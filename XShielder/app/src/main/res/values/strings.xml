@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">X Shielder</string>
+    <string name="buttonWifi">Wi-Fi security detector</string>
+    <string name="activityWifi_title">Wi-Fi security detector</string>
 </resources>

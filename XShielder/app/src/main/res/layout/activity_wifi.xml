@@ -12,13 +12,99 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:title="@string/activityWifi_title" />
 
+    <ImageView
+        android:id="@+id/imageViewResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:contentDescription="@string/wifi_imageViewResult_unknown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarWifi"
+        app:srcCompat="@drawable/result_unknown" />
+
+    <TextView
+        android:id="@+id/textViewExplanation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="TODO"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewResult" />
+
+    <com.xuexiang.xui.widget.layout.XUILinearLayout
+        android:id="@+id/linearLayoutWifiInfo"
+        android:background="@color/xui_config_color_separator_light_phone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewExplanation"
+        app:xui_borderColor="@color/xui_config_color_separator_light_phone"
+        app:xui_hideRadiusSide="bottom"
+        app:xui_outerNormalColor="@color/xui_config_color_background_phone"
+        app:xui_radius="30dp"
+        app:xui_showBorderOnlyBeforeL="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nestedScrollViewWifiInfo"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:overScrollMode="never"
+                android:scrollbars="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/roundButtonAction"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <com.xuexiang.xui.widget.grouplist.XUIGroupListView
+                    android:id="@+id/groupListViewWifiInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </androidx.core.widget.NestedScrollView>
+
+            <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+                android:id="@+id/roundButtonAction"
+                style="@style/RoundButton.Auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="25dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="TODO"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:rb_backgroundColor="@color/app_button_backgroundColour"
+                app:rb_borderColor="@android:color/transparent"
+                app:rb_isRadiusAdjustBounds="true" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.xuexiang.xui.widget.layout.XUILinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

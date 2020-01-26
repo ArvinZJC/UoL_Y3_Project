@@ -6,13 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".ActivityHome">
 
-    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-        android:id="@+id/buttonWifi"
+    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+        android:id="@+id/roundButtonWifi"
+        style="@style/RoundButton.Auto"
         android:layout_width="186dp"
         android:layout_height="112dp"
         android:layout_marginEnd="136dp"
-        android:onClick="onClickButtonWifi"
-        android:text="@string/buttonWifi"
+        android:onClick="onClickRoundButtonWifi"
+        android:text="@string/activityWifi_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.179"

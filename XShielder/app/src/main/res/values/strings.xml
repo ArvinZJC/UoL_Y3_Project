@@ -1,5 +1,52 @@
 <resources>
     <string name="app_name">X Shielder</string>
-    <string name="buttonWifi">Wi-Fi security detector</string>
+
     <string name="activityWifi_title">Wi-Fi security detector</string>
+
+    <string name="wifi_imageViewResult_unknown">UNKNOWN</string>
+    <string name="wifi_imageViewResult_pass">PASS</string>
+    <string name="wifi_imageViewResult_fail">FAIL</string>
+    <string name="wifi_info_ssid">SSID</string>
+    <string name="wifi_info_security">Security</string>
+    <string name="wifi_info_security_wep" translatable="false">WEP</string>
+    <string name="wifi_info_security_psk_code" translatable="false">PSK</string>
+    <string name="wifi_info_security_wpa_code" translatable="false">WPA-PSK</string>
+    <string name="wifi_info_security_wpa" translatable="false">WPA-Personal</string>
+    <string name="wifi_info_security_wpa2_code" translatable="false">RSN-PSK</string>
+    <string name="wifi_info_security_wpa2" translatable="false">WPA2-Personal</string>
+    <string name="wifi_info_security_unknownPsk_code" translatable="false">RSN-SAE</string>
+    <string name="wifi_info_security_wpa_wpa2_unknownPsk" translatable="false">WPA/WPA2-Personal</string>
+    <string name="wifi_info_security_psk_sae_code" translatable="false">PSK+SAE</string>
+    <string name="wifi_info_security_psk_sae" translatable="false">WPA2/WPA3-Personal</string>
+    <string name="wifi_info_security_wpa3_code" translatable="false">SAE</string>
+    <string name="wifi_info_security_wpa3" translatable="false">WPA3-Personal</string>
+    <string name="wifi_info_security_eap_code" translatable="false">EAP</string>
+    <string name="wifi_info_security_eap" translatable="false">WPA/WPA2/WPA3-Enterprise</string>
+    <string name="wifi_info_security_eap_wpa_code" translatable="false">WPA-EAP</string>
+    <string name="wifi_info_security_eap_wpa" translatable="false">WPA-Enterprise</string>
+    <string name="wifi_info_security_eap_wpa2_wpa3_code" translatable="false">RSN-EAP</string>
+    <string name="wifi_info_security_eap_wpa2_wpa3" translatable="false">WPA2/WPA3-Enterprise</string>
+    <string name="wifi_info_security_eap_suiteB_code" translatable="false">EAP_SUITE_B_192</string>
+    <string name="wifi_info_security_eap_suiteB" translatable="false">WPA3-Enterprise 192-bit</string>
+    <string name="wifi_info_security_owe_transition_code" translatable="false">OWE_TRANSITION</string>
+    <string name="wifi_info_security_owe_code" translatable="false">OWE</string>
+    <string name="wifi_info_security_owe" translatable="false">Enhanced Open</string>
+    <string name="wifi_info_security_none">None</string>
+    <string name="wifi_info_frequency">Frequency</string>
+    <string name="wifi_info_frequency_24ghz" translatable="false">2.4 GHz</string>
+    <string name="wifi_info_frequency_5ghz" translatable="false">5 GHz</string>
+    <string name="wifi_info_signalStrength">Signal strength</string>
+    <string name="wifi_info_signalStrength_none">None</string>
+    <string name="wifi_info_signalStrength_poor">Poor</string>
+    <string name="wifi_info_signalStrength_fair">Fair</string>
+    <string name="wifi_info_signalStrength_good">Good</string>
+    <string name="wifi_info_signalStrength_excellent">Excellent</string>
+    <string name="wifi_info_linkSpeed">Link speed</string>
+    <string name="wifi_info_ip">IP address</string>
+    <string name="wifi_info_gateway">Gateway</string>
+    <string name="wifi_info_subnetMask">Subnet mask</string>
+    <string name="wifi_info_dns">DNS server</string>
+    <string name="wifi_info_dns_plural">DNS servers</string>
+    <string name="wifi_info_unknownResult">&lt;unknown&gt;</string>
+    <string name="wifi_toast_clipboard">Successfully copied to the clipboard.</string>
 </resources>

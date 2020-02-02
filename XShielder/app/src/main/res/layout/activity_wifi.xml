@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutWifi"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ActivityWifi">
@@ -11,55 +12,55 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:theme="@style/AppTheme.ActionBarOverlay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:title="@string/activityWifi_title" />
 
-    <ImageView
-        android:id="@+id/imageViewResult"
+    <com.mikepenz.iconics.view.IconicsImageView
+        android:id="@+id/imageViewFinalResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:contentDescription="@string/wifi_imageViewResult_unknown"
+        android:layout_marginTop="@dimen/default_margin"
+        app:iiv_size="150dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarWifi"
-        app:srcCompat="@drawable/result_unknown" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarWifi" />
 
     <TextView
-        android:id="@+id/textViewExplanation"
+        android:id="@+id/textViewRationale"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:text="TODO"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
         android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
+        android:textColor="@color/primaryTextColour"
+        android:textSize="@dimen/default_text_size"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewResult" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewFinalResult" />
 
     <com.xuexiang.xui.widget.layout.XUILinearLayout
         android:id="@+id/linearLayoutWifiInfo"
-        android:background="@color/xui_config_color_separator_light_phone"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="@dimen/default_margin"
+        android:background="@color/card_backgroundColour"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewExplanation"
-        app:xui_borderColor="@color/xui_config_color_separator_light_phone"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRationale"
         app:xui_hideRadiusSide="bottom"
-        app:xui_outerNormalColor="@color/xui_config_color_background_phone"
         app:xui_radius="30dp"
-        app:xui_showBorderOnlyBeforeL="true">
+        app:xui_showBorderOnlyBeforeL="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutWifiInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -67,8 +68,8 @@
                 android:id="@+id/nestedScrollViewWifiInfo"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="25dp"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin"
                 android:overScrollMode="never"
                 android:scrollbars="vertical"
                 app:layout_constraintBottom_toTopOf="@+id/roundButtonAction"
@@ -84,27 +85,21 @@
                     android:layout_height="wrap_content" />
             </androidx.core.widget.NestedScrollView>
 
+            <!-- the attribute fitsSystemWindows needs setting to false to avoid an issue that padding has no effect on some devices -->
             <com.xuexiang.xui.widget.button.roundbutton.RoundButton
                 android:id="@+id/roundButtonAction"
-                style="@style/RoundButton.Auto"
+                style="@style/DefaultRoundButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp"
-                android:layout_marginBottom="25dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="TODO"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:fitsSystemWindows="false"
+                android:onClick="onClickRoundButtonAction"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:rb_backgroundColor="@color/app_button_backgroundColour"
-                app:rb_borderColor="@android:color/transparent"
-                app:rb_isRadiusAdjustBounds="true" />
+                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.xuexiang.xui.widget.layout.XUILinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,74 +1,90 @@
 /*
  * @Description: a class containing methods for getting the info of the connected Wi-Fi
- * @Version: 1.5.2.20200126
+ * @Version: 1.8.0.20200131
  * @Author: Arvin Zhao
  * @Date: 2020-01-20 13:59:45
  * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-01-26 15:47:48
+ * @LastEditTime : 2020-01-31 15:47:48
  */
 
 package com.arvinzjc.xshielder;
 
-import android.app.Activity;
+import android.accounts.NetworkErrorException;
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
+import android.net.NetworkCapabilities;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import androidx.annotation.NonNull;
+
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 class WifiInfoUtils
 {
-    private static final String TAG = "WifiInfoUtils";
+    private static final String TAG = WifiInfoUtils.class.getSimpleName(); // the tag of the log from this class
 
     /**
-     * lower bound on the 2.4 GHz (802.11b/g/n) WLAN channels
+     * The representation of a secured security type.
      */
-    private static final int LOWER_FREQUENCY_24GHZ = 2412;
+    static final String SECURED_SECURITY_TYPE = "secured security type";
 
     /**
-     * upper bound on the 2.4 GHz (802.11b/g/n) WLAN channels
+     * The representation of an unsecured security type.
      */
-    private static final int HIGHER_FREQUENCY_24GHZ = 2482;
+    static final String UNSECURED_SECURITY_TYPE = "unsecured security type";
 
-    /**
-     * lower bound on the 5.0 GHz (802.11a/h/j/n/ac) WLAN channels
-     */
-    private static final int LOWER_FREQUENCY_5GHZ = 4915;
+    private static final int LOWER_FREQUENCY_24GHZ = 2412; // lower bound on the 2.4 GHz (802.11b/g/n) WLAN channels
+    private static final int HIGHER_FREQUENCY_24GHZ = 2482; // upper bound on the 2.4 GHz (802.11b/g/n) WLAN channels
+    private static final int LOWER_FREQUENCY_5GHZ = 4915; // lower bound on the 5.0 GHz (802.11a/h/j/n/ac) WLAN channels
+    private static final int HIGHER_FREQUENCY_5GHZ = 5825; // upper bound on the 5.0 GHz (802.11a/h/j/n/ac) WLAN channels
+    private static final int SIGNAL_LEVELS = 5; // the number of distinct wifi levels
 
-    /**
-     * upper bound on the 5.0 GHz (802.11a/h/j/n/ac) WLAN channels
-     */
-    private static final int HIGHER_FREQUENCY_5GHZ = 5825;
+    private WifiManager mWifiManager;
+    private WifiInfo mWifiInfo;
+    private DhcpInfo mDhcpInfo;
+    private String mSsid;
+    private Context mContext;
 
-    /**
-     * the number of distinct wifi levels
-     */
-    private static final int SIGNAL_LEVELS = 5;
-
-    private WifiManager wifiManager;
-    private WifiInfo wifiInfo;
-    private DhcpInfo dhcpInfo;
-    private String ssid;
-    private Activity activity;
-
-    WifiInfoUtils(Activity callingActivity)
+    WifiInfoUtils(@NonNull Context context) throws NetworkErrorException
     {
-        activity = callingActivity;
-        wifiManager = (WifiManager)activity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        if (wifiManager != null)
+        if (connectivityManager != null)
         {
-            wifiInfo = wifiManager.getConnectionInfo();
-            dhcpInfo = wifiManager.getDhcpInfo();
-            ssid = wifiInfo.getSSID().replace("\"", "");
+            NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+
+            if (networkCapabilities != null)
+            {
+                if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI))
+                {
+                    mContext = context;
+                    mWifiManager = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+                    if (mWifiManager != null)
+                    {
+                        mWifiInfo = mWifiManager.getConnectionInfo();
+                        mDhcpInfo = mWifiManager.getDhcpInfo();
+                        mSsid = mWifiInfo.getSSID().replace("\"", "");
+                    }
+                    else
+                        throw new NullPointerException("Null object instantiated from the class " + WifiManager.class.getSimpleName() + ".");
+                }
+                else
+                    throw new NetworkErrorException("No connected Wi-Fi.");
+            }
+            else
+                throw new NetworkErrorException("No connected network.");
         }
         else
-            throw new NullPointerException("The object instantiated from the class WifiManager is null.");
+            throw new NullPointerException("Null object instantiated from the class " + ConnectivityManager.class.getSimpleName() + ".");
     } // end constructor WifiInfoUtils
 
     /**
@@ -77,85 +93,86 @@ class WifiInfoUtils
      */
     String getSsid()
     {
-        return ssid;
+        return mSsid;
     } // end method getSsid
 
     /**
-     * Get the security type of the connected Wi-Fi.
-     * @return the security type of the connected Wi-Fi
+     * Get the security type of the connected Wi-Fi and the representation indicating if the security type is secured.
+     * Basically support WEP, WPA/WPA2/WPA3, WPA/WPA2/WPA3 802.1x EAP, 802.1x EAP Suite-B-192, and OWE security.
+     * @return an array of the security type of the connected Wi-Fi as the first element and the representation indicating if the security type is secured as the second element
      */
-    String getSecurity()
+    String[] getSecurity()
     {
-        for (ScanResult scanResult : wifiManager.getScanResults())
+        for (ScanResult scanResult : mWifiManager.getScanResults())
         {
-            if (ssid.equals(scanResult.SSID))
+            if (mSsid.equals(scanResult.SSID))
             {
-                boolean hasWpaCode = scanResult.capabilities.contains((activity.getString(R.string.wifi_info_security_wpa_code)));
-                boolean hasWpa2Code = scanResult.capabilities.contains((activity.getString(R.string.wifi_info_security_wpa2_code)));
-                boolean hasWpa3Code = scanResult.capabilities.contains((activity.getString(R.string.wifi_info_security_wpa3_code)));
-                String owe = activity.getString(R.string.wifi_info_security_owe); // terminology for Wi-Fi with OWE security
-                String none = activity.getString(R.string.wifi_info_security_none); // refer to Wi-Fi with no security
+                boolean hasWpaCode = scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_wpa_code));
+                boolean hasWpa2Code = scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_wpa2_oldCode)) || scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_wpa2_newCode));
+                boolean hasWpa3Code = scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_wpa3_code));
+                String owe = mContext.getString(R.string.wifi_info_security_owe); // terminology for Wi-Fi with OWE security
+                String none = mContext.getString(R.string.wifi_info_security_none); // refer to Wi-Fi with no security
 
-                if (scanResult.capabilities.contains(activity.getString(R.string.wifi_info_security_wep)))
-                    return activity.getString(R.string.wifi_info_security_wep); // terminology for Wi-Fi with WEP security
-                else if (scanResult.capabilities.contains(activity.getString(R.string.wifi_info_security_eap_suiteB_code)))
-                    return activity.getString(R.string.wifi_info_security_eap_suiteB); // terminology for Wi-Fi with 802.1x EAP Suite-B-192 security
-                else if (scanResult.capabilities.contains(activity.getString(R.string.wifi_info_security_owe_transition_code)))
-                    return owe + "/" + none;
-                else if (scanResult.capabilities.contains(activity.getString(R.string.wifi_info_security_owe_code)))
-                    return owe;
-                else if (scanResult.capabilities.contains(activity.getString(R.string.wifi_info_security_psk_code)) || hasWpa3Code)
+                if (scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_wep)))
+                    return new String[]{mContext.getString(R.string.wifi_info_security_wep), UNSECURED_SECURITY_TYPE}; // terminology for Wi-Fi with WEP security
+                else if (scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_eap_suiteB_code)))
+                    return new String[]{mContext.getString(R.string.wifi_info_security_eap_suiteB), SECURED_SECURITY_TYPE}; // terminology for Wi-Fi with 802.1x EAP Suite-B-192 security
+                else if (scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_owe_transition_code)))
+                    return new String[]{owe + "/" + none, UNSECURED_SECURITY_TYPE};
+                else if (scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_owe_code)))
+                    return new String[]{owe, UNSECURED_SECURITY_TYPE};
+                else if (scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_psk_code)) || hasWpa3Code)
                 {
-                    if (scanResult.capabilities.contains(activity.getString(R.string.wifi_info_security_psk_sae_code)))
-                        return activity.getString(R.string.wifi_info_security_psk_sae); // terminology for Wi-Fi with WPA2/WPA3 Transition mode security
-                    else if ((hasWpaCode && hasWpa2Code) || (scanResult.capabilities.contains(activity.getString(R.string.wifi_info_security_unknownPsk_code))))
-                        return activity.getString(R.string.wifi_info_security_wpa_wpa2_unknownPsk); // terminology for Wi-Fi with both WPA/WPA2 security, or some unknown PSK types
+                    if (scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_psk_sae_code)))
+                        return new String[]{mContext.getString(R.string.wifi_info_security_psk_sae), SECURED_SECURITY_TYPE}; // terminology for Wi-Fi with WPA2/WPA3 Transition mode security
+                    else if ((hasWpaCode && hasWpa2Code) || (scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_unknownPsk_code))))
+                        return new String[]{mContext.getString(R.string.wifi_info_security_wpa_wpa2_unknownPsk), SECURED_SECURITY_TYPE}; // terminology for Wi-Fi with both WPA/WPA2 security, or some unknown PSK types
                     else if (hasWpaCode)
-                        return activity.getString(R.string.wifi_info_security_wpa); // terminology for Wi-Fi with WPA security
+                        return new String[]{mContext.getString(R.string.wifi_info_security_wpa), UNSECURED_SECURITY_TYPE}; // terminology for Wi-Fi with WPA security
                     else if (hasWpa2Code)
-                        return activity.getString(R.string.wifi_info_security_wpa2); // terminology for Wi-Fi with WPA2 security
+                        return new String[]{mContext.getString(R.string.wifi_info_security_wpa2), SECURED_SECURITY_TYPE}; // terminology for Wi-Fi with WPA2 security
                     else if (hasWpa3Code)
-                        return activity.getString(R.string.wifi_info_security_wpa3); // terminology for Wi-Fi with WPA3 security
+                        return new String[]{mContext.getString(R.string.wifi_info_security_wpa3), SECURED_SECURITY_TYPE}; // terminology for Wi-Fi with WPA3 security
                     else
                     {
                         Log.w(TAG, "Received abnormal flag string: " + scanResult.capabilities);
-                        return activity.getString(R.string.wifi_info_security_wpa_wpa2_unknownPsk); // terminology for Wi-Fi with some other unknown PSK types
+                        return new String[]{mContext.getString(R.string.wifi_info_security_wpa_wpa2_unknownPsk), SECURED_SECURITY_TYPE}; // terminology for Wi-Fi with some other unknown PSK types
                     } // end nested if...else
                 }
-                else if (scanResult.capabilities.contains(activity.getString(R.string.wifi_info_security_eap_code)))
+                else if (scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_eap_code)))
                 {
-                    if (scanResult.capabilities.contains(activity.getString(R.string.wifi_info_security_eap_wpa_code)))
-                        return activity.getString(R.string.wifi_info_security_eap_wpa); // terminology for Wi-Fi with WPA 802.1x EAP security
-                    else if (scanResult.capabilities.contains(activity.getString(R.string.wifi_info_security_eap_wpa2_wpa3_code)))
-                        return activity.getString(R.string.wifi_info_security_eap_wpa2_wpa3); // terminology for Wi-Fi with WPA2/WPA3 802.1x EAP security
+                    if (scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_eap_wpa_code)))
+                        return new String[]{mContext.getString(R.string.wifi_info_security_eap_wpa), UNSECURED_SECURITY_TYPE}; // terminology for Wi-Fi with WPA 802.1x EAP security
+                    else if (scanResult.capabilities.contains(mContext.getString(R.string.wifi_info_security_eap_wpa2_wpa3_code)))
+                        return new String[]{mContext.getString(R.string.wifi_info_security_eap_wpa2_wpa3), SECURED_SECURITY_TYPE}; // terminology for Wi-Fi with WPA2/WPA3 802.1x EAP security
                     else
-                        return activity.getString(R.string.wifi_info_security_eap); // terminology for Wi-Fi with 802.1x EAP security
+                        return new String[]{mContext.getString(R.string.wifi_info_security_eap), SECURED_SECURITY_TYPE}; // terminology for Wi-Fi with 802.1x EAP security
                 }
                 else
-                    return none;
+                    return new String[]{none, UNSECURED_SECURITY_TYPE};
             } // end if
         } // end for
 
-        Log.w(TAG, "Failed to get the security type. Some errors may occur.");
-        return activity.getString(R.string.wifi_info_unknownResult);
+        Log.w(TAG, "Failed to get the security type. Some errors might occur.");
+        return new String[]{mContext.getString(R.string.wifi_info_unknownResult), mContext.getString(R.string.wifi_info_unknownResult)};
     } // end method getSecurity
 
     /**
      * Get the frequency of the connected Wi-Fi.
      * @return the frequency of the connected Wi-Fi
      */
-    String getFrequency() // TODO
+    String getFrequency()
     {
-        int frequency = wifiInfo.getFrequency();
-        Log.d(TAG, String.valueOf(frequency));
+        int frequency = mWifiInfo.getFrequency();
+
         if (frequency >= LOWER_FREQUENCY_24GHZ && frequency <= HIGHER_FREQUENCY_24GHZ)
-            return activity.getString(R.string.wifi_info_frequency_24ghz);
+            return mContext.getString(R.string.wifi_info_frequency_24ghz);
         else if (frequency >= LOWER_FREQUENCY_5GHZ && frequency <= HIGHER_FREQUENCY_5GHZ)
-            return activity.getString(R.string.wifi_info_frequency_5ghz);
+            return mContext.getString(R.string.wifi_info_frequency_5ghz);
         else
         {
-            Log.w(TAG, "Failed to get the frequency. Some errors may occur.");
-            return activity.getString(R.string.wifi_info_unknownResult);
+            Log.w(TAG, "Failed to get the frequency. Some errors might occur.");
+            return mContext.getString(R.string.wifi_info_unknownResult);
         } // end nested if...else
     } // end method getFrequency
 
@@ -165,24 +182,24 @@ class WifiInfoUtils
      */
     String getSignalStrength()
     {
-        switch (WifiManager.calculateSignalLevel(wifiInfo.getRssi(), SIGNAL_LEVELS))
+        switch (WifiManager.calculateSignalLevel(mWifiInfo.getRssi(), SIGNAL_LEVELS))
         {
             case 0:
             default:
-                Log.w(TAG, "No signal strength. Some errors may occur.");
-                return activity.getString(R.string.wifi_info_signalStrength_none);
+                Log.w(TAG, "No signal strength. Some errors might occur.");
+                return mContext.getString(R.string.wifi_info_signalStrength_none);
 
             case 1:
-                return activity.getString(R.string.wifi_info_signalStrength_poor);
+                return mContext.getString(R.string.wifi_info_signalStrength_poor);
 
             case 2:
-                return activity.getString(R.string.wifi_info_signalStrength_fair);
+                return mContext.getString(R.string.wifi_info_signalStrength_fair);
 
             case 3:
-                return activity.getString(R.string.wifi_info_signalStrength_good);
+                return mContext.getString(R.string.wifi_info_signalStrength_good);
 
             case 4:
-                return activity.getString(R.string.wifi_info_signalStrength_excellent);
+                return mContext.getString(R.string.wifi_info_signalStrength_excellent);
         } // end switch-case
     } // end method getSignalStrength
 
@@ -192,36 +209,90 @@ class WifiInfoUtils
      */
     String getLinkSpeed()
     {
-        int linkSpeedValue = wifiInfo.getLinkSpeed();
+        int linkSpeedValue = mWifiInfo.getLinkSpeed();
 
         if (linkSpeedValue < 0)
         {
-            Log.w(TAG, "Failed to get the link speed. Some errors may occur.");
-            return activity.getString(R.string.wifi_info_unknownResult);
+            Log.w(TAG, "Failed to get the link speed. Some errors might occur.");
+            return mContext.getString(R.string.wifi_info_unknownResult);
         }
         else
             return linkSpeedValue + " " + WifiInfo.LINK_SPEED_UNITS;
     } // end method getLinkSpeed
 
     /**
-     * Get the IPv4 address of the connected Wi-Fi.
-     * @return the IPv4 address of the connected Wi-Fi
+     * Get the Mac address of the connected Wi-Fi.
+     * @return the Mac address of the connected Wi-Fi
      */
-    String getIp()
+    String getMac()
     {
-        int ip =  wifiInfo.getIpAddress();
+        String macAddress = mWifiInfo.getBSSID();
+        return macAddress == null ? mContext.getString(R.string.wifi_info_unknownResult) : macAddress;
+    } // getMac
 
-        if (ip == 0)
+    /**
+     * Get the IPv4 address and subnet mask of the connected Wi-Fi.
+     * @return an array of the IPv4 address as the first element and the subnet mask as the second element
+     */
+    String[] getIpAndSubnetMask()
+    {
+        int ipValue =  mWifiInfo.getIpAddress();
+        String unknownResult = mContext.getString(R.string.wifi_info_unknownResult);
+
+        if (ipValue != 0)
         {
-            Log.w(TAG, "Failed to get the IPv4 address. Some errors may occur.");
-            return activity.getString(R.string.wifi_info_unknownResult);
-        }
-        else
-            return "" + (ip & 0xFF) + "."
-                    + ((ip >> 8) & 0xFF) + "."
-                    + ((ip >> 16) & 0xFF) + "."
-                    + ((ip >> 24) & 0xFF);
-    } // end method getIp
+            String ip = (ipValue & 0xFF) + "."
+                    + ((ipValue >> 8) & 0xFF) + "."
+                    + ((ipValue >> 16) & 0xFF) + "."
+                    + ((ipValue >> 24) & 0xFF);
+
+            try
+            {
+                int index;
+
+                for (Enumeration<NetworkInterface> networkInterfaceEnumeration = NetworkInterface.getNetworkInterfaces(); networkInterfaceEnumeration.hasMoreElements();)
+                {
+                    index = 0;
+
+                    for (Enumeration<InetAddress> inetAddressEnumeration = networkInterfaceEnumeration.nextElement().getInetAddresses(); inetAddressEnumeration.hasMoreElements();)
+                    {
+                        InetAddress inetAddress = inetAddressEnumeration.nextElement();
+
+                        if (!inetAddress.isLoopbackAddress())
+                        {
+                            if (inetAddress.getHostAddress().contains(".") && !inetAddress.getHostAddress().contains(":"))
+                            {
+                                InterfaceAddress interfaceAddress = NetworkInterface.getByInetAddress(inetAddress).getInterfaceAddresses().get(index); // it should contain the IPv4 address of "wlan0" when index = 1
+
+                                if (interfaceAddress.toString().contains(ip))
+                                {
+                                    int subnetMaskValue = 0xffffffff << (32 - interfaceAddress.getNetworkPrefixLength());
+                                    return new String[]
+                                            {
+                                                    ip,
+                                                    (((subnetMaskValue & 0xff000000) >> 24) & 0xff) + "."
+                                                            + (((subnetMaskValue & 0x00ff0000) >> 16) & 0xff) + "."
+                                                            + (((subnetMaskValue & 0x0000ff00) >> 8) & 0xff)  + "."
+                                                            + ((subnetMaskValue & 0x000000ff) & 0xff)
+                                            };
+                                } // end if
+                            } // end if
+
+                            index++;
+                        } // end if
+                    } // end for
+                } // end for
+            }
+            catch (SocketException e)
+            {
+                Log.e(TAG, "Exception occurred when the app tried to get the IPv4 submet mask.", e);
+                return new String[]{ip, unknownResult};
+            } // end try...catch
+        } // end if
+
+        Log.w(TAG, "Failed to get the IPv4 address. Hence, the IPv4 subnet mask cannot be got. Some errors might occur.");
+        return new String[]{unknownResult, unknownResult};
+    } // end method getIpAndSubnetMask
 
     /**
      * Get the IPv4 gateway of the connected Wi-Fi.
@@ -229,94 +300,46 @@ class WifiInfoUtils
      */
     String getGateway()
     {
-        if (dhcpInfo.gateway == 0)
+        if (mDhcpInfo.gateway == 0)
         {
-            Log.w(TAG, "Failed to get the IPv4 gateway. Some errors may occur.");
-            return activity.getString(R.string.wifi_info_unknownResult);
+            Log.w(TAG, "Failed to get the IPv4 gateway. Some errors might occur.");
+            return mContext.getString(R.string.wifi_info_unknownResult);
         }
         else
-            return "" + (dhcpInfo.gateway & 0xFF) + "."
-                    + ((dhcpInfo.gateway >> 8) & 0xFF) + "."
-                    + ((dhcpInfo.gateway >> 16) & 0xFF) + "."
-                    + ((dhcpInfo.gateway >> 24) & 0xFF);
+            return (mDhcpInfo.gateway & 0xFF) + "."
+                    + ((mDhcpInfo.gateway >> 8) & 0xFF) + "."
+                    + ((mDhcpInfo.gateway >> 16) & 0xFF) + "."
+                    + ((mDhcpInfo.gateway >> 24) & 0xFF);
     } // end method getGateway
-
-    /**
-     * Get the IPv4 subnet mask of the connected Wi-Fi.
-     * @return the IPv4 subnet mask of the connected Wi-Fi
-     */
-    String getSubnetMask() // TODO
-    {
-        try
-        {
-            Process process = Runtime.getRuntime().exec("ifconfig wlan0");
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String[] results;
-            String[] key_value;
-
-            do
-            {
-                String line = bufferedReader.readLine();
-
-                if (line == null)
-                    break;
-                Log.d(TAG, line);
-                if (line.trim().matches("inet addr:(\\d{1,3}\\.){3}\\d{1,3}( ){2}"
-                            + "(Bcast:(\\d{1,3}\\.){3}\\d{1,3}( ){2})?"
-                            + "Mask:(\\d{1,3}\\.){3}\\d{1,3}"))
-                {
-                    results = line.trim().split("( ){2}");
-
-                    for (String result : results)
-                    {
-                        if (result.length() > 0)
-                        {
-                            key_value = result.split(":");
-
-                            if (key_value[0].startsWith("Mask"))
-                                return key_value[1];
-                        } // end if
-                    } // end for
-                } // end if
-            } while (true);
-        }
-        catch (IOException e)
-        {
-            Log.e(TAG, "Exception occurs.", e);
-        } // end try...catch
-
-        Log.w(TAG, "Failed to get the IPv4 subnet mask. Some errors may occur.");
-        return activity.getString(R.string.wifi_info_unknownResult);
-    } // end method getSubnetMask
 
     /**
      * Get the IPv4 DNS server(s) of the connected Wi-Fi.
      * @return the IPv4 DNS server(s) of the connected Wi-Fi
      */
-    String getDnsServer()
+    String getDns()
     {
         String dnsServer1;
 
-        if (dhcpInfo.dns1 == 0)
+        if (mDhcpInfo.dns1 == 0)
         {
-            Log.w(TAG, "Failed to get the IPv4 DNS server. Some errors may occur.");
-            return activity.getString(R.string.wifi_info_unknownResult);
+            Log.w(TAG, "Failed to get the IPv4 DNS server. Some errors might occur.");
+            return mContext.getString(R.string.wifi_info_unknownResult);
         }
         else
-            dnsServer1 = (dhcpInfo.dns1 & 0xFF) + "."
-                    + ((dhcpInfo.dns1 >> 8) & 0xFF) + "."
-                    + ((dhcpInfo.dns1 >> 16) & 0xFF) + "."
-                    + ((dhcpInfo.dns1 >> 24) & 0xFF);
+            dnsServer1 = (mDhcpInfo.dns1 & 0xFF) + "."
+                    + ((mDhcpInfo.dns1 >> 8) & 0xFF) + "."
+                    + ((mDhcpInfo.dns1 >> 16) & 0xFF) + "."
+                    + ((mDhcpInfo.dns1 >> 24) & 0xFF);
 
-        if (dhcpInfo.dns2 > 0)
+        if (mDhcpInfo.dns2 > 0)
         {
-            String dnsServer2 = (dhcpInfo.dns2 & 0xFF) + "."
-                    + ((dhcpInfo.dns2 >> 8) & 0xFF) + "."
-                    + ((dhcpInfo.dns2 >> 16) & 0xFF) + "."
-                    + ((dhcpInfo.dns2 >> 24) & 0xFF);
+            String dnsServer2 = (mDhcpInfo.dns2 & 0xFF) + "."
+                    + ((mDhcpInfo.dns2 >> 8) & 0xFF) + "."
+                    + ((mDhcpInfo.dns2 >> 16) & 0xFF) + "."
+                    + ((mDhcpInfo.dns2 >> 24) & 0xFF);
             return dnsServer1 + "\n" + dnsServer2;
         } // end if
 
         return dnsServer1;
-    } // end method getDnsServer
+    } // end method getDns
 } // end class WifiInfoUtils

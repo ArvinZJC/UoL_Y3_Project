@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-
-    <color name="app_button_backgroundColour">#2196F3</color>
+    <color name="app_themeColour">@android:color/background_light</color>
+    <color name="borderColour">#636366</color>
+    <color name="button_backgroundColour">#2196F3</color>
+    <color name="buttonPressed_backgroundColour">#CC2196F3</color>
+    <color name="card_backgroundColour">#F6F8FA</color>
+    <color name="colourPass">#4CAF50</color>
+    <color name="colourWarning">#FFFFC107</color>
+    <color name="contentTextColour">#666666</color>
+    <color name="explanationTextColour">#999999</color>
+    <color name="listItemPressed_backgroundColour">#E5E5EA</color>
+    <color name="primaryTextColour">#333333</color>
 </resources>

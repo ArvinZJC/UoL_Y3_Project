@@ -41,11 +41,9 @@
         <item name="android:paddingBottom">20dp</item>
         <item name="android:textColor">@color/primaryTextColour</item>
         <item name="android:textSize">@dimen/default_text_size</item>
-        <item name="sCornersRadius">5dp</item>
+        <item name="sCornersRadius">15dp</item>
         <item name="sGravity">right</item>
         <item name="sSolidColor">@color/card_backgroundColour</item>
-        <item name="sStrokeColor">@color/borderColour</item>
-        <item name="sStrokeWidth">0.5dp</item>
     </style>
 
     <!-- the customised list style of some XUI widgets -->

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="app_themeColour">@android:color/background_light</color>
-    <color name="borderColour">#636366</color>
     <color name="button_backgroundColour">#2196F3</color>
     <color name="buttonPressed_backgroundColour">#CC2196F3</color>
     <color name="card_backgroundColour">#F6F8FA</color>

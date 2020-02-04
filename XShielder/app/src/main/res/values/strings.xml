@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">X Shielder</string>
+    <string name="menuSettings_hint">Settings</string>
+    <string name="activityMalware_title">Anti-malware shield</string>
+    <string name="activityWifi_title">Wi-Fi security shield</string>
+
+    <string name="wifi_dialogPermissionWarning_title">ATTENTION</string>
+    <string name="wifi_dialogPermissionWarning_content">Due to Android limits, location access is required to get accurate network details.\n\nThis app never tracks you, nor does it collect your location.</string>
+    <string name="wifi_dialogPermissionWarning_positiveText">CONFIRM</string>
+    <string name="wifi_textViewRationale_pass">Everything looks good.</string>
+    <string name="wifi_textViewRationale_failed">Unsecured Wi-Fi. Please connect to another Wi-Fi network or change your router settings.</string>
+    <string name="wifi_textViewRationale_unknown_connectivity">No connected Wi-Fi. Please connect to Wi-Fi first.</string>
+    <string name="wifi_textViewRationale_unknown_appError">Something wrong. Please retry the scan or report the bug.</string>
+    <string name="wifi_info_checklist_title">CHECKLIST</string>
+    <string name="wifi_info_securityResult">Secured security type</string>
+    <string name="wifi_info_details_title">NETWORK DETAILS</string>
+    <string name="wifi_info_ssid">SSID</string>
+    <string name="wifi_info_security">Security</string>
+    <string name="wifi_info_security_wep" translatable="false">WEP</string>
+    <string name="wifi_info_security_psk_code" translatable="false">PSK</string>
+    <string name="wifi_info_security_wpa_code" translatable="false">WPA-PSK</string>
+    <string name="wifi_info_security_wpa" translatable="false">WPA-Personal</string>
+    <string name="wifi_info_security_wpa2_oldCode" translatable="false">WPA2-PSK</string>
+    <string name="wifi_info_security_wpa2_newCode" translatable="false">RSN-PSK</string>
+    <string name="wifi_info_security_wpa2" translatable="false">WPA2-Personal</string>
+    <string name="wifi_info_security_unknownPsk_code" translatable="false">RSN-SAE</string>
+    <string name="wifi_info_security_wpa_wpa2_unknownPsk" translatable="false">WPA/WPA2-Personal</string>
+    <string name="wifi_info_security_psk_sae_code" translatable="false">PSK+SAE</string>
+    <string name="wifi_info_security_psk_sae" translatable="false">WPA2/WPA3-Personal</string>
+    <string name="wifi_info_security_wpa3_code" translatable="false">SAE</string>
+    <string name="wifi_info_security_wpa3" translatable="false">WPA3-Personal</string>
+    <string name="wifi_info_security_eap_code" translatable="false">EAP</string>
+    <string name="wifi_info_security_eap" translatable="false">WPA/WPA2/WPA3-Enterprise</string>
+    <string name="wifi_info_security_eap_wpa_code" translatable="false">WPA-EAP</string>
+    <string name="wifi_info_security_eap_wpa" translatable="false">WPA-Enterprise</string>
+    <string name="wifi_info_security_eap_wpa2_wpa3_code" translatable="false">RSN-EAP</string>
+    <string name="wifi_info_security_eap_wpa2_wpa3" translatable="false">WPA2/WPA3-Enterprise</string>
+    <string name="wifi_info_security_eap_suiteB_code" translatable="false">EAP_SUITE_B_192</string>
+    <string name="wifi_info_security_eap_suiteB" translatable="false">WPA3-Enterprise 192-bit</string>
+    <string name="wifi_info_security_owe_transition_code" translatable="false">OWE_TRANSITION</string>
+    <string name="wifi_info_security_owe_code" translatable="false">OWE</string>
+    <string name="wifi_info_security_owe" translatable="false">Enhanced Open</string>
+    <string name="wifi_info_security_none">None</string>
+    <string name="wifi_info_frequency">Frequency</string>
+    <string name="wifi_info_frequency_24ghz" translatable="false">2.4 GHz</string>
+    <string name="wifi_info_frequency_5ghz" translatable="false">5 GHz</string>
+    <string name="wifi_info_signalStrength">Signal strength</string>
+    <string name="wifi_info_signalStrength_none">None</string>
+    <string name="wifi_info_signalStrength_poor">Poor</string>
+    <string name="wifi_info_signalStrength_fair">Fair</string>
+    <string name="wifi_info_signalStrength_good">Good</string>
+    <string name="wifi_info_signalStrength_excellent">Excellent</string>
+    <string name="wifi_info_linkSpeed">Link speed</string>
+    <string name="wifi_info_mac">Wi-Fi Mac address</string>
+    <string name="wifi_info_ip">IP address</string>
+    <string name="wifi_info_gateway">Gateway</string>
+    <string name="wifi_info_subnetMask">Subnet mask</string>
+    <string name="wifi_info_dns">DNS server(s)</string>
+    <string name="wifi_info_unknownResult">&lt;unknown&gt;</string>
+    <string name="wifi_toastCopiedToClipboard">Successfully copied to the clipboard.</string>
+    <string name="wifi_roundButtonAction_normal">Rescan</string>
+    <string name="wifi_roundButtonAction_failed">Configure Wi-Fi</string>
+    <string name="wifi_roundButtonAction_unknown">Retry</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="app_themeColour">@android:color/background_dark</color>
+    <color name="card_backgroundColour">#1C1C1E</color>
+    <color name="contentTextColour">#979797</color>
+    <color name="listItemPressed_backgroundColour">#2C2C2E</color>
+    <color name="primaryTextColour">#F2F2F7</color>
+</resources>

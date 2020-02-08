@@ -19,8 +19,18 @@
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:title="@string/activityWifi_title" />
 
+    <com.xuexiang.xui.widget.progress.CircleProgressView
+        android:id="@+id/circleProgressViewWifi"
+        style="@style/DefaultCircleProgressViewStyle"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarWifi"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <com.mikepenz.iconics.view.IconicsImageView
-        android:id="@+id/imageViewFinalResult"
+        android:id="@+id/imageViewWifi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin"
@@ -30,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbarWifi" />
 
     <TextView
-        android:id="@+id/textViewRationale"
+        android:id="@+id/textViewWifiRationale"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
@@ -38,15 +48,15 @@
         android:layout_marginRight="@dimen/default_margin"
         android:textAlignment="center"
         android:textColor="@color/primaryTextColour"
-        android:textSize="@dimen/default_text_size"
+        android:textSize="@dimen/default_primary_text_size"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewFinalResult" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewWifi" />
 
     <com.xuexiang.xui.widget.layout.XUILinearLayout
-        android:id="@+id/linearLayoutWifiInfo"
+        android:id="@+id/linearLayoutWifiResults"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/default_margin"
@@ -54,25 +64,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRationale"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWifiRationale"
         app:xui_hideRadiusSide="bottom"
         app:xui_radius="30dp"
         app:xui_showBorderOnlyBeforeL="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayoutWifiInfo"
+            android:id="@+id/constraintLayoutWifiResults"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <androidx.core.widget.NestedScrollView
-                android:id="@+id/nestedScrollViewWifiInfo"
+                android:id="@+id/nestedScrollViewWifiResults"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:overScrollMode="never"
                 android:scrollbars="vertical"
-                app:layout_constraintBottom_toTopOf="@+id/roundButtonAction"
+                app:layout_constraintBottom_toTopOf="@+id/roundButtonWifiAction"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -80,14 +90,14 @@
                 app:layout_constraintVertical_bias="0.0">
 
                 <com.xuexiang.xui.widget.grouplist.XUIGroupListView
-                    android:id="@+id/groupListViewWifiInfo"
+                    android:id="@+id/groupListViewWifiResults"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </androidx.core.widget.NestedScrollView>
 
             <!-- the attribute fitsSystemWindows needs setting to false to avoid an issue that padding has no effect on some devices -->
             <com.xuexiang.xui.widget.button.roundbutton.RoundButton
-                android:id="@+id/roundButtonAction"
+                android:id="@+id/roundButtonWifiAction"
                 style="@style/DefaultRoundButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,7 +105,7 @@
                 android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:fitsSystemWindows="false"
-                android:onClick="onClickRoundButtonAction"
+                android:onClick="onClickRoundButtonWifiAction"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

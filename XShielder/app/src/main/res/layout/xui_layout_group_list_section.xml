@@ -8,7 +8,7 @@
         android:id="@+id/group_list_section_header_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="13sp"
-        android:textColor="@color/explanationTextColour"
+        android:textSize="@dimen/default_explanation_text_size"
+        android:textColor="@color/contentTextColour"
         android:gravity="start" />
 </merge>

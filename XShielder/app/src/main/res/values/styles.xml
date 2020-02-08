@@ -6,8 +6,8 @@
         <item name="android:windowAnimationStyle">@style/WindowAnimationStyle_customised</item>
         <item name="colorPrimary">@color/app_themeColour</item>
         <item name="colorPrimaryDark">@color/app_themeColour</item>
-        <item name="xui_common_list_item_title_h_text_size">@dimen/default_text_size</item>
-        <item name="xui_common_list_item_detail_h_text_size">16sp</item>
+        <item name="xui_common_list_item_detail_h_text_size">@dimen/default_content_text_size</item>
+        <item name="xui_common_list_item_title_h_text_size">@dimen/default_primary_text_size</item>
         <item name="xui_config_color_background">@color/app_themeColour</item>
         <item name="XUICommonListItemViewStyle">@style/XUIListStyle_customised</item>
         <item name="XUIGroupListSectionViewStyle">@style/XUIListStyle_customised</item>
@@ -40,10 +40,26 @@
         <item name="android:paddingTop">20dp</item>
         <item name="android:paddingBottom">20dp</item>
         <item name="android:textColor">@color/primaryTextColour</item>
-        <item name="android:textSize">@dimen/default_text_size</item>
+        <item name="android:textSize">@dimen/default_primary_text_size</item>
         <item name="sCornersRadius">15dp</item>
         <item name="sGravity">right</item>
         <item name="sSolidColor">@color/card_backgroundColour</item>
+    </style>
+
+    <!-- the default style of the circle progress views -->
+    <style name="DefaultCircleProgressViewStyle">
+        <item name="cpv_circle_broken">false</item>
+        <item name="cpv_end_color">@color/circleProgressView_progressColour_end</item>
+        <item name="cpv_end_progress">100</item>
+        <item name="cpv_isFilled">false</item>
+        <item name="cpv_isTracked">true</item>
+        <item name="cpv_progress_textColor">@color/primaryTextColour</item>
+        <item name="cpv_progress_textSize">50sp</item>
+        <item name="cpv_progress_width">20dp</item>
+        <item name="cpv_start_color">@color/circleProgressView_progressColour_start</item>
+        <item name="cpv_start_progress">0</item>
+        <item name="cpv_track_color">@color/circleProgressView_trackColour</item>
+        <item name="cpv_track_width">10dp</item>
     </style>
 
     <!-- the customised list style of some XUI widgets -->
@@ -53,7 +69,7 @@
         <item name="android:paddingLeft">@dimen/default_margin</item>
         <item name="android:paddingRight">@dimen/default_margin</item>
         <item name="xui_commonList_titleColor">@color/primaryTextColour</item>
-        <item name="xui_commonList_detailColor">@color/contentTextColour</item>
+        <item name="xui_commonList_detailColor">@color/explanationTextColour</item>
     </style>
 
     <!-- the default style of the round buttons -->
@@ -61,7 +77,7 @@
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:paddingTop">@dimen/default_padding</item>
         <item name="android:paddingBottom">@dimen/default_padding</item>
-        <item name="android:textSize">@dimen/default_text_size</item>
+        <item name="android:textSize">@dimen/default_primary_text_size</item>
         <item name="rb_backgroundColor">@color/default_round_button_background</item>
         <item name="rb_isRadiusAdjustBounds">true</item>
     </style>

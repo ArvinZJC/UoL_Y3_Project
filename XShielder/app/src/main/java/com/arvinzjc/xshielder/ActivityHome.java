@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
 
+import com.apkfuns.logutils.LogUtils;
 import com.google.android.material.appbar.AppBarLayout;
 import com.mikepenz.iconics.IconicsColorInt;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -34,6 +35,7 @@ public class ActivityHome extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        LogUtils.i("Enter the home activity.");
         StatusBarUtils.translucent(this); // enable the translucent status bar
         StatusBarThemeUtils.changeStatusBarTheme(this, getResources().getConfiguration());
         setContentView(R.layout.activity_home);
@@ -66,6 +68,17 @@ public class ActivityHome extends AppCompatActivity
                 null,
                 null);
     } // end method onCreate
+
+    /**
+     * Flush log cache before exiting the application.
+     */
+    @Override
+    public void onBackPressed()
+    {
+        LogUtils.i("The home activity has detected the user's press of the back key. The app should be exited.");
+        LogUtils.getLog2FileConfig().flushAsync(); // flush log cache to record logs in log files
+        super.onBackPressed();
+    } // end method onBackPressed
 
     /**
      * Recreate the activity when the configuration of the dark theme is changed.

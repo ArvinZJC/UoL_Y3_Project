@@ -1,10 +1,10 @@
 /*
  * @Description: a class containing methods for getting the info of the connected Wi-Fi
- * @Version: 1.9.1.20200208
+ * @Version: 1.9.2.20200209
  * @Author: Arvin Zhao
  * @Date: 2020-01-20 13:59:45
  * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-02-08 15:47:48
+ * @LastEditTime : 2020-02-09 15:47:48
  */
 
 package com.arvinzjc.xshielder;
@@ -33,7 +33,8 @@ import java.util.Enumeration;
 class WifiUtils
 {
     private static final String UNKNOWN_SSID = "<unknown ssid>";
-    private static final String ABNORMAL_BSSID = "02:00:00:00:00:00";
+    private static final String ABNORMAL_BSSID_1 = "02:00:00:00:00:00";
+    private static final String ABNORMAL_BSSID_2 = "02:00:00:00:01:00";
 
     /**
      * The representation of a secured security type.
@@ -272,9 +273,15 @@ class WifiUtils
             return mUnknownResult;
         } // end if
 
-        if (bssid.equals(ABNORMAL_BSSID))
+        if (bssid.equals(ABNORMAL_BSSID_1))
         {
-            LogUtils.w("Received abnormal BSSID (" + ABNORMAL_BSSID + "). The caller has insufficient permissions.");
+            LogUtils.w("Received abnormal BSSID (" + ABNORMAL_BSSID_1 + "). The caller has insufficient permissions.");
+            return mUnknownResult;
+        } // end if
+
+        if (bssid.equals(ABNORMAL_BSSID_2))
+        {
+            LogUtils.w("Received abnormal BSSID (" + ABNORMAL_BSSID_2 + "). Some errors might occur.");
             return mUnknownResult;
         } // end if
 

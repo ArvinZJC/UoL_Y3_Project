@@ -367,7 +367,7 @@ public class ActivityWifi extends AppCompatActivity
                 validatedConnectivity = WifiResults.PASS;
 
                 imageViewChecklistConnectivity.setIcon(drawablePass);
-                LogUtils.i("Validated connectivity");
+                LogUtils.i("Validated connectivity.");
                 sendMessage(1);
 
                 ExecutorService executorServiceWifi = Executors.newFixedThreadPool(AppInitialiser.CPU_CORE_COUNT + 1 < THREAD_TASK_COUNT ? AppInitialiser.CPU_CORE_COUNT : THREAD_TASK_COUNT);
@@ -419,8 +419,8 @@ public class ActivityWifi extends AppCompatActivity
                 imageViewChecklistConnectivity.setIcon(drawableFail);
                 imageViewChecklistDns.setIcon(drawableUnknown);
                 imageViewChecklistSsl.setIcon(drawableUnknown);
-                LogUtils.w("Invalidated connectivity. Internet access is not available");
-                LogUtils.w("DNS security; unknown");
+                LogUtils.w("Invalidated connectivity. Internet access is not available.");
+                LogUtils.w("DNS security: unknown");
                 LogUtils.w("SSL security: unknown");
             } // end if...else
 

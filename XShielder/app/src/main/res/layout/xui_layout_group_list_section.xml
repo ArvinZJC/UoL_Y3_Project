@@ -9,6 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/default_explanation_text_size"
-        android:textColor="@color/contentTextColour"
+        android:textColor="@color/explanationTextColour"
         android:gravity="start" />
 </merge>

@@ -2,5 +2,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:color="@color/xui_btn_disable_color" android:state_enabled="false" />
     <item android:color="@color/buttonPressed_backgroundColour" android:state_pressed="true" />
-    <item android:color="@color/button_backgroundColour" />
+    <item android:color="@color/colourInfo" />
 </selector>

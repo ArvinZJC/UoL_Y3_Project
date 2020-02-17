@@ -1,13 +1,13 @@
 /*
  * @Description: a class for the home activity
- * @Version: 1.3.5.20200202
+ * @Version: 1.3.7.20200213
  * @Author: Arvin Zhao
  * @Date: 2020-01-16 13:59:45
  * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-02-02 14:32:10
+ * @LastEditTime : 2020-02-13 14:32:10
  */
 
-package com.arvinzjc.xshielder;
+package com.arvinzjc.xshielder.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -21,6 +21,9 @@ import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.apkfuns.logutils.LogUtils;
+import com.arvinzjc.xshielder.AppInitialiser;
+import com.arvinzjc.xshielder.R;
+import com.arvinzjc.xshielder.utils.StatusBarThemeUtils;
 import com.google.android.material.appbar.AppBarLayout;
 import com.mikepenz.iconics.IconicsColorInt;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -40,10 +43,14 @@ public class ActivityHome extends AppCompatActivity
         StatusBarThemeUtils.changeStatusBarTheme(this, getResources().getConfiguration());
         setContentView(R.layout.activity_home);
         ((Toolbar)findViewById(R.id.toolbarHome)).inflateMenu(R.menu.menu_settings);
-        ((ActionMenuItemView)findViewById(R.id.menuSettings)).setIcon(new IconicsDrawable(this)
+
+        ActionMenuItemView menuSettings = findViewById(R.id.menuSettings);
+        menuSettings.setIcon(new IconicsDrawable(this)
                 .icon(MaterialDesignIconic.Icon.gmi_settings)
                 .color(new IconicsColorInt(getColor(R.color.primaryTextColour)))
                 .size(new IconicsSizeDp(AppInitialiser.TOOLBAR_RIGHT_ICON_SIZE)));
+        menuSettings.setOnClickListener((View view) -> startActivity(new Intent().setClass(this, ActivitySettings.class)));
+
         ((AppBarLayout)findViewById(R.id.appBarLayoutHome)).addOnOffsetChangedListener((AppBarLayout appBarLayoutHome, int verticalOffset) ->
         {
             TextView textViewAppName = findViewById(R.id.textViewAppName);
@@ -53,20 +60,26 @@ public class ActivityHome extends AppCompatActivity
             else
                 textViewAppName.setVisibility(View.INVISIBLE);
         });
-        ((SuperButton)findViewById(R.id.superButtonMalware)).setCompoundDrawables(new IconicsDrawable(this)
+
+        SuperButton superButtonMalware = findViewById(R.id.superButtonMalware);
+        superButtonMalware.setCompoundDrawables(new IconicsDrawable(this)
                         .icon(MaterialDesignIconic.Icon.gmi_shield_security)
                         .color(new IconicsColorInt(getColor(android.R.color.holo_green_light)))
                         .size(new IconicsSizeDp(40)),
                 null,
                 null,
                 null);
-        ((SuperButton)findViewById(R.id.superButtonWifi)).setCompoundDrawables(new IconicsDrawable(this)
+        superButtonMalware.setOnClickListener((View view) -> startActivity(new Intent().setClass(this, ActivityMalware.class)));
+
+        SuperButton superButtonWifi = findViewById(R.id.superButtonWifi);
+        superButtonWifi.setCompoundDrawables(new IconicsDrawable(this)
                         .icon(MaterialDesignIconic.Icon.gmi_wifi_info)
                         .color(new IconicsColorInt(getColor(android.R.color.holo_blue_light)))
                         .size(new IconicsSizeDp(40)),
                 null,
                 null,
                 null);
+        superButtonWifi.setOnClickListener((View view) -> startActivity(new Intent().setClass(this, ActivityWifi.class)));
     } // end method onCreate
 
     /**
@@ -90,26 +103,4 @@ public class ActivityHome extends AppCompatActivity
         super.onConfigurationChanged(configuration);
         recreate();
     } // end method onConfigurationChanged
-
-    /**
-     * Respond to the click event of the super button for turning to the activity of the anti-malware shield.
-     * @param view the view of the super button for turning to the activity of the anti-malware shield
-     */
-    public void onClickSuperButtonMalware(View view)
-    {
-        Intent intent = new Intent();
-        intent.setClass(this, ActivityMalware.class);
-        startActivity(intent);
-    } // end method onClickSuperButtonMalware
-
-    /**
-     * Respond to the click event of the super button for turning to the activity of the Wi-Fi security shield.
-     * @param view the view of the super button for turning to the activity of the Wi-Fi security shield
-     */
-    public void onClickSuperButtonWifi(View view)
-    {
-        Intent intent = new Intent();
-        intent.setClass(this, ActivityWifi.class);
-        startActivity(intent);
-    } // end method onClickSuperButtonWifi
 } // end class ActivityHome

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="app_themeColour">@android:color/background_light</color>
-    <color name="button_backgroundColour">#2196F3</color>
     <color name="buttonPressed_backgroundColour">#CC2196F3</color>
     <color name="card_backgroundColour">#F6F8FA</color>
     <color name="circleProgressView_progressColour_end">#00EEFA</color>
     <color name="circleProgressView_progressColour_start">#0052a3</color>
     <color name="circleProgressView_trackColour">#22FFF5</color>
+    <color name="colourInfo">#2196F3</color>
     <color name="colourPass">#4CAF50</color>
     <color name="colourWarning">#FFFFC107</color>
     <color name="contentTextColour">#666666</color>

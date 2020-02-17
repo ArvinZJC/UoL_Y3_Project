@@ -5,7 +5,7 @@
     android:id="@+id/coordinatorLayoutHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityHome">
+    tools:context=".activities.ActivityHome">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayoutHome"
@@ -70,7 +70,6 @@
                 style="@style/DefaultSuperButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onClickSuperButtonMalware"
                 android:text="@string/activityMalware_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +80,6 @@
                 style="@style/DefaultSuperButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="onClickSuperButtonWifi"
                 android:text="@string/activityWifi_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

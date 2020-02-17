@@ -1,10 +1,10 @@
 /*
  * @Description: a necessary class for initialising the application
- * @Version: 1.3.2.20200208
+ * @Version: 1.3.3.20200212
  * @Author: Arvin Zhao
  * @Date: 2020-01-24 13:08:14
  * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-02-08 14:12:45
+ * @LastEditTime : 2020-02-12 14:12:45
  */
 
 package com.arvinzjc.xshielder;
@@ -36,19 +36,39 @@ public class AppInitialiser extends Application
     private static final int LOG_FILE_LIFETIME = 7; // each log file has a lifetime of 7 days
 
     /**
-     * The code of the permission request appeared on the activity of the Wi-Fi security shield.
+     * The start of a circle progress view.
      */
-    public static final int PERMISSION_REQUEST_WIFI = 0;
+    public static final int START_PROGRESS = 0;
 
     /**
-     * The size (unit: dp) of the dialog icon.
+     * The end of a circle progress view.
      */
-    public static final int DIALOG_ICON_SIZE = 24;
+    public static final int END_PROGRESS = 100;
+
+    /**
+     * The handler flag of increasing the progress because of a new completed scan task.
+     */
+    public static final int PROGRESS_INCREMENT_FLAG = 1;
+
+    /**
+     * The handler flag of initialising the progress.
+     */
+    public static final int PROGRESS_INITIALISATION_FLAG = 0;
+
+    /**
+     * The handler flag of directly finishing the progress usually because of some errors.
+     */
+    public static final int PROGRESS_ERROR_FLAG = -1;
 
     /**
      * The size (unit: dp) of the right icon in a toolbar.
      */
     public static final int TOOLBAR_RIGHT_ICON_SIZE = 18;
+
+    /**
+     * The size (unit: dp) of the dialogue icon.
+     */
+    public static final int DIALOGUE_ICON_SIZE = 24;
 
     /**
      * The size (unit: dp) of the icon indicating the final result.
@@ -141,7 +161,7 @@ public class AppInitialiser extends Application
                 }
                 catch (ParseException e)
                 {
-                    LogUtils.e("Exception occurred when the app parsed the log file name \"" + logFileName + "\" to get its birthday.");
+                    LogUtils.e("An exception occurred when the app parsed the log file name \"" + logFileName + "\" to get its birthday.");
                     LogUtils.e(e);
                     isAbnormalLog = true;
                 } // end try...catch
@@ -175,7 +195,7 @@ public class AppInitialiser extends Application
             versionName = getResources().getString(R.string.unknownInfo);
             LogUtils.i("\n------------------------------" +
                     "\nThe app started and initialised. Version: " + versionName);
-            LogUtils.e("Exception occurred when the app tried to get the version name.");
+            LogUtils.e("An exception occurred when the app tried to get the version name.");
             LogUtils.e(e);
         } // end try...catch
     } // end method onCreate

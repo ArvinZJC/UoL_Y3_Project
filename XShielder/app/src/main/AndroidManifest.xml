@@ -16,30 +16,42 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- the activity of app settings -->
+        <activity
+            android:name=".activities.ActivitySettings"
+            android:configChanges="uiMode"
+            android:label="@string/activitySettings_title"
+            android:parentActivityName=".activities.ActivityHome"
+            android:screenOrientation="portrait" />
+
+        <!-- the activity of the Wi-Fi security shield -->
+        <activity
+            android:name=".activities.ActivityWifi"
+            android:configChanges="uiMode"
+            android:label="@string/activityWifi_title"
+            android:parentActivityName=".activities.ActivityHome"
+            android:screenOrientation="portrait" />
+
+        <!-- the activity of the anti-malware shield -->
+        <activity
+            android:name=".activities.ActivityMalware"
+            android:configChanges="uiMode"
+            android:label="@string/activityMalware_title"
+            android:parentActivityName=".activities.ActivityHome"
+            android:screenOrientation="portrait" />
+
         <!-- the home activity -->
         <activity
-            android:name=".ActivityHome"
+            android:name=".activities.ActivityHome"
             android:configChanges="uiMode"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
         </activity>
-
-        <activity
-            android:name=".ActivityMalware"
-            android:configChanges="uiMode"
-            android:label="@string/activityMalware_title"
-            android:parentActivityName=".ActivityHome"
-            android:screenOrientation="portrait" />
-
-        <!-- the activity of the Wi-Fi security detector -->
-        <activity
-            android:name=".ActivityWifi"
-            android:configChanges="uiMode"
-            android:label="@string/activityWifi_title"
-            android:parentActivityName=".ActivityHome"
-            android:screenOrientation="portrait" />
     </application>
 </manifest>

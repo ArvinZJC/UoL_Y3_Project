@@ -30,34 +30,28 @@ android {
 }
 
 // increase the version code automatically after each release task and get the version code
-def getVersionCode()
-{
+def getVersionCode() {
     def versionCodeFileName = 'version-code.properties'
     def versionCodePropertyName = 'VERSION_CODE'
     def versionCodeFile = file(versionCodeFileName)
 
-    if (versionCodeFile.canRead())
-    {
+    if (versionCodeFile.canRead()) {
         Properties versionProperties = new Properties()
         versionProperties.load(new FileInputStream(versionCodeFile))
 
-        if (versionProperties[versionCodePropertyName] != null)
-        {
+        if (versionProperties[versionCodePropertyName] != null) {
             def versionCode = versionProperties[versionCodePropertyName].toInteger()
             def runTasks = gradle.startParameter.taskNames
 
-            if (':app:assembleRelease' in runTasks)
-            {
+            if (':app:assembleRelease' in runTasks) {
                 versionProperties[versionCodePropertyName] = (++versionCode).toString()
                 versionProperties.store(versionCodeFile.newWriter(), null)
             } // end if
 
             return versionCode
-        }
-        else
+        } else
             throw new GradleException('The property "' + versionCodePropertyName + '" not found.')
-    }
-    else
+    } else
         throw new GradleException('The file "' + versionCodeFileName + '" not found.')
 } // end method getVersionCode
 

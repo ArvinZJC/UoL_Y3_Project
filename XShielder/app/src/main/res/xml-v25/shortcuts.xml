@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- the shortcut of app settings -->
+    <shortcut
+        android:shortcutId="settings"
+        android:enabled="true"
+        android:icon="@mipmap/ic_shortcut_settings_round"
+        android:shortcutShortLabel="@string/activitySettings_title">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.arvinzjc.xshielder"
+            android:targetClass="com.arvinzjc.xshielder.activities.ActivitySettings" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+
+    <!-- the shortcut of the activity of the Wi-Fi security shield -->
+    <shortcut
+        android:shortcutId="wifi"
+        android:enabled="true"
+        android:icon="@mipmap/ic_shortcut_wifi_round"
+        android:shortcutShortLabel="@string/activityWifi_shortTitle">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.arvinzjc.xshielder"
+            android:targetClass="com.arvinzjc.xshielder.activities.ActivityWifi" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+
+    <!-- the shortcut of the activity of the anti-malware shield -->
+    <shortcut
+        android:shortcutId="malware"
+        android:enabled="true"
+        android:icon="@mipmap/ic_shortcut_malware_round"
+        android:shortcutShortLabel="@string/activityMalware_shortTitle">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.arvinzjc.xshielder"
+            android:targetClass="com.arvinzjc.xshielder.activities.ActivityMalware" />
+        <categories android:name="android.shortcut.conversation"/>
+    </shortcut>
+</shortcuts>

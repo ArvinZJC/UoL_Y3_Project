@@ -69,7 +69,7 @@
         <item name="android:paddingLeft">@dimen/default_margin</item>
         <item name="android:paddingRight">@dimen/default_margin</item>
         <item name="xui_commonList_titleColor">@color/primaryTextColour</item>
-        <item name="xui_commonList_detailColor">@color/explanationTextColour</item>
+        <item name="xui_commonList_detailColor">@color/contentTextColour</item>
     </style>
 
     <!-- the default style of the round buttons -->

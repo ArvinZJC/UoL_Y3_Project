@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the activity of the Wi-Fi security shield
- * @Version: 2.0.0.20200213
+ * @Version: 2.1.3.20200303
  * @Author: Arvin Zhao
  * @Date: 2020-01-19 13:59:45
  * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-02-13 23:52:07
+ * @LastEditTime : 2020-03-03 23:52:07
  */
 
 package com.arvinzjc.xshielder.activities;
@@ -22,7 +22,6 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,9 +33,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import com.arvinzjc.xshielder.AppInitialiser;
 import com.arvinzjc.xshielder.R;
-import com.arvinzjc.xshielder.utils.StatusBarThemeUtils;
+import com.arvinzjc.xshielder.utils.SystemBarThemeUtils;
 import com.arvinzjc.xshielder.utils.WifiUtils;
 import com.mikepenz.iconics.IconicsColorInt;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -44,7 +47,6 @@ import com.mikepenz.iconics.IconicsSizeDp;
 import com.mikepenz.iconics.typeface.library.ionicons.Ionicons;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.apkfuns.logutils.LogUtils;
-import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.utils.ViewUtils;
 import com.xuexiang.xui.widget.button.roundbutton.RoundButton;
 import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
@@ -53,10 +55,6 @@ import com.xuexiang.xui.widget.grouplist.XUICommonListItemView;
 import com.xuexiang.xui.widget.grouplist.XUIGroupListView;
 import com.xuexiang.xui.widget.layout.XUILinearLayout;
 import com.xuexiang.xui.widget.progress.CircleProgressView;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class ActivityWifi extends AppCompatActivity
 {
@@ -67,13 +65,6 @@ public class ActivityWifi extends AppCompatActivity
         UNKNOWN
     } // end enum LocationServicesStatus
 
-    private enum WifiResults
-    {
-        PASS,
-        FAIL,
-        UNKNOWN
-    } // end enum WifiResults
-
     private static final int PERMISSION_REQUEST_WIFI = 0; // the code of the permission request appeared on this activity
     private static final int LOCATION_SERVICES_REQUEST = 1; // the code of the request of enabling Location Services and returning results
     private static final int WIFI_CONFIGURATION_REQUEST = 2; // the code of the request of configuring Wi-Fi and returning results
@@ -83,20 +74,23 @@ public class ActivityWifi extends AppCompatActivity
      * 11. secured security type;
      * 12. connectivity;
      * 13. secured DNS;
-     * 14. secured SSL
+     * 14. secured SSL;
+     * 15. ready for displaying results
      */
-    private static final int SCAN_TASK_COUNT = 14;
+    private static final int SCAN_TASK_COUNT = 15;
 
     /*
      * 1. secured DNS;
      * 2. secured SSL
      */
     private static final int PARALLEL_TASK_COUNT = 2;
+
     private static final int THREAD_TASK_TIMEOUT = 1; // the maximum time (unit: minute) to wait for thread tasks to complete execution
 
-    private int mCompletedScanTaskCount, mAnimationDuration;
+    private int mCompletedScanTaskCount = 0, mAnimationDuration;
     private boolean mIsFirstScan = true, mHasInternetConnection, mIsSecuredDns, mIsSecuredSsl;
-    private WifiResults mFinalResult;
+    private Configuration mConfiguration;
+    private AppInitialiser.FinalResults mFinalResult = null;
     private ExecutorService mExecutorServiceScan;
     private CircleProgressView mCircleProgressViewWifi;
     private IconicsImageView mImageViewWifi;
@@ -118,6 +112,7 @@ public class ActivityWifi extends AppCompatActivity
     private XUICommonListItemView mCommonListItemViewInfoSubnetMask;
     private XUICommonListItemView mCommonListItemViewInfoDns;
     private RoundButton mRoundButtonWifiAction;
+    private MaterialDialog mDialogueScanStopConfirmation, mDialogueIssueDisregardConfirmation, mDialogueLocationServicesStatusWarning, mDialoguePermissionWarning;
     private Handler mHandlerWifi;
 
     @Override
@@ -125,8 +120,9 @@ public class ActivityWifi extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         LogUtils.i("Enter the activity of the Wi-Fi security shield.");
-        StatusBarUtils.translucent(this); // enable the translucent status bar
-        StatusBarThemeUtils.changeStatusBarTheme(this, getResources().getConfiguration()); // call the specified method to change the text colour (black/white) of the status bar according to the configuration of the dark theme
+        mConfiguration = getResources().getConfiguration();
+        SystemBarThemeUtils.changeStatusBarTheme(this, mConfiguration);
+        SystemBarThemeUtils.changeNavigationBarTheme(this, mConfiguration, getColor(R.color.app_themeColour));
         setContentView(R.layout.activity_wifi);
         setSupportActionBar(findViewById(R.id.toolbarWifi));
 
@@ -135,19 +131,19 @@ public class ActivityWifi extends AppCompatActivity
         else
             LogUtils.w("Failed to get this activity's action bar. Some errors might occur.");
 
-        mExecutorServiceScan = Executors.newSingleThreadExecutor();
         mAnimationDuration = getResources().getInteger(android.R.integer.config_mediumAnimTime); // 400 milliseconds
+        mExecutorServiceScan = Executors.newSingleThreadExecutor();
         mCircleProgressViewWifi = findViewById(R.id.circleProgressViewWifi);
         mImageViewWifi = findViewById(R.id.imageViewWifi);
         mTextViewWifiRationale = findViewById(R.id.textViewWifiRationale);
         mLinearLayoutWifiResults = findViewById(R.id.linearLayoutWifiResults);
         mGroupListViewWifiResults = findViewById(R.id.groupListViewWifiResults);
         mRoundButtonWifiAction = findViewById(R.id.roundButtonWifiAction);
-        mRoundButtonWifiAction.setOnClickListener((View view) ->
+        mRoundButtonWifiAction.setOnClickListener(view ->
         {
             if (mRoundButtonWifiAction.getText().equals(getString(R.string.wifi_roundButtonAction_fail)))
             {
-                LogUtils.i("User chose to go to the Wi-Fi settings page to configure Wi-Fi.");
+                LogUtils.i("User chose to go to the Wi-Fi settings screen to configure Wi-Fi.");
                 startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), WIFI_CONFIGURATION_REQUEST);
             }
             else
@@ -159,7 +155,11 @@ public class ActivityWifi extends AppCompatActivity
                 ViewUtils.fadeOut(mTextViewWifiRationale, mAnimationDuration, null);
                 ViewUtils.slideOut(mLinearLayoutWifiResults, mAnimationDuration, null, ViewUtils.Direction.TOP_TO_BOTTOM);
                 findViewById(R.id.nestedScrollViewWifiResults).scrollTo(0, 0);
-                (new Handler()).postDelayed(() -> ViewUtils.fadeIn(mCircleProgressViewWifi, mAnimationDuration, null), mAnimationDuration / 2);
+                (new Handler()).postDelayed(() ->
+                {
+                    SystemBarThemeUtils.changeNavigationBarTheme(this, mConfiguration, getColor(R.color.app_themeColour));
+                    ViewUtils.fadeIn(mCircleProgressViewWifi, mAnimationDuration, null);
+                }, mAnimationDuration / 2);
 
                 mIsFirstScan = false;
 
@@ -172,12 +172,12 @@ public class ActivityWifi extends AppCompatActivity
                         showLocationServicesStatusWarningDialogue();
             } // end if...else
         });
-        mHandlerWifi = new Handler((Message message) ->
+        mHandlerWifi = new Handler(message ->
         {
             switch (message.what)
             {
                 case AppInitialiser.PROGRESS_INCREMENT_FLAG:
-                    mCircleProgressViewWifi.setProgress(++mCompletedScanTaskCount * 100 / SCAN_TASK_COUNT);
+                    mCircleProgressViewWifi.setProgress(++mCompletedScanTaskCount * 100f / SCAN_TASK_COUNT);
                     if (mCompletedScanTaskCount == SCAN_TASK_COUNT)
                         playAnimationAfterProgress();
                     return true;
@@ -234,19 +234,27 @@ public class ActivityWifi extends AppCompatActivity
                 else
                 {
                     LogUtils.w("User chose not to enable Location Services. Return to the specified activity.");
-                    mExecutorServiceScan.shutdownNow();
                     finish();
                 } // end if...else
                 break;
 
             case WIFI_CONFIGURATION_REQUEST:
-                mRoundButtonWifiAction.setText(R.string.wifi_roundButtonAction_normal);
+                mRoundButtonWifiAction.setText(R.string.roundButtonAction_normal);
                 break;
 
             default:
                 LogUtils.w("Received abnormal request code to identify who the results came from (" + requestCode + "). Some errors might occur.");
         } // end switch-case
     } // end method onActivityResult
+
+    /**
+     * Confirm stopping checking Wi-Fi security when the back button is pressed and the scan is not completed.
+     */
+    @Override
+    public void onBackPressed()
+    {
+        confirmBeforeLeaving();
+    } // end method onBackPressed
 
     /**
      * Recreate the activity when the configuration of the dark theme is changed.
@@ -260,6 +268,30 @@ public class ActivityWifi extends AppCompatActivity
     } // end method onConfigurationChanged
 
     /**
+     * Perform some necessary tasks when destroying this activity.
+     */
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+
+        if (mDialogueScanStopConfirmation != null)
+            mDialogueScanStopConfirmation.dismiss();
+
+        if (mDialogueIssueDisregardConfirmation != null)
+            mDialogueIssueDisregardConfirmation.dismiss();
+
+        if (mDialogueLocationServicesStatusWarning != null)
+            mDialogueLocationServicesStatusWarning.dismiss();
+
+        if (mDialoguePermissionWarning != null)
+            mDialoguePermissionWarning.dismiss();
+
+        mExecutorServiceScan.shutdownNow();
+        LogUtils.getLog2FileConfig().flushAsync(); // flush log cache to record logs in log files
+    } // end method onDestroy
+
+    /**
      * Respond to the selected event of the menu item on this activity's tool bar.
      * @param menuItem the menu item selected
      * @return  true to consume it here, or false to allow normal menu processing to proceed
@@ -269,7 +301,7 @@ public class ActivityWifi extends AppCompatActivity
     {
         if (menuItem.getItemId() == android.R.id.home)
         {
-            confirmBeforeLeaving(); // confirm stopping checking Wi-Fi security when the Up button on the tool bar is clicked and the scan is not completed
+            confirmBeforeLeaving();
             return true;
         } // end if
 
@@ -299,26 +331,16 @@ public class ActivityWifi extends AppCompatActivity
             else
             {
                 LogUtils.w("Refused to grant the permission(s) to enable checking Wi-Fi security. Return to the specified activity.");
-                mExecutorServiceScan.shutdownNow();
                 finish();
             } // end if...else
         } // end if
     } // end method onRequestPermissionsResult
 
-    /**
-     * Confirm stopping checking Wi-Fi security when the back button is pressed and the scan is not completed.
-     */
-    @Override
-    public void onBackPressed()
-    {
-        confirmBeforeLeaving();
-    } // end method onBackPressed
-
-    // show a confirmation dialogue before finishing this activity when necessary
+    // show a confirmation dialogue when necessary before finishing this activity
     private void confirmBeforeLeaving()
     {
         if (mCompletedScanTaskCount < SCAN_TASK_COUNT)
-            new MaterialDialog.Builder(this)
+            mDialogueScanStopConfirmation = new MaterialDialog.Builder(this)
                     .backgroundColor(getColor(R.color.card_backgroundColour))
                     .icon(new IconicsDrawable(this)
                             .icon(Ionicons.Icon.ion_information_circled)
@@ -328,7 +350,7 @@ public class ActivityWifi extends AppCompatActivity
                     .titleColor(getColor(R.color.primaryTextColour))
                     .content(R.string.wifi_dialogueScanStopConfirmation_content)
                     .contentColor(getColor(R.color.contentTextColour))
-                    .positiveText(R.string.wifi_dialogueScanStopConfirmation_positiveText)
+                    .positiveText(R.string.dialogueScanStopConfirmation_positiveText)
                     .positiveColor(getColor(R.color.colourInfo))
                     .onPositive((MaterialDialog dialogue, DialogAction which) ->
                     {
@@ -336,7 +358,6 @@ public class ActivityWifi extends AppCompatActivity
                         if (mCompletedScanTaskCount < SCAN_TASK_COUNT)
                         {
                             LogUtils.i("User chose to stop checking Wi-Fi security.");
-                            mExecutorServiceScan.shutdownNow();
                             finish();
                         } // end if
                     })
@@ -346,8 +367,8 @@ public class ActivityWifi extends AppCompatActivity
                     .show(); // show a confirmation dialogue asking whether to stop checking Wi-Fi security when the scan is not completed
         else
         {
-            if (mFinalResult == WifiResults.FAIL)
-                new MaterialDialog.Builder(this)
+            if (mFinalResult == AppInitialiser.FinalResults.FAIL)
+                mDialogueIssueDisregardConfirmation = new MaterialDialog.Builder(this)
                         .backgroundColor(getColor(R.color.card_backgroundColour))
                         .icon(new IconicsDrawable(this)
                                 .icon(Ionicons.Icon.ion_information_circled)
@@ -357,12 +378,11 @@ public class ActivityWifi extends AppCompatActivity
                         .titleColor(getColor(R.color.primaryTextColour))
                         .content(R.string.wifi_dialogueIssueDisregardConfirmation_content)
                         .contentColor(getColor(R.color.contentTextColour))
-                        .positiveText(R.string.wifi_dialogueIssueDisregardConfirmation_positiveText)
+                        .positiveText(R.string.dialogueIssueDisregardConfirmation_positiveText)
                         .positiveColor(getColor(R.color.colourInfo))
                         .onPositive((MaterialDialog dialogue, DialogAction which) ->
                         {
-                            LogUtils.i("User chose to disregard the Wi-Fi security issue(s).");
-                            mExecutorServiceScan.shutdownNow();
+                            LogUtils.i("User chose to disregard Wi-Fi security issues.");
                             finish();
                         })
                         .negativeText(R.string.dialogue_defaultNegativeText)
@@ -370,18 +390,13 @@ public class ActivityWifi extends AppCompatActivity
                         .cancelable(false)
                         .show(); // show a confirmation dialogue asking whether to disregard Wi-Fi security issues
             else
-            {
-                mExecutorServiceScan.shutdownNow();
                 finish();
-            } // end if...else
         } // end if...else
     } // end method confirmBeforeLeaving
 
-    // get and display the scan results of Wi-Fi security
+    // get Wi-Fi security scan results
     private void getWifiResults(boolean isFirstScan)
     {
-        mCompletedScanTaskCount = 0; // initialise the number of completed scan tasks
-
         if (isFirstScan)
         {
             mCommonListItemViewChecklistSecurityType = mGroupListViewWifiResults.createItemView(getString(R.string.wifi_checklist_securityType));
@@ -398,7 +413,12 @@ public class ActivityWifi extends AppCompatActivity
             mCommonListItemViewInfoGateway = mGroupListViewWifiResults.createItemView(getString(R.string.wifi_info_gateway));
             mCommonListItemViewInfoSubnetMask = mGroupListViewWifiResults.createItemView(getString(R.string.wifi_info_subnetMask));
             mCommonListItemViewInfoDns = mGroupListViewWifiResults.createItemView(getString(R.string.wifi_info_dns));
-        } // end if
+        }
+        else
+        {
+            mCompletedScanTaskCount = 0; // initialise the number of completed scan tasks
+            mFinalResult = null;
+        } // end if...else
 
         IconicsImageView imageViewChecklistSecurityType = new IconicsImageView(this),
                 imageViewChecklistConnectivity = new IconicsImageView(this),
@@ -422,7 +442,7 @@ public class ActivityWifi extends AppCompatActivity
                 .size(new IconicsSizeDp(AppInitialiser.FINAL_RESULT_ICON_SIZE));
         String unknownResult = getString(R.string.unknownInfo);
         String noSignalStrenghth = getString(R.string.wifi_info_signalStrength_none);
-        WifiResults securedSecurityType, internetConnection, securedDns, securedSsl;
+        AppInitialiser.FinalResults securedSecurityType, internetConnection, securedDns, securedSsl;
 
         runOnUiThread(() ->
         {
@@ -473,21 +493,21 @@ public class ActivityWifi extends AppCompatActivity
 
             if (securityTypeAndLabel[1].equals(WifiUtils.SECURED_SECURITY_TYPE))
             {
-                securedSecurityType = WifiResults.PASS;
+                securedSecurityType = AppInitialiser.FinalResults.PASS;
 
                 runOnUiThread(() -> imageViewChecklistSecurityType.setIcon(drawablePass));
                 LogUtils.i("Secured security type.");
             }
             else if (securityTypeAndLabel[1].equals(WifiUtils.UNSECURED_SECURITY_TYPE))
             {
-                securedSecurityType = WifiResults.FAIL;
+                securedSecurityType = AppInitialiser.FinalResults.FAIL;
 
                 runOnUiThread(() -> imageViewChecklistSecurityType.setIcon(drawableFail));
                 LogUtils.w("Unsecured security type.");
             }
             else
             {
-                securedSecurityType = WifiResults.UNKNOWN;
+                securedSecurityType = AppInitialiser.FinalResults.UNKNOWN;
 
                 runOnUiThread(() -> imageViewChecklistSecurityType.setIcon(drawableUnknown));
                 LogUtils.w("Cannot tell whether the security type is secured/unsecured. Some errors might occur.");
@@ -498,11 +518,13 @@ public class ActivityWifi extends AppCompatActivity
             ExecutorService executorServiceInternetConnection = Executors.newSingleThreadExecutor();
             executorServiceInternetConnection.execute(() -> mHasInternetConnection = wifiUtils.hasInternetConnection());
             executorServiceInternetConnection.shutdown();
-            executorServiceInternetConnection.awaitTermination(THREAD_TASK_TIMEOUT, TimeUnit.MINUTES);
+
+            if (!executorServiceInternetConnection.awaitTermination(THREAD_TASK_TIMEOUT, TimeUnit.MINUTES))
+                executorServiceInternetConnection.shutdownNow();
 
             if (mHasInternetConnection)
             {
-                internetConnection = WifiResults.PASS;
+                internetConnection = AppInitialiser.FinalResults.PASS;
 
                 runOnUiThread(() -> imageViewChecklistConnectivity.setIcon(drawablePass));
                 mHandlerWifi.sendEmptyMessage(AppInitialiser.PROGRESS_INCREMENT_FLAG); // complete Scan Task 12
@@ -511,17 +533,19 @@ public class ActivityWifi extends AppCompatActivity
                 executorServiceParallelTasks.execute(() -> mIsSecuredDns = wifiUtils.isSecuredDns());
                 executorServiceParallelTasks.execute(() -> mIsSecuredSsl = wifiUtils.isSecuredSsl());
                 executorServiceParallelTasks.shutdown();
-                executorServiceParallelTasks.awaitTermination(THREAD_TASK_TIMEOUT, TimeUnit.MINUTES);
+
+                if (!executorServiceParallelTasks.awaitTermination(THREAD_TASK_TIMEOUT, TimeUnit.MINUTES))
+                    executorServiceParallelTasks.shutdownNow();
 
                 if (mIsSecuredDns)
                 {
-                    securedDns = WifiResults.PASS;
+                    securedDns = AppInitialiser.FinalResults.PASS;
 
                     runOnUiThread(() -> imageViewChecklistDns.setIcon(drawablePass));
                 }
                 else
                 {
-                    securedDns = WifiResults.FAIL;
+                    securedDns = AppInitialiser.FinalResults.FAIL;
 
                     runOnUiThread(() -> imageViewChecklistDns.setIcon(drawableFail));
                 } // end if...else
@@ -530,13 +554,13 @@ public class ActivityWifi extends AppCompatActivity
 
                 if (mIsSecuredSsl)
                 {
-                    securedSsl = WifiResults.PASS;
+                    securedSsl = AppInitialiser.FinalResults.PASS;
 
                     runOnUiThread(() -> imageViewChecklistSsl.setIcon(drawablePass));
                 }
                 else
                 {
-                    securedSsl = WifiResults.FAIL;
+                    securedSsl = AppInitialiser.FinalResults.FAIL;
 
                     runOnUiThread(() -> imageViewChecklistSsl.setIcon(drawableFail));
                 } // end if...else
@@ -545,14 +569,14 @@ public class ActivityWifi extends AppCompatActivity
             }
             else
             {
-                internetConnection = WifiResults.FAIL;
+                internetConnection = AppInitialiser.FinalResults.FAIL;
                 mHandlerWifi.sendEmptyMessage(AppInitialiser.PROGRESS_INCREMENT_FLAG); // complete Scan Task 12
 
-                securedDns = WifiResults.UNKNOWN;
+                securedDns = AppInitialiser.FinalResults.UNKNOWN;
                 LogUtils.w("DNS security: unknown");
                 mHandlerWifi.sendEmptyMessage(AppInitialiser.PROGRESS_INCREMENT_FLAG); // complete Scan Task 13
 
-                securedSsl = WifiResults.UNKNOWN;
+                securedSsl = AppInitialiser.FinalResults.UNKNOWN;
                 LogUtils.w("SSL security: unknown");
                 mHandlerWifi.sendEmptyMessage(AppInitialiser.PROGRESS_INCREMENT_FLAG); // complete Scan Task 14
 
@@ -564,88 +588,90 @@ public class ActivityWifi extends AppCompatActivity
                 });
             } // end if...else
 
-            runOnUiThread(() ->
+            if (securedSecurityType == AppInitialiser.FinalResults.PASS
+                    && internetConnection == AppInitialiser.FinalResults.PASS
+                    && securedDns == AppInitialiser.FinalResults.PASS
+                    && securedSsl == AppInitialiser.FinalResults.PASS)
             {
-                if (securedSecurityType == WifiResults.PASS
-                        && internetConnection == WifiResults.PASS
-                        && securedDns == WifiResults.PASS
-                        && securedSsl == WifiResults.PASS)
-                {
-                    mFinalResult = WifiResults.PASS;
+                mFinalResult = AppInitialiser.FinalResults.PASS;
 
+                runOnUiThread(() ->
+                {
                     mImageViewWifi.setIcon(new IconicsDrawable(this)
                             .icon(Ionicons.Icon.ion_checkmark_circled)
                             .color(new IconicsColorInt(getColor(R.color.colourPass)))
                             .size(new IconicsSizeDp(AppInitialiser.FINAL_RESULT_ICON_SIZE)));
-                    mTextViewWifiRationale.setText(R.string.wifi_textViewRationale_pass);
-                    mRoundButtonWifiAction.setText(R.string.wifi_roundButtonAction_normal);
-                }
-                else if ((securedSecurityType == WifiResults.FAIL
-                        || securedDns == WifiResults.FAIL
-                        || securedSsl == WifiResults.FAIL))
-                {
-                    mFinalResult = WifiResults.FAIL;
+                    mTextViewWifiRationale.setText(R.string.textViewRationale_pass);
+                    mRoundButtonWifiAction.setText(R.string.roundButtonAction_normal);
+                });
+            }
+            else if ((securedSecurityType == AppInitialiser.FinalResults.FAIL
+                    || securedDns == AppInitialiser.FinalResults.FAIL
+                    || securedSsl == AppInitialiser.FinalResults.FAIL))
+            {
+                mFinalResult = AppInitialiser.FinalResults.FAIL;
 
+                runOnUiThread(() ->
+                {
                     mImageViewWifi.setIcon(new IconicsDrawable(this)
                             .icon(Ionicons.Icon.ion_android_alert)
                             .color(new IconicsColorInt(Color.RED))
                             .size(new IconicsSizeDp(AppInitialiser.FINAL_RESULT_ICON_SIZE)));
                     mTextViewWifiRationale.setText(R.string.wifi_textViewRationale_fail_default);
                     mRoundButtonWifiAction.setText(R.string.wifi_roundButtonAction_fail);
-                }
-                /*
-                 * execute this part if the connected Wi-Fi does not have unknown security type and Internet connection (internetConnection == WifiResults.FAIL);
-                 * the condition in the parentheses above is not included because it is always true at this point;
-                 * the reason is that the results of DNS and SSL security are unknown only when there is Internet connection;
-                 * therefore, there is only 1 situation suitable for this part (secured security type, available Internet connection, and unknown DNS and SSL security)
-                 */
-                else if (securedSecurityType != WifiResults.UNKNOWN)
-                {
-                    mFinalResult = WifiResults.FAIL;
+                });
+            }
+            /*
+             * execute this part if the connected Wi-Fi does not have unknown security type and Internet connection (internetConnection == WifiResults.FAIL);
+             * the condition in the parentheses above is not included because it is always true at this point;
+             * the reason is that the results of DNS and SSL security are unknown only when there is Internet connection;
+             * therefore, there is only 1 situation suitable for this part (secured security type, available Internet connection, and unknown DNS and SSL security)
+             */
+            else if (securedSecurityType != AppInitialiser.FinalResults.UNKNOWN)
+            {
+                mFinalResult = AppInitialiser.FinalResults.FAIL;
 
+                runOnUiThread(() ->
+                {
                     mImageViewWifi.setIcon(new IconicsDrawable(this)
                             .icon(Ionicons.Icon.ion_android_alert)
                             .color(new IconicsColorInt(Color.RED))
                             .size(new IconicsSizeDp(AppInitialiser.FINAL_RESULT_ICON_SIZE)));
                     mTextViewWifiRationale.setText(R.string.wifi_textViewRationale_fail_connectivity);
                     mRoundButtonWifiAction.setText(R.string.wifi_roundButtonAction_fail);
-                }
-                else
-                {
-                    mFinalResult = WifiResults.UNKNOWN;
+                });
+            }
+            else
+            {
+                mFinalResult = AppInitialiser.FinalResults.UNKNOWN;
 
+                runOnUiThread(() ->
+                {
                     mImageViewWifi.setIcon(drawableBigUnknown);
-                    mTextViewWifiRationale.setText(R.string.wifi_textViewRationale_unknown_appError);
-                    mRoundButtonWifiAction.setText(R.string.wifi_roundButtonAction_unknown);
-                } // end nested if...else
-            });
+                    mTextViewWifiRationale.setText(R.string.textViewRationale_unknown_appError);
+                    mRoundButtonWifiAction.setText(R.string.roundButtonAction_unknown);
+                });
+            } // end nested if...else
+
+            LogUtils.i("Successfully finish checking Wi-Fi security.");
+            mHandlerWifi.sendEmptyMessage(AppInitialiser.PROGRESS_INCREMENT_FLAG); // complete Scan Task 15
         }
-        catch (Exception e)
+        catch (InterruptedException | NetworkErrorException e)
         {
             if (e instanceof InterruptedException)
             {
-                LogUtils.e("The scan thread has been interrupted. An exception occurred. This might be caused by stopping checking Wi-Fi security.");
+                LogUtils.e("The scan thread has been interrupted. An exception occurred (" + e.getMessage() + "). This might be caused by stopping checking Wi-Fi security.");
                 LogUtils.e(e);
             }
             else
             {
-                LogUtils.e("Failed to check Wi-Fi security. An exception occurred.");
+                LogUtils.e("Failed to check Wi-Fi security. An exception occurred (" + e.getMessage() + ").");
                 LogUtils.e(e);
                 runOnUiThread(() ->
                 {
                     mImageViewWifi.setIcon(drawableBigUnknown);
-
-                    if (e instanceof NetworkErrorException)
-                    {
-                        mTextViewWifiRationale.setText(R.string.wifi_textViewRationale_unknown_connectivity);
-                        mRoundButtonWifiAction.setText(R.string.wifi_roundButtonAction_fail);
-                    }
-                    else
-                    {
-                        mTextViewWifiRationale.setText(R.string.wifi_textViewRationale_unknown_appError);
-                        mRoundButtonWifiAction.setText(R.string.wifi_roundButtonAction_unknown);
-                    } // end if...else
-
+                    mTextViewWifiRationale.setText(R.string.wifi_textViewRationale_unknown_connectivity);
+                    mRoundButtonWifiAction.setText(R.string.wifi_roundButtonAction_fail);
                     imageViewChecklistSecurityType.setIcon(drawableUnknown);
                     imageViewChecklistConnectivity.setIcon(drawableUnknown);
                     imageViewChecklistDns.setIcon(drawableUnknown);
@@ -666,7 +692,7 @@ public class ActivityWifi extends AppCompatActivity
             mHandlerWifi.sendEmptyMessage(AppInitialiser.PROGRESS_ERROR_FLAG);
         } // end try...catch
 
-        View.OnLongClickListener onLongClickListenerWifiInfo = (View view) ->
+        View.OnLongClickListener onLongClickListenerWifiInfo = view ->
         {
             ClipboardManager clipboardManager;
 
@@ -698,10 +724,10 @@ public class ActivityWifi extends AppCompatActivity
                 XUIGroupListView.newSection(this)
                         .setTitle(getString(R.string.wifi_checklist_title))
                         .setDescription(" ") // this description is set so as to leave space between 2 sections
-                        .setSeparatorDrawableRes(R.drawable.common_list_item_bg_with_border_none_selector,
-                                R.drawable.common_list_item_bg_with_border_none_selector,
-                                R.drawable.common_list_item_bg_with_border_none_selector,
-                                R.drawable.common_list_item_bg_with_border_none_selector)
+                        .setSeparatorDrawableRes(R.drawable.list_item_background_selector,
+                                R.drawable.list_item_background_selector,
+                                R.drawable.list_item_background_selector,
+                                R.drawable.list_item_background_selector)
                         .addItemView(mCommonListItemViewChecklistSecurityType, null)
                         .addItemView(mCommonListItemViewChecklistConnectivity, null)
                         .addItemView(mCommonListItemViewChecklistDns, null)
@@ -709,10 +735,13 @@ public class ActivityWifi extends AppCompatActivity
                         .addTo(mGroupListViewWifiResults);
                 XUIGroupListView.newSection(this)
                         .setTitle(getString(R.string.wifi_info_title))
-                        .setSeparatorDrawableRes(R.drawable.common_list_item_bg_with_border_none_selector,
-                                R.drawable.common_list_item_bg_with_border_none_selector,
-                                R.drawable.common_list_item_bg_with_border_none_selector,
-                                R.drawable.common_list_item_bg_with_border_none_selector)
+                        .setDescription(getString(R.string.wifi_info_description))
+                        .addTo(mGroupListViewWifiResults);
+                XUIGroupListView.newSection(this)
+                        .setSeparatorDrawableRes(R.drawable.list_item_background_selector,
+                                R.drawable.list_item_background_selector,
+                                R.drawable.list_item_background_selector,
+                                R.drawable.list_item_background_selector)
                         .addItemView(mCommonListItemViewInfoSsid, null, onLongClickListenerWifiInfo)
                         .addItemView(mCommonListItemViewInfoSecurity, null, onLongClickListenerWifiInfo)
                         .addItemView(mCommonListItemViewInfoFrequency, null, onLongClickListenerWifiInfo)
@@ -731,7 +760,7 @@ public class ActivityWifi extends AppCompatActivity
     // get the status of Location Services
     private LocationServicesStatus getLocationServicesStatus()
     {
-        LocationManager locationManager = (LocationManager)this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 
         if (locationManager != null)
             if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) || locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
@@ -743,7 +772,7 @@ public class ActivityWifi extends AppCompatActivity
         return LocationServicesStatus.UNKNOWN;
     } // end method getLocationServicesStatus
 
-    // play animation to hide the circle progress view and to display scan results
+    // play animation to hide the circle progress view and to display Wi-Fi security scan results
     private void playAnimationAfterProgress()
     {
         ViewUtils.fadeOut(mCircleProgressViewWifi, mAnimationDuration, null);
@@ -752,6 +781,7 @@ public class ActivityWifi extends AppCompatActivity
             ViewUtils.fadeIn(mImageViewWifi, mAnimationDuration, null);
             ViewUtils.fadeIn(mTextViewWifiRationale, mAnimationDuration, null);
             ViewUtils.slideIn(mLinearLayoutWifiResults, mAnimationDuration, null, ViewUtils.Direction.BOTTOM_TO_TOP);
+            SystemBarThemeUtils.changeNavigationBarTheme(this, mConfiguration, getColor(R.color.card_backgroundColour));
             mRoundButtonWifiAction.setEnabled(true);
         }, mAnimationDuration / 2);
     } // end method playAnimationAfterProgress
@@ -759,7 +789,7 @@ public class ActivityWifi extends AppCompatActivity
     // show a Location Services status warning dialogue to ask for enabling Location Services
     private void showLocationServicesStatusWarningDialogue()
     {
-        new MaterialDialog.Builder(this)
+        mDialogueLocationServicesStatusWarning = new MaterialDialog.Builder(this)
                 .backgroundColor(getColor(R.color.card_backgroundColour))
                 .icon(new IconicsDrawable(this)
                         .icon(Ionicons.Icon.ion_android_alert)
@@ -777,12 +807,11 @@ public class ActivityWifi extends AppCompatActivity
                 .onNegative((MaterialDialog dialogue, DialogAction which) ->
                 {
                     LogUtils.w("User chose not to enable Location Services. Return to the specified activity.");
-                    mExecutorServiceScan.shutdownNow();
                     finish();
                 })
                 .cancelable(false)
                 .show();
-        LogUtils.w("Location Services is not enabled. A Location Services status warning dialogue from the app appeared.");
+        LogUtils.w("Location Services is not enabled.");
     } // end method showLocationServicesStatusWarningDialogue
 
     // show a permission warning dialogue to give a brief rationale of the permission(s) to enable checking Wi-Fi security
@@ -795,7 +824,7 @@ public class ActivityWifi extends AppCompatActivity
         else
             permissionArray = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION};
 
-        new MaterialDialog.Builder(this)
+        mDialoguePermissionWarning = new MaterialDialog.Builder(this)
                 .backgroundColor(getColor(R.color.card_backgroundColour))
                 .icon(new IconicsDrawable(this)
                         .icon(Ionicons.Icon.ion_android_alert)
@@ -806,10 +835,10 @@ public class ActivityWifi extends AppCompatActivity
                 .content(R.string.wifi_dialoguePermissionWarning_content)
                 .contentColor(getColor(R.color.contentTextColour))
                 .positiveText(R.string.dialogue_defaultPositiveText)
+                .onPositive((MaterialDialog dialogue, DialogAction which) -> ActivityCompat.requestPermissions(this, permissionArray, PERMISSION_REQUEST_WIFI))
                 .positiveColor(getColor(R.color.colourInfo))
                 .cancelable(false)
-                .dismissListener(permissionAlert -> ActivityCompat.requestPermissions(this, permissionArray, PERMISSION_REQUEST_WIFI))
                 .show();
-        LogUtils.w("The permission(s) to enable checking Wi-Fi security is/are not granted. A permission warning dialogue from the app appeared.");
+        LogUtils.w("The permission(s) to enable checking Wi-Fi security is/are not granted.");
     } // end method showPermissionWarningDialogue
 } // end class ActivityWifi

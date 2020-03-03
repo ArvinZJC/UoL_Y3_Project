@@ -1,20 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.arvinzjc.xshielder">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.arvinzjc.xshielder">
+
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission-sdk-23 android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission-sdk-23 android:name="android.permission.INTERNET" />
+    <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission-sdk-23 android:name="android.permission.REQUEST_DELETE_PACKAGES" />
 
     <application
         android:name=".AppInitialiser"
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:allowBackup="false"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:targetApi="q">
+
+        <!-- the file provider for accessing some specified directories from Android 7.0 -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.arvinzjc.xshielder.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <!-- the activity of app settings -->
         <activity
@@ -22,7 +41,8 @@
             android:configChanges="uiMode"
             android:label="@string/activitySettings_title"
             android:parentActivityName=".activities.ActivityHome"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!-- the activity of the Wi-Fi security shield -->
         <activity
@@ -30,7 +50,8 @@
             android:configChanges="uiMode"
             android:label="@string/activityWifi_title"
             android:parentActivityName=".activities.ActivityHome"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!-- the activity of the anti-malware shield -->
         <activity
@@ -38,13 +59,15 @@
             android:configChanges="uiMode"
             android:label="@string/activityMalware_title"
             android:parentActivityName=".activities.ActivityHome"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <!-- the home activity -->
         <activity
             android:name=".activities.ActivityHome"
             android:configChanges="uiMode"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,24 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- base application theme -->
     <style name="AppTheme" parent="XUITheme.Phone">
         <item name="android:fitsSystemWindows">true</item>
-        <item name="android:forceDarkAllowed" tools:targetApi="29">true</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">true</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationStyle_customised</item>
         <item name="colorPrimary">@color/app_themeColour</item>
         <item name="colorPrimaryDark">@color/app_themeColour</item>
+        <item name="preferenceCategoryStyle">@style/DefaultPreferenceCategoryStyle</item>
+        <item name="preferenceStyle">@style/DefaultPreferenceStyle</item>
+        <item name="switchPreferenceStyle">@style/DefaultSwitchPreferenceStyle</item>
         <item name="xui_common_list_item_detail_h_text_size">@dimen/default_content_text_size</item>
         <item name="xui_common_list_item_title_h_text_size">@dimen/default_primary_text_size</item>
         <item name="xui_config_color_background">@color/app_themeColour</item>
         <item name="XUICommonListItemViewStyle">@style/XUIListStyle_customised</item>
         <item name="XUIGroupListSectionViewStyle">@style/XUIListStyle_customised</item>
-    </style>
-
-    <!-- the customised window animation style of switching between activities -->
-    <style name="WindowAnimationStyle_customised" parent="@android:style/Animation">
-        <item name="android:activityOpenEnterAnimation">@anim/slide_in_from_right</item>
-        <item name="android:activityOpenExitAnimation">@anim/slide_out_to_left</item>
-        <item name="android:activityCloseEnterAnimation">@anim/slide_in_from_left</item>
-        <item name="android:activityCloseExitAnimation">@anim/slide_out_to_right</item>
     </style>
 
     <!-- application theme of the action bar overlay -->
@@ -27,10 +23,66 @@
     <!-- application theme of the pop-up widget overlay -->
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat" />
 
+    <!-- the default style of the circle progress views -->
+    <style name="DefaultCircleProgressViewStyle">
+        <item name="cpv_circle_broken">false</item>
+        <item name="cpv_end_color">@color/circleProgressView_progressColour_end</item>
+        <item name="cpv_end_progress">100</item>
+        <item name="cpv_isFilled">false</item>
+        <item name="cpv_isTracked">true</item>
+        <item name="cpv_progress_textColor">@color/primaryTextColour</item>
+        <item name="cpv_progress_textSize">50sp</item>
+        <item name="cpv_progress_width">20dp</item>
+        <item name="cpv_start_color">@color/circleProgressView_progressColour_start</item>
+        <item name="cpv_start_progress">0</item>
+        <item name="cpv_track_color">@color/circleProgressView_trackColour</item>
+        <item name="cpv_track_width">@dimen/medium_interval</item>
+    </style>
+
+    <!-- the default style of the nested scroll views -->
+    <style name="DefaultNestedScrollViewStyle">
+        <item name="android:overScrollMode">never</item>
+        <item name="android:scrollbars">vertical</item>
+    </style>
+
+    <!-- the default style of the preference categories -->
+    <style name="DefaultPreferenceCategoryStyle" parent="@style/Preference.Category">
+        <item name="android:layout">@layout/customised_preference_category</item>
+        <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <!-- the default style of the preferences -->
+    <style name="DefaultPreferenceStyle" parent="@style/Preference">
+        <item name="android:layout">@layout/customised_preference</item>
+        <item name="allowDividerBelow">false</item>
+        <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <!-- the default style of the round buttons -->
+    <style name="DefaultRoundButtonStyle" parent="RoundButton.Blue">
+        <!-- the attribute fitsSystemWindows needs setting to "false" to avoid an issue that padding has no effect on some devices -->
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:paddingTop">@dimen/default_padding</item>
+        <item name="android:paddingBottom">@dimen/default_padding</item>
+        <item name="android:textSize">@dimen/default_primary_text_size</item>
+        <item name="rb_backgroundColor">@color/default_round_button_background</item>
+        <item name="rb_isRadiusAdjustBounds">true</item>
+    </style>
+
+    <style name="DefaultSectionTextViewStyle">
+        <item name="android:shadowColor">@color/colourInfo</item>
+        <item name="android:shadowDx">@dimen/text_shadow_config</item>
+        <item name="android:shadowDy">@dimen/text_shadow_config</item>
+        <item name="android:shadowRadius">@dimen/text_shadow_config</item>
+        <item name="android:textColor">@color/colourInfo</item>
+        <item name="android:textSize">@dimen/default_section_text_size</item>
+    </style>
+
     <!-- the default style of the super buttons -->
     <style name="DefaultSuperButtonStyle">
         <item name="android:drawablePadding">20dp</item>
-        <!-- the attribute fitsSystemWindows needs setting to false to avoid an issue that padding has no effect on some devices -->
+        <!-- the attribute fitsSystemWindows needs setting to "false" to avoid an issue that padding has no effect on some devices -->
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:layout_marginStart">@dimen/default_margin</item>
         <item name="android:layout_marginTop">@dimen/default_margin</item>
@@ -46,39 +98,44 @@
         <item name="sSolidColor">@color/card_backgroundColour</item>
     </style>
 
-    <!-- the default style of the circle progress views -->
-    <style name="DefaultCircleProgressViewStyle">
-        <item name="cpv_circle_broken">false</item>
-        <item name="cpv_end_color">@color/circleProgressView_progressColour_end</item>
-        <item name="cpv_end_progress">100</item>
-        <item name="cpv_isFilled">false</item>
-        <item name="cpv_isTracked">true</item>
-        <item name="cpv_progress_textColor">@color/primaryTextColour</item>
-        <item name="cpv_progress_textSize">50sp</item>
-        <item name="cpv_progress_width">20dp</item>
-        <item name="cpv_start_color">@color/circleProgressView_progressColour_start</item>
-        <item name="cpv_start_progress">0</item>
-        <item name="cpv_track_color">@color/circleProgressView_trackColour</item>
-        <item name="cpv_track_width">10dp</item>
+    <!-- the default style of the switch preferences -->
+    <style name="DefaultSwitchPreferenceStyle" parent="@style/Preference.SwitchPreference">
+        <item name="android:layout">@layout/customised_preference</item>
+        <item name="android:widgetLayout">@layout/customised_preference_widget_switch</item>
+        <item name="allowDividerBelow">false</item>
+        <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <!-- the default style of the XUI linear layout -->
+    <style name="DefaultXuiLinearLayoutStyle">
+        <item name="android:background">@color/card_backgroundColour</item>
+        <item name="xui_hideRadiusSide">bottom</item>
+        <item name="xui_radius">30dp</item>
+        <item name="xui_showBorderOnlyBeforeL">false</item>
+    </style>
+
+    <!-- the style of the text views showing rationales -->
+    <style name="RationaleTextViewStyle">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/primaryTextColour</item>
+        <item name="android:textSize">@dimen/default_primary_text_size</item>
+    </style>
+
+    <!-- the customised window animation style of switching between activities -->
+    <style name="WindowAnimationStyle_customised" parent="@android:style/Animation">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_from_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_to_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_from_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_to_right</item>
     </style>
 
     <!-- the customised list style of some XUI widgets -->
     <style name="XUIListStyle_customised">
-        <!-- the attribute fitsSystemWindows needs setting to false to avoid an issue that padding has no effect on some devices -->
+        <!-- the attribute fitsSystemWindows needs setting to "false" to avoid an issue that padding has no effect on some devices -->
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:paddingLeft">@dimen/default_margin</item>
         <item name="android:paddingRight">@dimen/default_margin</item>
         <item name="xui_commonList_titleColor">@color/primaryTextColour</item>
         <item name="xui_commonList_detailColor">@color/contentTextColour</item>
-    </style>
-
-    <!-- the default style of the round buttons -->
-    <style name="DefaultRoundButtonStyle" parent="RoundButton.Blue">
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:paddingTop">@dimen/default_padding</item>
-        <item name="android:paddingBottom">@dimen/default_padding</item>
-        <item name="android:textSize">@dimen/default_primary_text_size</item>
-        <item name="rb_backgroundColor">@color/default_round_button_background</item>
-        <item name="rb_isRadiusAdjustBounds">true</item>
     </style>
 </resources>

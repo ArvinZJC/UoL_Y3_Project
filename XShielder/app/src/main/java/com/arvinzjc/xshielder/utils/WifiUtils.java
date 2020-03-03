@@ -1,10 +1,10 @@
 /*
- * @Description: a class containing methods supporting some actions on Wi-Fi
- * @Version: 2.0.0.20200214
+ * @Description: utilities for supporting some actions on Wi-Fi
+ * @Version: 2.0.4.20200302
  * @Author: Arvin Zhao
  * @Date: 2020-01-20 13:59:45
  * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-02-14 15:47:48
+ * @LastEditTime : 2020-03-02 15:47:48
  */
 
 package com.arvinzjc.xshielder.utils;
@@ -18,9 +18,6 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
-import com.apkfuns.logutils.LogUtils;
-import com.arvinzjc.xshielder.R;
-
 import androidx.annotation.NonNull;
 
 import java.io.IOException;
@@ -29,6 +26,7 @@ import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
@@ -37,12 +35,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import com.apkfuns.logutils.LogUtils;
+import com.arvinzjc.xshielder.R;
+
 public class WifiUtils
 {
-    private static final String UNKNOWN_SSID = "<unknown ssid>";
-    private static final String ABNORMAL_BSSID_1 = "02:00:00:00:00:00";
-    private static final String ABNORMAL_BSSID_2 = "02:00:00:00:01:00";
-
     /**
      * The representation of a secured security type.
      */
@@ -60,18 +57,26 @@ public class WifiUtils
     private static final int LOWER_FREQUENCY_5GHZ = 4915; // lower bound on the 5.0 GHz (802.11a/h/j/n/ac) WLAN channels
     private static final int HIGHER_FREQUENCY_5GHZ = 5825; // upper bound on the 5.0 GHz (802.11a/h/j/n/ac) WLAN channels
     private static final int SIGNAL_LEVELS = 5; // the number of distinct Wi-Fi levels
-    private static final int CONNECT_TIMEOUT = 5000; // the connect timeout value in milliseconds
+    private static final int CONNECT_TIMEOUT = 10000; // the connect timeout value in milliseconds
+    private static final String UNKNOWN_SSID = "<unknown ssid>";
+    private static final String ABNORMAL_BSSID_1 = "02:00:00:00:00:00";
+    private static final String ABNORMAL_BSSID_2 = "02:00:00:00:01:00";
     private static final String TEST_URL = "https://github.com";
     private static final String TEST_HOST = "github.com";
 
+    private final Context mContext;
     private WifiManager mWifiManager;
     private WifiInfo mWifiInfo;
     private DhcpInfo mDhcpInfo;
     private List<ScanResult> mScanResultList;
     private String mUnknownResult, mSsid;
     private boolean mHasQuotesAroundSsid;
-    private Context mContext;
 
+    /**
+     * The default constructor to use utilities for supporting some actions on Wi-Fi.
+     * @param context global info about an app environment
+     * @throws NetworkErrorException this exception is thrown when there is no connected Wi-Fi or network
+     */
     public WifiUtils(@NonNull Context context) throws NetworkErrorException
     {
         ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -85,7 +90,7 @@ public class WifiUtils
                 if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI))
                 {
                     mContext = context;
-                    mWifiManager = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                    mWifiManager = (WifiManager)mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
                     if (mWifiManager != null)
                     {
@@ -155,7 +160,7 @@ public class WifiUtils
                     }
                     catch (InterruptedException e)
                     {
-                        LogUtils.e("The timer thread for refreshing has been interrupted. An exception occurred.");
+                        LogUtils.e("The timer thread for refreshing has been interrupted. An exception occurred (" + e.getMessage() + ").");
                         LogUtils.e(e);
                     } // end try...catch
 
@@ -170,7 +175,7 @@ public class WifiUtils
             }
             catch (InterruptedException e)
             {
-                LogUtils.e("The thread for refreshing has been interrupted. An exception occurred.");
+                LogUtils.e("The thread for refreshing has been interrupted. An exception occurred (" + e.getMessage() + ").");
                 LogUtils.e(e);
             } // end try...catch
         } // end if
@@ -408,7 +413,7 @@ public class WifiUtils
             }
             catch (SocketException e)
             {
-                LogUtils.e("An exception occurred when the app tried to get the IPv4 submet mask.");
+                LogUtils.e("An exception occurred when the app tried to get the IPv4 submet mask (" + e.getMessage() + ").");
                 LogUtils.e(e);
                 return new String[]{ip, mUnknownResult};
             } // end try...catch
@@ -494,8 +499,14 @@ public class WifiUtils
         }
         catch (IOException e)
         {
-            LogUtils.e("Failed to check Internet connection. An exception occurred.");
-            LogUtils.e(e);
+            if (e instanceof SocketTimeoutException)
+                LogUtils.w("Connection timeout. Internet connection might be unavailable.");
+            else
+            {
+                LogUtils.e("Failed to check Internet connection. An exception occurred (" + e.getMessage() + ").");
+                LogUtils.e(e);
+            } // end if...else
+
             return false;
         } // end try...catch
     } // end method hasInternetConnection
@@ -517,7 +528,8 @@ public class WifiUtils
         }
         catch (UnknownHostException e)
         {
-            LogUtils.e("Unsecured DNS because an exception occurred.\n" + e.getMessage()); // "LogUtils.e(e)" may be no output
+            LogUtils.e("Unsecured DNS because an exception occurred (" + e.getMessage() + ").");
+            LogUtils.e(e);
             return false;
         } // end try...catch
     } // end method isSecuredDns
@@ -537,7 +549,7 @@ public class WifiUtils
         }
         catch (IOException e)
         {
-            LogUtils.e("Unsecured SSL because an exception occurred.");
+            LogUtils.e("Unsecured SSL because an exception occurred (" + e.getMessage() + ").");
             LogUtils.e(e);
             return false;
         } // end try...catch

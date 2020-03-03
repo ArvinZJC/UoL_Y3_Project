@@ -1,7 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="circle_progress_view_side_length">250dp</dimen>
     <dimen name="default_content_text_size">16sp</dimen>
     <dimen name="default_explanation_text_size">14sp</dimen>
+    <dimen name="default_section_text_size">12sp</dimen>
     <dimen name="default_margin">25dp</dimen>
     <dimen name="default_padding">15dp</dimen>
     <dimen name="default_primary_text_size">18sp</dimen>
+    <dimen name="final_result_icon_size">150dp</dimen>
+    <dimen name="medium_interval">10dp</dimen>
+    <dimen name="small_interval">5dp</dimen>
+    <dimen name="text_shadow_config">0.5</dimen>
 </resources>

@@ -19,4 +19,16 @@
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:title="@string/activitySettings_title" />
 
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollViewSettings"
+        style="@style/DefaultNestedScrollViewStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/small_interval"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarSettings"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@
     <color name="circleProgressView_progressColour_end">#00EEFA</color>
     <color name="circleProgressView_progressColour_start">#0052a3</color>
     <color name="circleProgressView_trackColour">#22FFF5</color>
+    <color name="colourDisabled">#BDBDBD</color>
     <color name="colourInfo">#2196F3</color>
     <color name="colourPass">#4CAF50</color>
     <color name="colourWarning">#FFFFC107</color>

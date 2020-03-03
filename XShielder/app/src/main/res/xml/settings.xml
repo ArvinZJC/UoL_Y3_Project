@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/preferenceScreenSettings">
+
+    <PreferenceCategory
+        android:id="@+id/preferenceCategoryLog"
+        android:title="@string/settings_preferenceCategoryLogs_title">
+
+        <SwitchPreference
+            android:id="@+id/switchPreferenceEnablingLogging"
+            android:key="switchPreferenceEnablingLogging"
+            android:title="@string/settings_switchPreferenceEnablingLogging_title" />
+
+        <Preference
+            android:id="@+id/preferenceViewingLogFiles"
+            android:key="preferenceViewingLogFiles"
+            android:title="@string/settings_preferenceViewingLogFiles_title" />
+
+        <Preference
+            android:id="@+id/preferenceClearingLogFiles"
+            android:key="preferenceClearingLogFiles"
+            android:title="@string/settings_preferenceClearingLogFiles_title" />
+    </PreferenceCategory>
+
+    <Preference
+        android:id="@+id/preferenceCategoryLogDivider"
+        android:layout="@layout/preference_divider" />
+
+    <PreferenceCategory
+        android:id="@+id/preferenceCategoryOthers"
+        android:title="@string/settings_preferenceCategoryOthers_title">
+
+        <Preference
+            android:id="@+id/preferenceAbout"
+            android:key="preferenceAbout"
+            android:title="@string/settings_preferenceAbout_title" />
+
+        <Preference
+            android:id="@+id/preferencePermissions"
+            android:key="preferencePermissions"
+            android:title="@string/settings_preferencePermissions_title" />
+
+        <Preference
+            android:id="@+id/preferenceAcknowledgements"
+            android:key="preferenceAcknowledgements"
+            android:title="@string/settings_preferenceAcknowledgements_title" />
+    </PreferenceCategory>
+</PreferenceScreen>

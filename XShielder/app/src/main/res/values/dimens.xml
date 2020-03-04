@@ -9,6 +9,7 @@
     <dimen name="default_primary_text_size">18sp</dimen>
     <dimen name="final_result_icon_size">150dp</dimen>
     <dimen name="medium_interval">10dp</dimen>
+    <dimen name="preference_min_height">55dp</dimen>
     <dimen name="small_interval">5dp</dimen>
     <dimen name="text_shadow_config">0.5</dimen>
 </resources>

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">X Shielder</string>
+    <string name="activitySettings_title">Settings</string>
+    <string name="activityPermissions_title">Permissions</string>
+    <string name="activityAcknowledgements_title">Acknowledgements</string>
     <string name="activityMalware_shortTitle">Anti-malware</string>
     <string name="activityMalware_title">Anti-malware shield</string>
     <string name="activityWifi_shortTitle">Wi-Fi security</string>
     <string name="activityWifi_title">Wi-Fi security shield</string>
-    <string name="activitySettings_title">Settings</string>
 
-    <string name="menuSettings_hint">Settings</string>
     <string name="dialoguePermissionWarning_title">Insufficient permission</string>
     <string name="dialogueScanStopConfirmation_title">Stop scanning?</string>
     <string name="dialogueScanStopConfirmation_positiveText">Stop</string>
@@ -17,8 +18,10 @@
     <string name="dialogue_defaultNegativeText">Cancel</string>
     <string name="filePickerDialogue_defaultSubtitle_singular">file in total</string>
     <string name="filePickerDialogue_defaultSubtitle_plural">files in total</string>
+    <string name="menuSettings_hint">Settings</string>
     <string name="textViewRationale_pass">Everything looks good.</string>
     <string name="textViewRationale_unknown_appError">Something wrong. Please retry the scan later, or relaunch the app, or send feedback.</string>
+    <string name="toastOpeningLinkFailed">It seems that there is no suitable browser to open the link.</string>
     <string name="roundButtonAction_normal">Rescan</string>
     <string name="roundButtonAction_unknown">Retry</string>
     <string name="unknownInfo">Unknown</string>
@@ -28,9 +31,11 @@
     <string name="settings_dialogueDisableLoggingConfirmation_title">Disable logging?</string>
     <string name="settings_dialogueDisableLoggingConfirmation_content">Logging will be disabled if you click the confirmation button which is not recommended because log files help to provide a better user experience.</string>
     <string name="settings_dialogueDisableLoggingConfirmation_positiveText">Disable</string>
-    <string name="settings_dialoguePermissionWarning_content">Due to security concerns, storage access is required to view log files.\n\nThis app never collects any sensitive data.</string>
+    <string name="settings_dialoguePermissionWarning_content">
+        Due to security concerns, storage access is required to view log files.\n
+        \nThis app never collects any sensitive user data.</string>
     <string name="settings_preferenceViewingLogFiles_title">View log files</string>
-    <string name="settings_preferenceViewingLogFiles_summary_existed">Location:</string>
+    <string name="settings_preferenceViewingLogFiles_summary_existed">Location:&#160;</string>
     <string name="settings_preferenceViewingLogFiles_summary_none">No log files</string>
     <string name="settings_toastViewingLogFilesFailed">It seems that there is no suitable app to view the log file.</string>
     <string name="settings_preferenceClearingLogFiles_title">Clear log files</string>
@@ -40,23 +45,69 @@
     <string name="settings_dialogueClearingLogFilesConfirmation_positiveText">Clear</string>
     <string name="settings_toastLogFilesCleared">Successfully cleared all log files.</string>
     <string name="settings_preferenceCategoryOthers_title">OTHERS</string>
-    <string name="settings_preferenceAbout_title">About the app</string>
+    <string name="settings_preferenceAboutApp_title">About the app</string>
+    <string name="settings_preferenceAboutApp_summary">Version:&#160;</string>
+    <string name="settings_dialogueAboutApp_title">About&#160;</string>
+    <string name="settings_dialogueAboutApp_content_part1">
+        &#169; 2020 Arvin Zhao\n
+        \nThis app is a \"shielder\" because it has several \"shields\" focusing on scanning for security threads. It provides basic protection for
+        mobile devices running from Android 6 (M) to Android 10 (Q).\n
+        \nThe anti-malware shield scans installed third-party apps for malware. After scanning, it will show the final result and an app list. Apps can be
+        uninstalled according to the user\'s choice.\n
+        \nThe Wi-Fi security shield scans the connected Wi-Fi for any potential security threads. After scanning, it will list results and provide an info list of
+        the connected Wi-Fi. It basically tells the user how to handle the security issues.\n
+        \nDeveloped for academic study, the app is&#160;
+    </string>
+    <string name="settings_dialogueAboutApp_content_part2">open-source</string>
+    <string name="settings_dialogueAboutApp_content_part3">. It should never be used for any commercial purposes.</string>
     <string name="settings_preferencePermissions_title">Permissions</string>
-    <string name="settings_preferenceAcknowledgements_title">Acknowledgements</string>
+    <string name="settings_preferenceSendingFeedback_title">Send feedback</string>
+    <string name="settings_toastOpeningMailFailed">It seems that there is no suitable mail app to send feedback.</string>
+
+    <string name="permissions_textViewSection1_header">About Android Permissions</string>
+    <string name="permissions_textViewSection1_content">
+        Android permissions are designed to protect the privacy of a user. A central design point of the Android security architecture is that no app, by default,
+        has permissions to perform any operations that would adversely impact other apps, the operating system, or the user. These permissions are divided into
+        several protection levels. The two most important levels are normal and dangerous permissions. Depending on the feature, the system might grant the
+        permission automatically or might prompt the user to approve the request.
+    </string>
+    <string name="permissions_textViewSection2_header">Viewing an App\'s Permissions</string>
+    <string name="permissions_textViewSection2_content_part1">
+        You can view an app\'s permissions currently defined in the system by viewing the specified part of its app details screen. To go to an app details screen,
+        a general way is to open the Settings app, click \"Apps\", select an app, and click \"Permissions\". Please note that this may be different
+        in various versions of Android and also some third-party ROMs (MIUI, for example). You can click&#160;
+    </string>
+    <string name="permissions_textViewSection2_content_part2">here</string>
+    <string name="permissions_textViewSection2_content_part3">&#160;to go to the app details screen of this app.</string>
+    <string name="permissions_textViewSection3_header">How Permissions Are Used in&#160;</string>
+    <string name="permissions_textViewSection3_content">It is not easy to understand exactly what you grant a permission for. Required Android permissions and what they mean to you are shown as follows.</string>
+    <string name="permissions_textViewLocationAccess_header">Location Access</string>
+    <string name="permissions_textViewLocationAccess_content">
+        Due to Android limits, location access is required to get accurate network details including the connected Wi-Fi\'s SSID, security type, etc. Without
+        location access, the Wi-Fi security shield cannot work properly. Location Services should also be enabled. This app never tracks you, nor does it collect
+        your location.
+    </string>
+    <string name="permissions_textViewStorageAccess_header">Storage Access</string>
+    <string name="permissions_textViewStorageAccess_content">
+        Due to security concerns, storage access is required to view log files. Without storage access, you cannot view the log file list and open a log file via the
+        app\'s settings. The storage access only affects viewing log files. You can still enable logging without it. This app never collects any sensitive user data.
+    </string>
 
     <string name="malware_dialogueScanStopConfirmation_content">The app will stop scanning for malware if you click the confirmation button when the scan is not completed.</string>
     <string name="malware_dialogueIssueDisregardConfirmation_content">The app will take no action on malware if you click the confirmation button which is not recommended.</string>
     <string name="malware_dialogueAllSystemApps_title">Lack of third-party apps</string>
     <string name="malware_dialogueAllSystemApps_content">Except this app, all installed apps are system apps. Please install some third-party apps to scan for malware.</string>
     <string name="malware_textViewRationale_fail">Malware detected! Please uninstall malware as soon as possible.</string>
-    <string name="malware_appList_discription">You can click an item to uninstall the corresponding app. System apps which generally cannot be completely uninstalled are not scanned.</string>
-    <string name="malware_malwareList_title">MALWARE</string>
-    <string name="malware_unknownAppList_title">UNKNOWN APPS</string>
-    <string name="malware_benignAppList_title">BENIGN APPS</string>
-    <string name="malware_toastAppNotFound">might have been uninstalled.</string>
+    <string name="malware_appList_discription">Click an item to uninstall the corresponding app. System apps which generally cannot be completely uninstalled are not scanned.</string>
+    <string name="malware_malwareList_title">MALWARE (</string>
+    <string name="malware_unknownAppList_title">UNKNOWN APPS (</string>
+    <string name="malware_benignAppList_title">BENIGN APPS (</string>
+    <string name="malware_toastAppNotFound">&#160;might have been uninstalled.</string>
     <string name="malware_roundButtonAction_fail">Uninstall malware</string>
 
-    <string name="wifi_dialoguePermissionWarning_content">Due to Android limits, location access is required to get accurate network details.\n\nThis app never tracks you, nor does it collect your location.</string>
+    <string name="wifi_dialoguePermissionWarning_content">
+        Due to Android limits, location access is required to get accurate network details.\n
+        \nThis app never tracks you, nor does it collect your location.</string>
     <string name="wifi_dialogueLocationServicesStatusWarning_title">Enable Location Services?</string>
     <string name="wifi_dialogueLocationServicesStatusWarning_content">Due to Android limits, Location Services is required to be enabled to get accurate network details.</string>
     <string name="wifi_dialogueLocationServicesStatusWarning_positiveText">Enable</string>
@@ -71,7 +122,7 @@
     <string name="wifi_checklist_dns">DNS security</string>
     <string name="wifi_checklist_ssl">SSL security</string>
     <string name="wifi_info_title">NETWORK DETAILS</string>
-    <string name="wifi_info_description">You can long press an item to copy valid text.</string>
+    <string name="wifi_info_description">Long press an item to copy valid text</string>
     <string name="wifi_info_ssid">SSID</string>
     <string name="wifi_info_security">Security</string>
     <string name="wifi_info_security_wep" translatable="false">WEP</string>
@@ -117,7 +168,4 @@
     <string name="wifi_info_dns">DNS server(s)</string>
     <string name="wifi_toastCopiedToClipboard">Successfully copied to the clipboard.</string>
     <string name="wifi_roundButtonAction_fail">Configure Wi-Fi</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

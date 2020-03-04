@@ -1,10 +1,10 @@
 /*
  * @Description: utilities for supporting some actions on the theme of the status bar or the navigation bar
- * @Version: 1.1.0.20200228
+ * @Version: 1.1.5.20200304
  * @Author: Arvin Zhao
  * @Date: 2020-01-26 13:59:45
  * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-02-28 14:17:29
+ * @LastEditTime : 2020-03-04 14:17:29
  */
 
 package com.arvinzjc.xshielder.utils;
@@ -21,7 +21,7 @@ import com.xuexiang.xui.utils.StatusBarUtils;
 
 public class SystemBarThemeUtils
 {
-    private static final int TRANSLUCENT_NAVIGATION_BAR_BACKGROUND_COLOUR = 0x40000000;
+    private static final int TRANSLUCENT_NAVIGATION_BAR_BACKGROUND_COLOUR = 0x80000000;
 
     /**
      * Change the theme of the status bar according to the configuration of the dark theme.
@@ -51,28 +51,30 @@ public class SystemBarThemeUtils
      * @param configuration the device configuration info
      * @param colour the background colour of the navigation bar (please use a bright colour when the dark theme is off, while use a dark colour when the dark theme
      *               is on; using the same colour as the one used by a nearby view is suggested so as to look like a transparent navigation bar)
+     * @param drawBehind a flag indicating whether to draw behind the navigation bar (if true, please use a translucent colour)
      */
     public static void changeNavigationBarTheme(
             @NonNull Activity activity,
             @NonNull Configuration configuration,
-            int colour)
+            int colour,
+            boolean drawBehind)
     {
         Window window = activity.getWindow();
+        View windowDecorView = window.getDecorView();
+        int flags = windowDecorView.getSystemUiVisibility();
+
+        if (drawBehind)
+            flags |= View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
             if ((configuration.uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO)
-            {
-                View windowDecorView = window.getDecorView();
-                int flags = windowDecorView.getSystemUiVisibility();
-
                 flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR; // enable automatically changing the icon colour of the buttons on the navigation bar
-                windowDecorView.setSystemUiVisibility(flags);
-            } // end if
-
-            window.setNavigationBarColor(colour);
         }
         else
-            window.setNavigationBarColor(TRANSLUCENT_NAVIGATION_BAR_BACKGROUND_COLOUR); // enable the translucent navigation bar
+            colour = TRANSLUCENT_NAVIGATION_BAR_BACKGROUND_COLOUR;
+
+        windowDecorView.setSystemUiVisibility(flags);
+        window.setNavigationBarColor(colour);
     } // end method changeNavigationBarTheme
 } // end class SystemBarThemeUtils

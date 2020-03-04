@@ -39,6 +39,26 @@
         <item name="cpv_track_width">@dimen/medium_interval</item>
     </style>
 
+    <!-- the default style of text views for contents -->
+    <style name="DefaultContentTextViewStyle">
+        <item name="android:layout_marginTop">@dimen/default_padding</item>
+        <item name="android:layout_marginStart">@dimen/default_margin</item>
+        <item name="android:layout_marginEnd">@dimen/default_margin</item>
+        <item name="android:textColor">@color/contentTextColour</item>
+        <item name="android:textIsSelectable">true</item>
+        <item name="android:textSize">@dimen/default_content_text_size</item>
+    </style>
+
+    <!-- the default style of text views for headers -->
+    <style name="DefaultHeaderTextViewStyle" parent="DefaultTextShadowStyle">
+        <item name="android:layout_marginTop">@dimen/default_padding</item>
+        <item name="android:layout_marginStart">@dimen/default_margin</item>
+        <item name="android:layout_marginEnd">@dimen/default_margin</item>
+        <item name="android:textColor">@color/primaryTextColour</item>
+        <item name="android:textIsSelectable">true</item>
+        <item name="android:textSize">@dimen/default_primary_text_size</item>
+    </style>
+
     <!-- the default style of the nested scroll views -->
     <style name="DefaultNestedScrollViewStyle">
         <item name="android:overScrollMode">never</item>
@@ -70,11 +90,9 @@
         <item name="rb_isRadiusAdjustBounds">true</item>
     </style>
 
-    <style name="DefaultSectionTextViewStyle">
+    <!-- the default style of the text views for sections -->
+    <style name="DefaultSectionTextViewStyle" parent="DefaultTextShadowStyle">
         <item name="android:shadowColor">@color/colourInfo</item>
-        <item name="android:shadowDx">@dimen/text_shadow_config</item>
-        <item name="android:shadowDy">@dimen/text_shadow_config</item>
-        <item name="android:shadowRadius">@dimen/text_shadow_config</item>
         <item name="android:textColor">@color/colourInfo</item>
         <item name="android:textSize">@dimen/default_section_text_size</item>
     </style>
@@ -104,6 +122,14 @@
         <item name="android:widgetLayout">@layout/customised_preference_widget_switch</item>
         <item name="allowDividerBelow">false</item>
         <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <!-- the default style of text shadows -->
+    <style name="DefaultTextShadowStyle">
+        <item name="android:shadowColor">@color/primaryTextColour</item>
+        <item name="android:shadowDx">@dimen/text_shadow_config</item>
+        <item name="android:shadowDy">@dimen/text_shadow_config</item>
+        <item name="android:shadowRadius">@dimen/text_shadow_config</item>
     </style>
 
     <!-- the default style of the XUI linear layout -->

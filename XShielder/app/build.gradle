@@ -65,11 +65,6 @@ def getVersionCode() {
 } // end method getVersionCode
 
 dependencies {
-    /*
-     * for more about XUI, refer to: https://github.com/xuexiangjys/XUI;
-     * for more about Android-Iconics, refer to: https://github.com/mikepenz/Android-Iconics;
-     * for more about LogUtils, refer to: https://github.com/pengwei1024/LogUtils
-     */
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'

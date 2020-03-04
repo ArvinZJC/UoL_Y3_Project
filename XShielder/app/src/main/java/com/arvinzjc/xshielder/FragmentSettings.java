@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the fragment of settings
- * @Version: 1.1.1.20200303
+ * @Version: 1.1.5.20200304
  * @Author: Arvin Zhao
  * @Date: 2020-03-02 19:37:54
  * @Last Editors: Arvin Zhao
- * @LastEditTime: 2020-03-03 19:41:26
+ * @LastEditTime: 2020-03-04 19:41:26
  */
 
 package com.arvinzjc.xshielder;
@@ -16,9 +16,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -56,9 +64,13 @@ public class FragmentSettings extends PreferenceFragmentCompat
 
     private static final String FILE_PROVIDER_AUTHORITIES = "com.arvinzjc.xshielder.fileprovider",
             VIEWING_LOG_FILES_KEY = "preferenceViewingLogFiles",
-            CLEARING_LOG_FILES_KEY = "preferenceClearingLogFiles";
+            CLEARING_LOG_FILES_KEY = "preferenceClearingLogFiles",
+            ABOUT_APP_KEY = "preferenceAboutApp",
+            SENDING_FEEDBACK_KEY = "preferenceSendingFeedback",
+            SOURCE_CODE_URL = "https://github.com/ArvinZJC/UoL_Y3_Project/tree/master/XShielder",
+            FEEDBACK_EMAIL = "zjcarvin@outlook.com";
 
-    private MaterialDialog mDialogueDisableLoggingConfirmation, mDialoguePermissionWarning, mDialogueClearingLogFilesConfirmation;
+    private MaterialDialog mDialogueDisableLoggingConfirmation, mDialoguePermissionWarning, mDialogueClearingLogFilesConfirmation, mDialogueAboutApp;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey)
@@ -174,7 +186,7 @@ public class FragmentSettings extends PreferenceFragmentCompat
                             } // end try...catch
                         });
 
-                        preferenceViewingLogFiles.setSummary(getString(R.string.settings_preferenceViewingLogFiles_summary_existed) + " " + logFilePath);
+                        preferenceViewingLogFiles.setSummary(getString(R.string.settings_preferenceViewingLogFiles_summary_existed) + logFilePath);
                         preferenceViewingLogFiles.setEnabled(true);
                         preferenceViewingLogFiles.setLayoutResource(R.layout.customised_preference);
                         preferenceViewingLogFiles.setOnPreferenceClickListener(preference ->
@@ -254,18 +266,115 @@ public class FragmentSettings extends PreferenceFragmentCompat
             }
             else
                 LogUtils.w("Failed to find the preference for viewing/clearing log files. Some errors might occur.");
+
+            Preference preferenceAboutApp = findPreference(ABOUT_APP_KEY);
+
+            if (preferenceAboutApp != null)
+            {
+                preferenceAboutApp.setSummary(context.getString(R.string.settings_preferenceAboutApp_summary) + AppUtils.getAppVersionName(context));
+                preferenceAboutApp.setOnPreferenceClickListener(preference ->
+                {
+                    LogUtils.i("User chose to know about the app.");
+
+                    Drawable drawableAppIcon = context.getDrawable(R.mipmap.ic_launcher_foreground);
+
+                    if (drawableAppIcon == null)
+                    {
+                        LogUtils.w("Failed to get the app icon. Some errors might occur.");
+                        drawableAppIcon = new IconicsDrawable(context)
+                                .icon(Ionicons.Icon.ion_information_circled)
+                                .color(new IconicsColorInt(context.getColor(R.color.colourInfo)))
+                                .size(new IconicsSizeDp(AppInitialiser.DIALOGUE_ICON_SIZE));
+                    } // end if
+
+                    String openSourceText = context.getString(R.string.settings_dialogueAboutApp_content_part2);
+                    SpannableString openSourceLinkText = new SpannableString(openSourceText);
+                    openSourceLinkText.setSpan(
+                            new ClickableSpan()
+                            {
+                                @Override
+                                public void onClick(@NonNull View widget)
+                                {
+                                    try
+                                    {
+                                        LogUtils.i("User chose to view the source code of the app.");
+                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(SOURCE_CODE_URL)));
+                                    }
+                                    catch (ActivityNotFoundException e)
+                                    {
+                                        LogUtils.e("Failed to find a suitable browser to view the source code of the app. An exception occurred.");
+                                        LogUtils.e(e);
+                                        Toast.makeText(context.getApplicationContext(), R.string.toastOpeningLinkFailed, Toast.LENGTH_SHORT).show(); // the application context is required to avoid any abnormal toast styles
+                                    } // end try...catch
+                                } // end method onClick
+                            },
+                            0,
+                            openSourceText.length(),
+                            Spanned.SPAN_MARK_MARK);
+
+                    mDialogueAboutApp = new MaterialDialog.Builder(context)
+                            .backgroundColor(context.getColor(R.color.card_backgroundColour))
+                            .icon(drawableAppIcon)
+                            .title(context.getString(R.string.settings_dialogueAboutApp_title) + context.getString(R.string.app_name))
+                            .titleColor(context.getColor(R.color.primaryTextColour))
+                            .content(new SpannableStringBuilder()
+                                    .append(context.getString(R.string.settings_dialogueAboutApp_content_part1))
+                                    .append(openSourceLinkText)
+                                    .append(context.getString(R.string.settings_dialogueAboutApp_content_part3)))
+                            .contentColor(context.getColor(R.color.contentTextColour))
+                            .positiveText(R.string.dialogue_defaultPositiveText)
+                            .positiveColor(context.getColor(R.color.colourInfo))
+                            .cancelable(true)
+                            .build();
+
+                    TextView dialogueTextViewAboutApp = mDialogueAboutApp.getContentView();
+
+                    if (dialogueTextViewAboutApp != null)
+                        dialogueTextViewAboutApp.setMovementMethod(LinkMovementMethod.getInstance());
+                    else
+                        LogUtils.w("Failed to get the text view of the info dialogue about the app. Some errors might occur.");
+
+                    mDialogueAboutApp.show(); // show an info dialogue about the app
+                    return true;
+                });
+            }
+            else
+                LogUtils.w("Failed to find the preference about the app. Some errors might occur.");
+
+            Preference preferenceSendingFeedback = findPreference(SENDING_FEEDBACK_KEY);
+
+            if (preferenceSendingFeedback != null)
+            {
+                preferenceSendingFeedback.setOnPreferenceClickListener(preference ->
+                {
+                    try
+                    {
+                        startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + FEEDBACK_EMAIL)));
+                    }
+                    catch (ActivityNotFoundException e)
+                    {
+                        LogUtils.e("Failed to find a suitable mail app to send feedback. An exception occurred.");
+                        LogUtils.e(e);
+                        Toast.makeText(context.getApplicationContext(), R.string.settings_toastOpeningMailFailed, Toast.LENGTH_SHORT).show(); // the application context is required to avoid any abnormal toast styles
+                    } // end try...catch
+
+                    return true;
+                });
+            }
+            else
+                LogUtils.w("Failed to find the preference for sending feedback. Some errors might occur.");
         }
         else
             LogUtils.w("Failed to get the context that the preference fragment is currently associated with. Some errors might occur.");
     } // end method onCreatePreferences
 
     /**
-     * Perform tasks when the Fragment is no longer resumed.
+     * Perform some necessary tasks when destroying the preference fragment.
      */
     @Override
-    public void onPause()
+    public void onDestroy()
     {
-        super.onPause();
+        super.onDestroy();
 
         if (mDialogueDisableLoggingConfirmation != null)
             mDialogueDisableLoggingConfirmation.dismiss();
@@ -278,6 +387,9 @@ public class FragmentSettings extends PreferenceFragmentCompat
 
         if (mDialogueClearingLogFilesConfirmation != null)
             mDialogueClearingLogFilesConfirmation.dismiss();
+
+        if (mDialogueAboutApp != null)
+            mDialogueAboutApp.dismiss();
     } // end method onPause
 
     // set the style of the disabled preferences for viewing and clearing log files

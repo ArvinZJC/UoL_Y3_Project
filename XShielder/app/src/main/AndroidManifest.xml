@@ -14,11 +14,11 @@
 
     <application
         android:name=".AppInitialiser"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:allowBackup="false"
         android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="q">
@@ -29,20 +29,10 @@
             android:authorities="com.arvinzjc.xshielder.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
-        <!-- the activity of app settings -->
-        <activity
-            android:name=".activities.ActivitySettings"
-            android:configChanges="uiMode"
-            android:label="@string/activitySettings_title"
-            android:parentActivityName=".activities.ActivityHome"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
 
         <!-- the activity of the Wi-Fi security shield -->
         <activity
@@ -62,19 +52,41 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
 
+        <!-- the activity of acknowledgements -->
+
+        <!-- the activity of permissions -->
+        <activity
+            android:name=".activities.ActivityPermissions"
+            android:configChanges="uiMode"
+            android:label="@string/activityPermissions_title"
+            android:parentActivityName=".activities.ActivitySettings"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
+
+        <!-- the activity of app settings -->
+        <activity
+            android:name=".activities.ActivitySettings"
+            android:configChanges="uiMode"
+            android:label="@string/activitySettings_title"
+            android:parentActivityName=".activities.ActivityHome"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
         <!-- the home activity -->
         <activity
             android:name=".activities.ActivityHome"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
     </application>
 </manifest>

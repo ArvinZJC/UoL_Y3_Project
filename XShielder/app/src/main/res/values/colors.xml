@@ -14,4 +14,5 @@
     <color name="explanationTextColour">#999999</color>
     <color name="listItemPressed_backgroundColour">#E5E5EA</color>
     <color name="primaryTextColour">#333333</color>
+    <color name="translucentNavigationBarColour">#B3FFFFFF</color>
 </resources>

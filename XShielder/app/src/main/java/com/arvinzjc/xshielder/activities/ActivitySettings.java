@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the activity of settings
- * @Version: 1.0.2.20200228
+ * @Version: 1.1.2.20200304
  * @Author: Arvin Zhao
  * @Date: 2020-02-14 20:42:39
  * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-02-28 20:48:04
+ * @LastEditTime : 2020-03-04 20:48:04
  */
 
 package com.arvinzjc.xshielder.activities;
@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import com.apkfuns.logutils.LogUtils;
 import com.arvinzjc.xshielder.FragmentSettings;
 import com.arvinzjc.xshielder.R;
+import com.arvinzjc.xshielder.databinding.ActivitySettingsBinding;
 import com.arvinzjc.xshielder.utils.SystemBarThemeUtils;
 
 public class ActivitySettings extends AppCompatActivity
@@ -34,15 +35,11 @@ public class ActivitySettings extends AppCompatActivity
 
         Configuration configuration = getResources().getConfiguration();
         SystemBarThemeUtils.changeStatusBarTheme(this, configuration);
-        SystemBarThemeUtils.changeNavigationBarTheme(this, configuration, getColor(R.color.app_themeColour));
+        SystemBarThemeUtils.changeNavigationBarTheme(this, configuration, getColor(R.color.translucentNavigationBarColour), true);
 
-        setContentView(R.layout.activity_settings);
-        setSupportActionBar(findViewById(R.id.toolbarSettings));
-
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true); // enable the Up button for this activity whose parent activity is the home activity
-        else
-            LogUtils.w("Failed to get this activity's action bar. Some errors might occur.");
+        ActivitySettingsBinding activitySettingsBinding = ActivitySettingsBinding.inflate(getLayoutInflater());
+        setContentView(activitySettingsBinding.getRoot());
+        setSupportActionBar(activitySettingsBinding.toolbarSettings);
 
         mFragmentSettings = new FragmentSettings();
         getSupportFragmentManager().beginTransaction().replace(R.id.nestedScrollViewSettings, mFragmentSettings).commit();

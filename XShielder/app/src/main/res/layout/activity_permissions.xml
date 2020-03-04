@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayoutPermissions"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.ActivityPermissions">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayoutPermissions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayoutPermissions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- the attribute fitsSystemWindows needs setting to false to avoid any abnormal text view styles -->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarPermissions"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:fitsSystemWindows="false"
+                android:theme="@style/AppTheme.ActionBarOverlay"
+                app:navigationIcon="?attr/homeAsUpIndicator"
+                app:title=" ">
+
+                <TextView
+                    android:id="@+id/textViewPermissions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/activityPermissions_title"
+                    android:textColor="@color/primaryTextColour"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollViewPermissions"
+        style="@style/DefaultNestedScrollViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
+        android:layout_marginBottom="@dimen/default_padding"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutPermissions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewSection1_header"
+                style="@style/DefaultHeaderTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/permissions_textViewSection1_header" />
+
+            <TextView
+                android:id="@+id/textViewSection1_content"
+                style="@style/DefaultContentTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/permissions_textViewSection1_content" />
+
+            <TextView
+                android:id="@+id/textViewSection2_header"
+                style="@style/DefaultHeaderTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/permissions_textViewSection2_header" />
+
+            <TextView
+                android:id="@+id/textViewSection2_content"
+                style="@style/DefaultContentTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/textViewSection3_header"
+                style="@style/DefaultHeaderTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/textViewSection3_content"
+                style="@style/DefaultContentTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/permissions_textViewSection3_content" />
+
+            <TextView
+                android:id="@+id/textViewLocationAccess_header"
+                style="@style/DefaultHeaderTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/default_content_text_size"
+                android:text="@string/permissions_textViewLocationAccess_header" />
+
+            <TextView
+                android:id="@+id/textViewLocationAccess_content"
+                style="@style/DefaultContentTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/permissions_textViewLocationAccess_content" />
+
+            <TextView
+                android:id="@+id/textViewStorageAccess_header"
+                style="@style/DefaultHeaderTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/default_content_text_size"
+                android:text="@string/permissions_textViewStorageAccess_header" />
+
+            <!-- the attribute fitsSystemWindows needs setting to "false" to avoid an issue that padding has no effect on some devices -->
+            <TextView
+                android:id="@+id/textViewStorageAccess_content"
+                style="@style/DefaultContentTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/permissions_textViewStorageAccess_content" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

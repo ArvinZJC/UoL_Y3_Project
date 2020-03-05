@@ -65,10 +65,13 @@
         android:fitsSystemWindows="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <!-- the attribute fitsSystemWindows needs setting to "false" to avoid an issue that padding (set programmatically) has no effect on some devices -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayoutHome"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="false"
+            android:layout_marginBottom="@dimen/default_margin">
 
             <com.xuexiang.xui.widget.textview.supertextview.SuperButton
                 android:id="@+id/superButtonMalware"

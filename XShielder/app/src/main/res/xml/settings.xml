@@ -31,6 +31,11 @@
         android:title="@string/settings_preferenceCategoryOthers_title">
 
         <Preference
+            android:id="@+id/preferenceSendingFeedback"
+            android:key="preferenceSendingFeedback"
+            android:title="@string/settings_preferenceSendingFeedback_title" />
+
+        <Preference
             android:id="@+id/preferenceAboutApp"
             android:key="preferenceAboutApp"
             android:title="@string/settings_preferenceAboutApp_title" />
@@ -38,18 +43,13 @@
         <Preference
             android:id="@+id/preferencePermissions"
             android:key="preferencePermissions"
-            android:title="@string/settings_preferencePermissions_title">
+            android:title="@string/settings_preferencePermissions_title"
+            android:layout="@layout/customised_preference_bottom">
 
             <intent
                 android:action="android.intent.action.VIEW"
                 android:targetClass="com.arvinzjc.xshielder.activities.ActivityPermissions"
                 android:targetPackage="com.arvinzjc.xshielder" />
         </Preference>
-
-        <Preference
-            android:id="@+id/preferenceSendingFeedback"
-            android:key="preferenceSendingFeedback"
-            android:title="@string/settings_preferenceSendingFeedback_title"
-            android:layout="@layout/customised_preference_bottom" />
     </PreferenceCategory>
 </PreferenceScreen>

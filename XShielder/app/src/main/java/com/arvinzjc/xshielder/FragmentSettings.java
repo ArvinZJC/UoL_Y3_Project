@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the fragment of settings
- * @Version: 1.1.5.20200304
+ * @Version: 1.1.6.20200305
  * @Author: Arvin Zhao
  * @Date: 2020-03-02 19:37:54
  * @Last Editors: Arvin Zhao
- * @LastEditTime: 2020-03-04 19:41:26
+ * @LastEditTime: 2020-03-05 19:41:26
  */
 
 package com.arvinzjc.xshielder;
@@ -65,8 +65,9 @@ public class FragmentSettings extends PreferenceFragmentCompat
     private static final String FILE_PROVIDER_AUTHORITIES = "com.arvinzjc.xshielder.fileprovider",
             VIEWING_LOG_FILES_KEY = "preferenceViewingLogFiles",
             CLEARING_LOG_FILES_KEY = "preferenceClearingLogFiles",
-            ABOUT_APP_KEY = "preferenceAboutApp",
             SENDING_FEEDBACK_KEY = "preferenceSendingFeedback",
+            ABOUT_APP_KEY = "preferenceAboutApp",
+
             SOURCE_CODE_URL = "https://github.com/ArvinZJC/UoL_Y3_Project/tree/master/XShielder",
             FEEDBACK_EMAIL = "zjcarvin@outlook.com";
 
@@ -267,6 +268,29 @@ public class FragmentSettings extends PreferenceFragmentCompat
             else
                 LogUtils.w("Failed to find the preference for viewing/clearing log files. Some errors might occur.");
 
+            Preference preferenceSendingFeedback = findPreference(SENDING_FEEDBACK_KEY);
+
+            if (preferenceSendingFeedback != null)
+            {
+                preferenceSendingFeedback.setOnPreferenceClickListener(preference ->
+                {
+                    try
+                    {
+                        startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + FEEDBACK_EMAIL)));
+                    }
+                    catch (ActivityNotFoundException e)
+                    {
+                        LogUtils.e("Failed to find a suitable mail app to send feedback. An exception occurred.");
+                        LogUtils.e(e);
+                        Toast.makeText(context.getApplicationContext(), R.string.settings_toastOpeningMailFailed, Toast.LENGTH_SHORT).show(); // the application context is required to avoid any abnormal toast styles
+                    } // end try...catch
+
+                    return true;
+                });
+            }
+            else
+                LogUtils.w("Failed to find the preference for sending feedback. Some errors might occur.");
+
             Preference preferenceAboutApp = findPreference(ABOUT_APP_KEY);
 
             if (preferenceAboutApp != null)
@@ -340,29 +364,6 @@ public class FragmentSettings extends PreferenceFragmentCompat
             }
             else
                 LogUtils.w("Failed to find the preference about the app. Some errors might occur.");
-
-            Preference preferenceSendingFeedback = findPreference(SENDING_FEEDBACK_KEY);
-
-            if (preferenceSendingFeedback != null)
-            {
-                preferenceSendingFeedback.setOnPreferenceClickListener(preference ->
-                {
-                    try
-                    {
-                        startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + FEEDBACK_EMAIL)));
-                    }
-                    catch (ActivityNotFoundException e)
-                    {
-                        LogUtils.e("Failed to find a suitable mail app to send feedback. An exception occurred.");
-                        LogUtils.e(e);
-                        Toast.makeText(context.getApplicationContext(), R.string.settings_toastOpeningMailFailed, Toast.LENGTH_SHORT).show(); // the application context is required to avoid any abnormal toast styles
-                    } // end try...catch
-
-                    return true;
-                });
-            }
-            else
-                LogUtils.w("Failed to find the preference for sending feedback. Some errors might occur.");
         }
         else
             LogUtils.w("Failed to get the context that the preference fragment is currently associated with. Some errors might occur.");

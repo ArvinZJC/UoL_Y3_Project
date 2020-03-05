@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the home activity
- * @Version: 1.4.0.20200303
+ * @Version: 1.4.1.20200305
  * @Author: Arvin Zhao
  * @Date: 2020-01-16 13:59:45
  * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-03-03 14:32:10
+ * @LastEditTime : 2020-03-05 14:32:10
  */
 
 package com.arvinzjc.xshielder.activities;
@@ -29,6 +29,7 @@ import com.mikepenz.iconics.IconicsColorInt;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.IconicsSizeDp;
 import com.mikepenz.iconics.typeface.library.materialdesigniconic.MaterialDesignIconic;
+import com.xuexiang.xui.utils.StatusBarUtils;
 
 public class ActivityHome extends AppCompatActivity
 {
@@ -63,6 +64,8 @@ public class ActivityHome extends AppCompatActivity
             else
                 mActivityHomeBinding.textViewAppName.setVisibility(View.INVISIBLE);
         });
+
+        mActivityHomeBinding.constraintLayoutHome.setPadding(0, 0, 0, StatusBarUtils.getNavigationBarHeight(this)); // avoid showing content behind the navigation bar when scrolling to the end
 
         mActivityHomeBinding.superButtonMalware.setCompoundDrawables(new IconicsDrawable(this)
                         .icon(MaterialDesignIconic.Icon.gmi_shield_security)

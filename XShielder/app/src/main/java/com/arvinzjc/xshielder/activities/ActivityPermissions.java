@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the activity of permissions
- * @Version: 1.0.0.20200304
+ * @Version: 1.0.2.20200305
  * @Author: Arvin Zhao
  * @Date: 2020-03-04 06:33:31
  * @Last Editors: Arvin Zhao
- * @LastEditTime: 2020-03-04 07:41:12
+ * @LastEditTime: 2020-03-05 07:41:12
  */
 
 package com.arvinzjc.xshielder.activities;
@@ -48,7 +48,7 @@ public class ActivityPermissions extends AppCompatActivity
         ActivityPermissionsBinding activityPermissionsBinding = ActivityPermissionsBinding.inflate(getLayoutInflater());
         setContentView(activityPermissionsBinding.getRoot());
         setSupportActionBar(activityPermissionsBinding.toolbarPermissions);
-        activityPermissionsBinding.nestedScrollViewPermissions.setPadding(0, 0, 0, StatusBarUtils.getNavigationBarHeight(this)); // avoid showing content behind the navigation bar when scrolling to the end
+        activityPermissionsBinding.linearLayoutPermissions.setPadding(0, 0, 0, StatusBarUtils.getNavigationBarHeight(this)); // avoid showing content behind the navigation bar when scrolling to the end
 
         String hereText = getString(R.string.permissions_textViewSection2_content_part2);
         SpannableString hereLinkText = new SpannableString(hereText);

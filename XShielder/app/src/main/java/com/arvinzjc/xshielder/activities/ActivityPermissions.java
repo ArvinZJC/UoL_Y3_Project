@@ -48,6 +48,7 @@ public class ActivityPermissions extends AppCompatActivity
         ActivityPermissionsBinding activityPermissionsBinding = ActivityPermissionsBinding.inflate(getLayoutInflater());
         setContentView(activityPermissionsBinding.getRoot());
         setSupportActionBar(activityPermissionsBinding.toolbarPermissions);
+
         activityPermissionsBinding.linearLayoutPermissions.setPadding(0, 0, 0, StatusBarUtils.getNavigationBarHeight(this)); // avoid showing content behind the navigation bar when scrolling to the end
 
         String hereText = getString(R.string.permissions_textViewSection2_content_part2);

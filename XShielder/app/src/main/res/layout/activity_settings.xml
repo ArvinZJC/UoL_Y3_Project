@@ -25,26 +25,24 @@
                 android:layout_height="?attr/actionBarSize"
                 android:fitsSystemWindows="false"
                 android:theme="@style/AppTheme.ActionBarOverlay"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title=" ">
+                app:navigationIcon="?attr/homeAsUpIndicator">
 
                 <TextView
-                    android:id="@+id/textViewPermissions"
+                    android:id="@+id/textViewSettings"
+                    style="@style/ToolbarTextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/activitySettings_title"
-                    android:textColor="@color/primaryTextColour"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:text="@string/activitySettings_title" />
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollViewSettings"
-        style="@style/DefaultNestedScrollViewStyle"
+        style="@style/NestedScrollViewStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="false"
+        android:layout_marginTop="@dimen/medium_interval"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -25,24 +25,21 @@
                 android:layout_height="?attr/actionBarSize"
                 android:fitsSystemWindows="false"
                 android:theme="@style/AppTheme.ActionBarOverlay"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title=" ">
+                app:navigationIcon="?attr/homeAsUpIndicator">
 
                 <TextView
                     android:id="@+id/textViewPermissions"
+                    style="@style/ToolbarTextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/activityPermissions_title"
-                    android:textColor="@color/primaryTextColour"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:text="@string/activityPermissions_title" />
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollViewPermissions"
-        style="@style/DefaultNestedScrollViewStyle"
+        style="@style/NestedScrollViewStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="false"
@@ -59,47 +56,47 @@
 
             <TextView
                 android:id="@+id/textViewSection1_header"
-                style="@style/DefaultHeaderTextViewStyle"
+                style="@style/HeaderTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/permissions_textViewSection1_header" />
 
             <TextView
                 android:id="@+id/textViewSection1_content"
-                style="@style/DefaultContentTextViewStyle"
+                style="@style/ContentTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/permissions_textViewSection1_content" />
 
             <TextView
                 android:id="@+id/textViewSection2_header"
-                style="@style/DefaultHeaderTextViewStyle"
+                style="@style/HeaderTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/permissions_textViewSection2_header" />
 
             <TextView
                 android:id="@+id/textViewSection2_content"
-                style="@style/DefaultContentTextViewStyle"
+                style="@style/ContentTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/textViewSection3_header"
-                style="@style/DefaultHeaderTextViewStyle"
+                style="@style/HeaderTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/textViewSection3_content"
-                style="@style/DefaultContentTextViewStyle"
+                style="@style/ContentTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/permissions_textViewSection3_content" />
 
             <TextView
                 android:id="@+id/textViewLocationAccess_header"
-                style="@style/DefaultHeaderTextViewStyle"
+                style="@style/HeaderTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/default_content_text_size"
@@ -107,14 +104,14 @@
 
             <TextView
                 android:id="@+id/textViewLocationAccess_content"
-                style="@style/DefaultContentTextViewStyle"
+                style="@style/ContentTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/permissions_textViewLocationAccess_content" />
 
             <TextView
                 android:id="@+id/textViewStorageAccess_header"
-                style="@style/DefaultHeaderTextViewStyle"
+                style="@style/HeaderTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/default_content_text_size"
@@ -122,7 +119,7 @@
 
             <TextView
                 android:id="@+id/textViewStorageAccess_content"
-                style="@style/DefaultContentTextViewStyle"
+                style="@style/ContentTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/permissions_textViewStorageAccess_content" />

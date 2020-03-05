@@ -46,14 +46,12 @@
 
                 <TextView
                     android:id="@+id/textViewAppName"
+                    style="@style/ToolbarTextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="48dp"
                     android:text="@string/app_name"
-                    android:textAlignment="center"
-                    android:textColor="@color/primaryTextColour"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textAlignment="center"/>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -61,7 +59,7 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollViewHome"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:fitsSystemWindows="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -75,7 +73,7 @@
 
             <com.xuexiang.xui.widget.textview.supertextview.SuperButton
                 android:id="@+id/superButtonMalware"
-                style="@style/DefaultSuperButtonStyle"
+                style="@style/SuperButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/activityMalware_title"
@@ -85,7 +83,7 @@
 
             <com.xuexiang.xui.widget.textview.supertextview.SuperButton
                 android:id="@+id/superButtonWifi"
-                style="@style/DefaultSuperButtonStyle"
+                style="@style/SuperButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/activityWifi_title"

@@ -12,4 +12,5 @@
     <dimen name="preference_min_height">55dp</dimen>
     <dimen name="small_interval">5dp</dimen>
     <dimen name="text_shadow_config">0.5</dimen>
+    <dimen name="toolbar_title_text_size">20sp</dimen>
 </resources>

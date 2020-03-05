@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the customised file picker dialogue
- * @Version: 1.1.0.20200303
+ * @Version: 1.1.2.20200305
  * @Author: Original source code by Akshay Sunil Masram (https://github.com/TutorialsAndroid)
  * @Date: 2020-03-02 19:32:55
  * @Last Editors: Arvin Zhao
- * @LastEditTime: 2020-03-03 20:27:44
+ * @LastEditTime: 2020-03-05 20:27:44
  */
 
 package com.arvinzjc.xshielder;
@@ -82,14 +82,8 @@ public class FilePickerDialogue extends Dialog implements AdapterView.OnItemClic
         ((RelativeLayout)findViewById(R.id.header).getParent()).setBackgroundColor(mContext.getResources().getColor(com.arvinzjc.xshielder.R.color.card_backgroundColour, mContext.getTheme()));
         ((LinearLayout)findViewById(R.id.imageView).getParent()).setBackgroundColor(buttonColour);
 
-        if (MarkedItemList.getFileCount() == 0)
-        {
-            select.setEnabled(false);
-            select.setTextColor(Color.argb(128, Color.red(buttonColour), Color.green(buttonColour), Color.blue(buttonColour)));
-        } // end if
-
-        select.setText(mContext.getResources().getString(R.string.choose_button_label).toUpperCase());
-        select.setTextSize(AppInitialiser.DEFAULT_CONTENT_TEXT_SIZE);
+        select.setText(mContext.getResources().getString(R.string.choose_button_label));
+        select.setTextAppearance(com.arvinzjc.xshielder.R.style.ButtonTextStyle);
         select.setOnClickListener(view ->
         {
             String[] paths = MarkedItemList.getSelectedPaths();
@@ -98,9 +92,15 @@ public class FilePickerDialogue extends Dialog implements AdapterView.OnItemClic
 
             dismiss();
         });
-        cancel.setText(mContext.getString(com.arvinzjc.xshielder.R.string.dialogue_defaultNegativeText).toUpperCase());
-        cancel.setTextColor(buttonColour);
-        cancel.setTextSize(AppInitialiser.DEFAULT_CONTENT_TEXT_SIZE);
+
+        if (MarkedItemList.getFileCount() == 0)
+        {
+            select.setEnabled(false);
+            select.setTextColor(Color.argb(128, Color.red(buttonColour), Color.green(buttonColour), Color.blue(buttonColour)));
+        } // end if
+
+        cancel.setText(mContext.getString(com.arvinzjc.xshielder.R.string.dialogue_defaultNegativeText));
+        cancel.setTextAppearance(com.arvinzjc.xshielder.R.style.ButtonTextStyle);
         cancel.setOnClickListener(view -> cancel());
 
         mFileListAdapter = new FileListAdapter(mInternalList, mContext, mProperties);

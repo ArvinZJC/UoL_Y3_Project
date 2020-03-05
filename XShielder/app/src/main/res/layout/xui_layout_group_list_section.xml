@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <TextView
-        style="@style/DefaultSectionTextViewStyle"
+        style="@style/SectionTextViewStyle"
         android:id="@+id/group_list_section_header_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

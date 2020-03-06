@@ -40,6 +40,8 @@
                 android:paddingStart="@dimen/medium_interval"
                 android:paddingEnd="@dimen/medium_interval"
                 android:theme="@style/AppTheme.ActionBarOverlay"
+                app:contentInsetEnd="56dp"
+                app:contentInsetStart="72dp"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:title=" ">
@@ -49,9 +51,8 @@
                     style="@style/ToolbarTextViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="48dp"
                     android:text="@string/app_name"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center" />
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>

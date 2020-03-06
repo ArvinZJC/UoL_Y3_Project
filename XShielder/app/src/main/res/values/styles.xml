@@ -142,6 +142,13 @@
         <item name="android:shadowRadius">@dimen/text_shadow_config</item>
     </style>
 
+    <!-- the style of toolbars -->
+    <style name="ToolbarStyle">
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:theme">@style/AppTheme.ActionBarOverlay</item>
+        <item name="navigationIcon">?attr/homeAsUpIndicator</item>
+    </style>
+
     <!-- the style of the text views added to toolbars -->
     <style name="ToolbarTextViewStyle" parent="TextShadowStyle">
         <item name="android:textColor">@color/primaryTextColour</item>

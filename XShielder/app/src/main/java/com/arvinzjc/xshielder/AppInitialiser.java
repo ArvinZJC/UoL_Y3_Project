@@ -1,10 +1,10 @@
 /*
  * @Description: a necessary class for initialising the application
- * @Version: 1.4.0.20200302
+ * @Version: 1.4.2.20200318
  * @Author: Arvin Zhao
  * @Date: 2020-01-24 13:08:14
  * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-03-02 14:12:45
+ * @LastEditTime : 2020-03-18 14:12:45
  */
 
 package com.arvinzjc.xshielder;
@@ -85,6 +85,11 @@ public class AppInitialiser extends Application
     public static final int TOOLBAR_RIGHT_ICON_SIZE = 18;
 
     /**
+     * The size (unit: dp) of the icon in a super button on the home activity.
+     */
+    public static final int HOME_BUTTON_ICON_SIZE = 40;
+
+    /**
      * The size (unit: dp) of the icon on the left of the title of a dialogue.
      */
     public static final int DIALOGUE_ICON_SIZE = 24;
@@ -103,11 +108,6 @@ public class AppInitialiser extends Application
      * The size (unit: px) of an icon in the app list.
      */
     public static final int APP_LIST_ICON_SIZE = 100;
-
-    /**
-     * The default size (unit: sp) of content text.
-     */
-    public static final int DEFAULT_CONTENT_TEXT_SIZE = 16;
 
     /**
      * The number of CPU cores.

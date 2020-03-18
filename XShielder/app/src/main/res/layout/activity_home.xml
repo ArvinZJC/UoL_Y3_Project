@@ -91,6 +91,26 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/superButtonMalware" />
+
+            <com.xuexiang.xui.widget.textview.supertextview.SuperButton
+                android:id="@+id/superButtonAppManager"
+                style="@style/SuperButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/home_appManager_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/superButtonWifi" />
+
+            <com.xuexiang.xui.widget.textview.supertextview.SuperButton
+                android:id="@+id/superButtonSystemUpdate"
+                style="@style/SuperButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/home_systemUpdate_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/superButtonAppManager" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

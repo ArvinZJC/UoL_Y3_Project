@@ -26,6 +26,10 @@
     <string name="roundButtonAction_unknown">Retry</string>
     <string name="unknownInfo">Unknown</string>
 
+    <string name="home_appManager_title">App manager</string>
+    <string name="home_systemUpdate_title">System update</string>
+    <string name="home_toastSystemUpdate">It seems that there is no system update screen.</string>
+
     <string name="settings_preferenceCategoryLogs_title">LOGS</string>
     <string name="settings_switchPreferenceEnablingLogging_title">Enable logging</string>
     <string name="settings_dialogueDisableLoggingConfirmation_title">Disable logging?</string>
@@ -50,12 +54,14 @@
     <string name="settings_dialogueAboutApp_title">About&#160;</string>
     <string name="settings_dialogueAboutApp_content_part1">
         &#169; 2020 Arvin Zhao\n
-        \nThis app is a \"shielder\" because it has several \"shields\" focusing on scanning for security threads. It provides basic protection for
+        \nThis app is a \"shielder\" and it has 2 \"shields\" as the main functionality focusing on scanning for security threads. It provides basic protection for
         mobile devices running from Android 6 (M) to Android 10 (Q).\n
         \nThe anti-malware shield scans installed third-party apps for malware. After scanning, it will show the final result and an app list. Apps can be
         uninstalled according to the user\'s choice.\n
         \nThe Wi-Fi security shield scans the connected Wi-Fi for any potential security threads. After scanning, it will list results and provide an info list of
         the connected Wi-Fi. It basically tells the user how to handle the security issues.\n
+        \nThe app also provides links to the app list screen and the system update screen to assist the user to manage apps and their permissions and to update the
+        system in time.\n
         \nDeveloped for academic study, the app is&#160;
     </string>
     <string name="settings_dialogueAboutApp_content_part2">open-source</string>

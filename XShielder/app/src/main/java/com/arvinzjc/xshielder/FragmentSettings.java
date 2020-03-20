@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the fragment of settings
- * @Version: 1.1.6.20200305
+ * @Version: 1.1.7.20200320
  * @Author: Arvin Zhao
  * @Date: 2020-03-02 19:37:54
  * @Last Editors: Arvin Zhao
- * @LastEditTime: 2020-03-05 19:41:26
+ * @LastEditTime: 2020-03-20 19:41:26
  */
 
 package com.arvinzjc.xshielder;
@@ -241,16 +241,24 @@ public class FragmentSettings extends PreferenceFragmentCompat
                                         File[] logFilesBeingCleared = logFileFolder.listFiles();
 
                                         if (logFilesBeingCleared != null && logFilesBeingCleared.length > 0)
+                                        {
+                                            boolean isCleared = true; // indicate if all log files are cleared
+
                                             for (File logFileBeingCleared : logFilesBeingCleared)
                                                 if (logFileBeingCleared.exists())
-                                                    if (logFileBeingCleared.delete())
+                                                    if (!logFileBeingCleared.delete())
                                                     {
-                                                        disableOperatingLogFiles(preferenceViewingLogFiles, preferenceClearingLogFiles);
-                                                        Toast.makeText(context.getApplicationContext(), R.string.settings_toastLogFilesCleared, Toast.LENGTH_SHORT).show(); // the application context is required to avoid any abnormal toast styles
-                                                        LogUtils.i("Successfully delete the expired log file \"" + logFileBeingCleared.getName() + "\".");
-                                                    }
-                                                    else
-                                                        LogUtils.w("Failed to delete the expired log file \"" + logFileBeingCleared.getName() + "\". Some errors might occur.");
+                                                        isCleared = false;
+                                                        LogUtils.w("Failed to delete the log file \"" + logFileBeingCleared.getName() + "\". Some errors might occur.");
+                                                    } // end if...else
+
+                                            if (isCleared)
+                                            {
+                                                disableOperatingLogFiles(preferenceViewingLogFiles, preferenceClearingLogFiles);
+                                                LogUtils.i("Successfully delete all log files.");
+                                                Toast.makeText(context.getApplicationContext(), R.string.settings_toastLogFilesCleared, Toast.LENGTH_SHORT).show(); // the application context is required to avoid any abnormal toast styles
+                                            } // end if
+                                        } // end if
                                     })
                                     .negativeText(R.string.dialogue_defaultNegativeText)
                                     .negativeColor(context.getColor(R.color.colourInfo))

@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the activity of settings
- * @Version: 1.1.2.20200304
- * @Author: Arvin Zhao
+ * @Version: 1.1.3.20200330
+ * @Author: Jichen Zhao
  * @Date: 2020-02-14 20:42:39
- * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-03-04 20:48:04
+ * @Last Editors: Jichen Zhao
+ * @LastEditTime : 2020-03-30 20:48:04
  */
 
 package com.arvinzjc.xshielder.activities;

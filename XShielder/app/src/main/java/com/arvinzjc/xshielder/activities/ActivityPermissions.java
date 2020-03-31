@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the activity of permissions
- * @Version: 1.0.2.20200305
- * @Author: Arvin Zhao
+ * @Version: 1.0.3.20200330
+ * @Author: Jichen Zhao
  * @Date: 2020-03-04 06:33:31
- * @Last Editors: Arvin Zhao
- * @LastEditTime: 2020-03-05 07:41:12
+ * @Last Editors: Jichen Zhao
+ * @LastEditTime: 2020-03-30 07:41:12
  */
 
 package com.arvinzjc.xshielder.activities;

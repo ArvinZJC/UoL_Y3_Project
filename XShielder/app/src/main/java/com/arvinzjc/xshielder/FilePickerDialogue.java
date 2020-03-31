@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the customised file picker dialogue
- * @Version: 1.1.2.20200305
- * @Author: Original source code by Akshay Sunil Masram (https://github.com/TutorialsAndroid)
+ * @Version: 1.1.4.20200330
+ * @Author: Akshay Sunil Masram
  * @Date: 2020-03-02 19:32:55
- * @Last Editors: Arvin Zhao
- * @LastEditTime: 2020-03-05 20:27:44
+ * @Last Editors: Jichen Zhao
+ * @LastEditTime: 2020-03-30 20:27:44
  */
 
 package com.arvinzjc.xshielder;

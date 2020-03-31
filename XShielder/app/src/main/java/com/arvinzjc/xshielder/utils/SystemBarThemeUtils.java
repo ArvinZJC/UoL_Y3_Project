@@ -1,10 +1,10 @@
 /*
  * @Description: utilities for supporting some actions on the theme of the status bar or the navigation bar
- * @Version: 1.1.5.20200304
- * @Author: Arvin Zhao
+ * @Version: 1.1.6.20200330
+ * @Author: Jichen Zhao
  * @Date: 2020-01-26 13:59:45
- * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-03-04 14:17:29
+ * @Last Editors: Jichen Zhao
+ * @LastEditTime : 2020-03-30 14:17:29
  */
 
 package com.arvinzjc.xshielder.utils;

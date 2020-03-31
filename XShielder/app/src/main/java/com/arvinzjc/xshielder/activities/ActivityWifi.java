@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the activity of the Wi-Fi security shield
- * @Version: 2.1.5.20200303
- * @Author: Arvin Zhao
+ * @Version: 2.1.6.20200330
+ * @Author: Jichen Zhao
  * @Date: 2020-01-19 13:59:45
- * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-03-03 23:52:07
+ * @Last Editors: Jichen Zhao
+ * @LastEditTime : 2020-03-30 23:52:07
  */
 
 package com.arvinzjc.xshielder.activities;

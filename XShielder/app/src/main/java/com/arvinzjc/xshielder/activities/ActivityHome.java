@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the home activity
- * @Version: 1.4.5.20200318
- * @Author: Arvin Zhao
+ * @Version: 1.4.6.20200330
+ * @Author: Jichen Zhao
  * @Date: 2020-01-16 13:59:45
- * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-03-18 14:32:10
+ * @Last Editors: Jichen Zhao
+ * @LastEditTime : 2020-03-30 14:32:10
  */
 
 package com.arvinzjc.xshielder.activities;

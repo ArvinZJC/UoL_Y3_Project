@@ -1,10 +1,10 @@
 /*
  * @Description: utilities for supporting some actions on Wi-Fi
- * @Version: 2.0.4.20200302
- * @Author: Arvin Zhao
+ * @Version: 2.0.5.20200330
+ * @Author: Jichen Zhao
  * @Date: 2020-01-20 13:59:45
- * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-03-02 15:47:48
+ * @Last Editors: Jichen Zhao
+ * @LastEditTime : 2020-03-30 15:47:48
  */
 
 package com.arvinzjc.xshielder.utils;

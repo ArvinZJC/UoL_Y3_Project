@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the fragment of settings
- * @Version: 1.1.7.20200320
- * @Author: Arvin Zhao
+ * @Version: 1.1.8.20200330
+ * @Author: Jichen Zhao
  * @Date: 2020-03-02 19:37:54
- * @Last Editors: Arvin Zhao
- * @LastEditTime: 2020-03-20 19:41:26
+ * @Last Editors: Jichen Zhao
+ * @LastEditTime: 2020-03-30 19:41:26
  */
 
 package com.arvinzjc.xshielder;

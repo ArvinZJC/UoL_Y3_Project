@@ -1,10 +1,10 @@
 /*
  * @Description: a necessary class for initialising the application
- * @Version: 1.4.2.20200318
- * @Author: Arvin Zhao
+ * @Version: 1.4.3.20200330
+ * @Author: Jichen Zhao
  * @Date: 2020-01-24 13:08:14
- * @Last Editors: Arvin Zhao
- * @LastEditTime : 2020-03-18 14:12:45
+ * @Last Editors: Jichen Zhao
+ * @LastEditTime : 2020-03-30 14:12:45
  */
 
 package com.arvinzjc.xshielder;

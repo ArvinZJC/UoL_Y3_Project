@@ -15,30 +15,43 @@ android {
         versionCode currentVersionCode
         versionName '1.0.0'
         python {
-            buildPython 'py -3.7' // this depends on the version of Python installed on Windows
+            buildPython 'py -3.8' // select a suitable version according to the version of Python installed on Windows and the requirements of Python packages
             pip {
                 install 'androguard==3.3.5'
                 install 'numpy==1.17.4'
-                install 'tensorflow==2.1.0' // Tensorflow 2.1.0 supports Python 3.5 - 3.7
+                install 'tensorflow==2.1.0'
             }
         }
     }
 
     flavorDimensions 'abi'
     productFlavors {
-        arm {
+        arm_32 {
             dimension 'abi'
             ndk { abiFilters 'armeabi-v7a' }
+        }
+        arm_64 {
+            dimension 'abi'
+            ndk { abiFilters 'arm64-v8a' }
         }
         x86 {
             dimension 'abi'
             ndk { abiFilters 'x86' }
         }
+        x86_64 {
+            dimension 'abi'
+            ndk { abiFilters 'x86_64' }
+        }
     }
 
-    sourceSets {
-        main { jniLibs.srcDirs = ['libs'] }
+    splits {
+        abi {
+            enable true
+            universalApk true
+        }
     }
+
+    sourceSets { main { jniLibs.srcDir 'libs' } }
 
     buildTypes {
         release {

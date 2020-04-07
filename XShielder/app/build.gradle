@@ -19,27 +19,25 @@ android {
             pip {
                 install 'androguard==3.3.5'
                 install 'numpy==1.17.4'
-                install 'tensorflow-1.15.2-py3-none-any.whl'
+                install 'tensorflow==2.1.0' // Tensorflow 2.1.0 supports Python 3.5 - 3.7
             }
         }
     }
 
-    flavorDimensions "abi"
+    flavorDimensions 'abi'
     productFlavors {
         arm {
-            dimension "abi"
-            ndk { abiFilters "armeabi-v7a" }
+            dimension 'abi'
+            ndk { abiFilters 'armeabi-v7a' }
         }
         x86 {
-            dimension "abi"
-            ndk { abiFilters "x86" }
+            dimension 'abi'
+            ndk { abiFilters 'x86' }
         }
     }
 
     sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
-        }
+        main { jniLibs.srcDirs = ['libs'] }
     }
 
     buildTypes {
@@ -54,9 +52,7 @@ android {
         targetCompatibility = 1.8
     }
 
-    viewBinding {
-        enabled = true
-    }
+    viewBinding { enabled = true }
 }
 
 // increase the version code automatically after each release task and get the version code

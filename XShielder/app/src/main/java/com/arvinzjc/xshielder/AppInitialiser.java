@@ -1,10 +1,10 @@
 /*
  * @Description: a necessary class for initialising the application
- * @Version: 1.4.3.20200330
+ * @Version: 1.4.4.20200408
  * @Author: Jichen Zhao
  * @Date: 2020-01-24 13:08:14
  * @Last Editors: Jichen Zhao
- * @LastEditTime : 2020-03-30 14:12:45
+ * @LastEditTime : 2020-04-08 14:12:45
  */
 
 package com.arvinzjc.xshielder;
@@ -116,7 +116,7 @@ public class AppInitialiser extends Application
 
     private static final String LOG_TAG_PREFIX = "XShielder"; // the tag prefix of logs
     private static final String DATE_FORMAT = "yyyy-MM-dd";
-    private static final int LOG_FILE_LIFETIME = 7; // each log file has a lifetime of 7 days
+    private static final long LOG_FILE_LIFETIME = 7; // each log file has a lifetime of 7 days
 
     @Override
     public void onCreate()
@@ -178,10 +178,7 @@ public class AppInitialiser extends Application
 
                         if (logFileDate != null)
                         {
-                            long timeDifference = new Date().getTime() - logFileDate.getTime();
-                            long dateDifference = TimeUnit.DAYS.convert(timeDifference, TimeUnit.MILLISECONDS);
-
-                            if (dateDifference >= LOG_FILE_LIFETIME)
+                            if (TimeUnit.DAYS.convert(new Date().getTime() - logFileDate.getTime(), TimeUnit.MILLISECONDS) >= LOG_FILE_LIFETIME)
                             {
                                 File expiredLog = new File(logFilePath, logFileName + LOG_FILE_EXTENSION);
 

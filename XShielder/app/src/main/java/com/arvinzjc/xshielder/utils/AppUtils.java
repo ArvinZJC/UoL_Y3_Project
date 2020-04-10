@@ -1,10 +1,10 @@
 /*
  * @Description: utilities for supporting some app and file operations
- * @Version: 1.0.3.20200330
+ * @Version: 1.0.5.20200409
  * @Author: Jichen Zhao
  * @Date: 2020-02-28 13:31:06
  * @Last Editors: Jichen Zhao
- * @LastEditTime: 2020-03-30 13:32:18
+ * @LastEditTime: 2020-04-09 13:32:18
  */
 
 package com.arvinzjc.xshielder.utils;
@@ -51,19 +51,19 @@ public class AppUtils
     } // end method copyApk
 
     /**
-     * Delete old APKs for scanning if any.
-     * @param apkFolder a File object containing the absolute path to the folder storing APKs for scanning
+     * Clear the files in the folder containing APKs for scanning.
+     * @param apkFolder a File object containing the directory of the folder containing APKs for scanning
      */
-    public static void deleteOldApks(@NonNull File apkFolder)
+    public static void clearApkFolder(@NonNull File apkFolder)
     {
-        File[] oldApks = apkFolder.listFiles();
+        File[] oldFiles = apkFolder.listFiles();
 
-        if (oldApks != null && oldApks.length > 0)
-            for (File oldApk : oldApks)
-                if (oldApk.isFile())
-                    if (!oldApk.delete())
-                        LogUtils.w("Failed to delete an old APK for scanning (" + oldApk.getName() + "). Some errors might occur.");
-    } // end method deleteOldApks
+        if (oldFiles != null && oldFiles.length > 0)
+            for (File oldFile : oldFiles)
+                if (oldFile.isFile())
+                    if (!oldFile.delete())
+                        LogUtils.w("Failed to delete an old file (" + oldFile.getName() + "). Some errors might occur.");
+    } // end method clearApkFolder
 
     /**
      * Get the absolute path to the app-specific cache directory on the external storage device or the filesystem (when the external storage device is unavailable or
@@ -139,6 +139,13 @@ public class AppUtils
         return nonSystemAppInfoList;
     } // end method getNonSystemAppInfoList
 
+    /**
+     * Check if the specified app is installed.
+     * @param context global info about an app environment
+     * @param packageManager a package manager
+     * @param appInfo the info of the specified app
+     * @return true if the specified app is installed; otherwise, false
+     */
     public static boolean isInstalled(@NonNull Context context, @NonNull PackageManager packageManager, @NonNull ApplicationInfo appInfo)
     {
         ArrayList<ApplicationInfo> nonSystemAppInfoList = getNonSystemAppInfoList(context, packageManager);

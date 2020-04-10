@@ -99,6 +99,7 @@
         app\'s settings. The storage access only affects viewing log files. You can still enable logging without it. This app never collects any sensitive user data.
     </string>
 
+    <string name="malware_textViewScanNotice">The scan may take a long time.</string>
     <string name="malware_dialogueScanStopConfirmation_content">The app will stop scanning for malware if you click the confirmation button when the scan is not completed.</string>
     <string name="malware_dialogueIssueDisregardConfirmation_content">The app will take no action on malware if you click the confirmation button which is not recommended.</string>
     <string name="malware_dialogueAllSystemApps_title">Lack of third-party apps</string>

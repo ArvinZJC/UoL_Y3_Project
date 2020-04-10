@@ -26,7 +26,7 @@ import com.apkfuns.logutils.LogUtils;
 import com.arvinzjc.xshielder.AppInitialiser;
 import com.arvinzjc.xshielder.R;
 import com.arvinzjc.xshielder.databinding.ActivityHomeBinding;
-import com.arvinzjc.xshielder.utils.SystemBarThemeUtils;
+import com.arvinzjc.xshielder.utils.SystemUtils;
 import com.google.android.material.appbar.AppBarLayout;
 import com.mikepenz.iconics.IconicsColorInt;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -47,8 +47,8 @@ public class ActivityHome extends AppCompatActivity
         LogUtils.i("Enter the home activity.");
 
         Configuration configuration = getResources().getConfiguration();
-        SystemBarThemeUtils.changeStatusBarTheme(this, configuration);
-        SystemBarThemeUtils.changeNavigationBarTheme(this, configuration, getColor(R.color.translucentNavigationBarColour), true);
+        SystemUtils.changeStatusBarTheme(this, configuration);
+        SystemUtils.changeNavigationBarTheme(this, configuration, getColor(R.color.translucentNavigationBarColour), true);
 
         mActivityHomeBinding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(mActivityHomeBinding.getRoot());

@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the activity of the Wi-Fi security shield
- * @Version: 2.1.6.20200330
+ * @Version: 2.1.7.20200409
  * @Author: Jichen Zhao
  * @Date: 2020-01-19 13:59:45
  * @Last Editors: Jichen Zhao
- * @LastEditTime : 2020-03-30 23:52:07
+ * @LastEditTime : 2020-04-09 23:52:07
  */
 
 package com.arvinzjc.xshielder.activities;
@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 import com.arvinzjc.xshielder.AppInitialiser;
 import com.arvinzjc.xshielder.R;
 import com.arvinzjc.xshielder.databinding.ActivityWifiBinding;
-import com.arvinzjc.xshielder.utils.SystemBarThemeUtils;
+import com.arvinzjc.xshielder.utils.SystemUtils;
 import com.arvinzjc.xshielder.utils.WifiUtils;
 import com.mikepenz.iconics.IconicsColorInt;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -114,8 +114,8 @@ public class ActivityWifi extends AppCompatActivity
         LogUtils.i("Enter the activity of the Wi-Fi security shield.");
 
         mConfiguration = getResources().getConfiguration();
-        SystemBarThemeUtils.changeStatusBarTheme(this, mConfiguration);
-        SystemBarThemeUtils.changeNavigationBarTheme(this, mConfiguration, getColor(R.color.app_themeColour), false);
+        SystemUtils.changeStatusBarTheme(this, mConfiguration);
+        SystemUtils.changeNavigationBarTheme(this, mConfiguration, getColor(R.color.app_themeColour), false);
 
         mActivityWifiBinding = ActivityWifiBinding.inflate(getLayoutInflater());
         setContentView(mActivityWifiBinding.getRoot());
@@ -141,7 +141,7 @@ public class ActivityWifi extends AppCompatActivity
                 findViewById(R.id.nestedScrollViewWifiResults).scrollTo(0, 0);
                 (new Handler()).postDelayed(() ->
                 {
-                    SystemBarThemeUtils.changeNavigationBarTheme(this, mConfiguration, getColor(R.color.app_themeColour), false);
+                    SystemUtils.changeNavigationBarTheme(this, mConfiguration, getColor(R.color.app_themeColour), false);
                     ViewUtils.fadeIn(mActivityWifiBinding.circleProgressViewWifi, mAnimationDuration, null);
                 }, mAnimationDuration / 2);
 
@@ -271,6 +271,9 @@ public class ActivityWifi extends AppCompatActivity
         if (mDialoguePermissionWarning != null)
             mDialoguePermissionWarning.dismiss();
 
+        if (mFinalResult != AppInitialiser.FinalResults.PASS)
+            SystemUtils.keepScreenOn(this, false);
+
         mExecutorServiceScan.shutdownNow();
         LogUtils.getLog2FileConfig().flushAsync(); // flush log cache to record logs in log files
     } // end method onDestroy
@@ -381,6 +384,8 @@ public class ActivityWifi extends AppCompatActivity
     // get Wi-Fi security scan results
     private void getWifiResults(boolean isFirstScan)
     {
+        runOnUiThread(() -> SystemUtils.keepScreenOn(this, true));
+
         if (isFirstScan)
         {
             mCommonListItemViewChecklistSecurityType = mActivityWifiBinding.groupListViewWifiResults.createItemView(getString(R.string.wifi_checklist_securityType));
@@ -738,6 +743,9 @@ public class ActivityWifi extends AppCompatActivity
                         .addItemView(mCommonListItemViewInfoDns, null, onLongClickListenerWifiInfo)
                         .addTo(mActivityWifiBinding.groupListViewWifiResults);
             } // end if
+
+            if (mFinalResult == AppInitialiser.FinalResults.PASS)
+                SystemUtils.keepScreenOn(this, false);
         });
     } // end method getWifiResults
 
@@ -765,7 +773,7 @@ public class ActivityWifi extends AppCompatActivity
             ViewUtils.fadeIn(mActivityWifiBinding.imageViewWifi, mAnimationDuration, null);
             ViewUtils.fadeIn(mActivityWifiBinding.textViewWifiRationale, mAnimationDuration, null);
             ViewUtils.slideIn(mActivityWifiBinding.linearLayoutWifiResults, mAnimationDuration, null, ViewUtils.Direction.BOTTOM_TO_TOP);
-            SystemBarThemeUtils.changeNavigationBarTheme(this, mConfiguration, getColor(R.color.card_backgroundColour), false);
+            SystemUtils.changeNavigationBarTheme(this, mConfiguration, getColor(R.color.card_backgroundColour), false);
             mActivityWifiBinding.roundButtonWifiAction.setEnabled(true);
         }, mAnimationDuration / 2);
     } // end method playAnimationAfterProgress

@@ -1,10 +1,10 @@
 /*
- * @Description: utilities for supporting some actions on the theme of the status bar or the navigation bar
- * @Version: 1.1.6.20200330
+ * @Description: utilities for supporting some actions on the system configuration
+ * @Version: 1.2.0.20200409
  * @Author: Jichen Zhao
  * @Date: 2020-01-26 13:59:45
  * @Last Editors: Jichen Zhao
- * @LastEditTime : 2020-03-30 14:17:29
+ * @LastEditTime : 2020-04-09 14:17:29
  */
 
 package com.arvinzjc.xshielder.utils;
@@ -14,12 +14,14 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
+import com.apkfuns.logutils.LogUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
 
-public class SystemBarThemeUtils
+public class SystemUtils
 {
     private static final int TRANSLUCENT_NAVIGATION_BAR_BACKGROUND_COLOUR = 0x80000000;
 
@@ -77,4 +79,23 @@ public class SystemBarThemeUtils
         windowDecorView.setSystemUiVisibility(flags);
         window.setNavigationBarColor(colour);
     } // end method changeNavigationBarTheme
-} // end class SystemBarThemeUtils
+
+    /**
+     * Add the specified flag to keep the screen on, or clear the flag to allow the screen to turn off when the device is left idle.
+     * @param activity the activity calling this method
+     * @param isScreenKeptOn a flag indicating if the screen should be kept on
+     */
+    public static void keepScreenOn(@NonNull Activity activity, boolean isScreenKeptOn)
+    {
+        if (isScreenKeptOn)
+        {
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            LogUtils.i("Add the specified flag to keep the screen on.");
+        }
+        else
+        {
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            LogUtils.i("Clear the specified flag to allow the screen to turn off when the device is left idle.");
+        } // end if...else
+    } // end method keepScreenOn
+} // end class SystemUtils

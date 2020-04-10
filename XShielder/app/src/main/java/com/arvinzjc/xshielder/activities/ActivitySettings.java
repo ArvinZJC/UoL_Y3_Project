@@ -21,7 +21,7 @@ import com.apkfuns.logutils.LogUtils;
 import com.arvinzjc.xshielder.FragmentSettings;
 import com.arvinzjc.xshielder.R;
 import com.arvinzjc.xshielder.databinding.ActivitySettingsBinding;
-import com.arvinzjc.xshielder.utils.SystemBarThemeUtils;
+import com.arvinzjc.xshielder.utils.SystemUtils;
 
 public class ActivitySettings extends AppCompatActivity
 {
@@ -34,8 +34,8 @@ public class ActivitySettings extends AppCompatActivity
         LogUtils.i("Enter the activity of settings.");
 
         Configuration configuration = getResources().getConfiguration();
-        SystemBarThemeUtils.changeStatusBarTheme(this, configuration);
-        SystemBarThemeUtils.changeNavigationBarTheme(this, configuration, getColor(R.color.translucentNavigationBarColour), true);
+        SystemUtils.changeStatusBarTheme(this, configuration);
+        SystemUtils.changeNavigationBarTheme(this, configuration, getColor(R.color.translucentNavigationBarColour), true);
 
         ActivitySettingsBinding activitySettingsBinding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(activitySettingsBinding.getRoot());

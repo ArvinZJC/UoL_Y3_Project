@@ -29,7 +29,7 @@ import android.view.View;
 import com.apkfuns.logutils.LogUtils;
 import com.arvinzjc.xshielder.R;
 import com.arvinzjc.xshielder.databinding.ActivityPermissionsBinding;
-import com.arvinzjc.xshielder.utils.SystemBarThemeUtils;
+import com.arvinzjc.xshielder.utils.SystemUtils;
 import com.xuexiang.xui.utils.StatusBarUtils;
 
 public class ActivityPermissions extends AppCompatActivity
@@ -42,8 +42,8 @@ public class ActivityPermissions extends AppCompatActivity
         LogUtils.i("Enter the activity of permissions.");
 
         Configuration configuration = getResources().getConfiguration();
-        SystemBarThemeUtils.changeStatusBarTheme(this, configuration);
-        SystemBarThemeUtils.changeNavigationBarTheme(this, configuration, getColor(R.color.translucentNavigationBarColour), true);
+        SystemUtils.changeStatusBarTheme(this, configuration);
+        SystemUtils.changeNavigationBarTheme(this, configuration, getColor(R.color.translucentNavigationBarColour), true);
 
         ActivityPermissionsBinding activityPermissionsBinding = ActivityPermissionsBinding.inflate(getLayoutInflater());
         setContentView(activityPermissionsBinding.getRoot());

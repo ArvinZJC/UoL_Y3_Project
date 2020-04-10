@@ -20,6 +20,7 @@ android {
                 install 'androguard==3.3.5'
                 install 'numpy==1.17.4'
                 install 'tensorflow==2.1.0'
+                install 'git+https://github.com/google-research/tf-slim'
             }
         }
     }

@@ -1,10 +1,10 @@
 '''
 @Description: a compressed feature extractor (integrated anti-malware engine version)
-@Version: 1.0.2.20200410
+@Version: 1.0.3.20200411
 @Author: Jichen Zhao
 @Date: 2020-04-08 10:01:12
 @Last Editors: Jichen Zhao
-@LastEditTime: 2020-04-10 04:07:09
+@LastEditTime: 2020-04-11 16:59:39
 '''
 
 from androguard.core.analysis import analysis
@@ -46,7 +46,7 @@ def extract_compressed_features(apk_folder_directory) -> int:
                 
                 data_point = {}
                 data_point['x'] = x
-                data_point['y'] = 1
+                data_point['y'] = 0 # the category of the app is undecided when this function is called in the integrated anti-malware engine, so simply categorise it as benign apps
                 
                 feature_stream = open(os.path.join(apk_folder_directory, str(file) + '.save'), 'wb')
                 pickle.dump(data_point, feature_stream, protocol = pickle.DEFAULT_PROTOCOL)

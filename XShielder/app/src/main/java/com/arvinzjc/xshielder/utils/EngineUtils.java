@@ -1,10 +1,10 @@
 /*
  * @Description: utilities for supporting the integrated anti-malware engine
- * @Version: 1.0.3.20200410
+ * @Version: 1.0.5.20200413
  * @Author: Jichen Zhao
  * @Date: 2020-04-07 19:28:36
  * @Last Editors: Jichen Zhao
- * @LastEditTime: 2020-04-10 19:30:26
+ * @LastEditTime: 2020-04-13 19:30:26
  */
 
 package com.arvinzjc.xshielder.utils;
@@ -23,6 +23,8 @@ import java.util.List;
 
 public class EngineUtils
 {
+    private static final String DATA_READER_MODULE = "data_reader";
+    private static final String DATA_READER_VERSION_FUNCTION = "get_engine_version";
     private static final String DICTIONARY_GENERATOR_MODULE = "dictionary_generator";
     private static final String DICTIONARY_GENERATOR_CORE_FUNCTION = "generate_dictionary";
     private static final String FEATURE_EXTRACTOR_MODULE = "feature_extractor";
@@ -44,6 +46,15 @@ public class EngineUtils
         mEngine = Python.getInstance();
         mApkFolderDirectory = apkFolderDirectory;
     } // end constructor EngineUtils
+
+    /**
+     * Run the specified Python code to get the version of the integrated anti-malware engine.
+     * @return the version of the integrated anti-malware engine
+     */
+    public String getEngineVersion()
+    {
+        return mEngine.getModule(DATA_READER_MODULE).callAttr(DATA_READER_VERSION_FUNCTION).toJava(String.class);
+    } // end method getEngineVersion
 
     /**
      * Run the specified Python code to generate a dictionary storing mapping all distinct API calls to numbers and pickle the dictionary.

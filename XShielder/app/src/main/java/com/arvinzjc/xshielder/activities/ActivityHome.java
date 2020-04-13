@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the home activity
- * @Version: 1.4.6.20200330
+ * @Version: 1.4.7.20200413
  * @Author: Jichen Zhao
  * @Date: 2020-01-16 13:59:45
  * @Last Editors: Jichen Zhao
- * @LastEditTime : 2020-03-30 14:32:10
+ * @LastEditTime : 2020-04-13 14:32:10
  */
 
 package com.arvinzjc.xshielder.activities;
@@ -63,7 +63,7 @@ public class ActivityHome extends AppCompatActivity
 
         mActivityHomeBinding.appBarLayoutHome.addOnOffsetChangedListener((AppBarLayout appBarLayoutHome, int verticalOffset) ->
         {
-            // "total scroll range × 2 ÷ 3" can make the switch between the logo and the app name more smooth
+            // "total scroll range * 2 / 3" can make the switch between the logo and the app name more smooth
             if (Math.abs(verticalOffset) >= appBarLayoutHome.getTotalScrollRange() * 2 / 3)
                 mActivityHomeBinding.textViewAppName.setVisibility(View.VISIBLE);
             else

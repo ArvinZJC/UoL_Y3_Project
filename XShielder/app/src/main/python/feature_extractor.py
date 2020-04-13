@@ -1,10 +1,10 @@
 '''
 @Description: a compressed feature extractor (integrated anti-malware engine version)
-@Version: 1.0.3.20200411
+@Version: 1.0.4.20200412
 @Author: Jichen Zhao
 @Date: 2020-04-08 10:01:12
 @Last Editors: Jichen Zhao
-@LastEditTime: 2020-04-11 16:59:39
+@LastEditTime: 2020-04-12 17:17:43
 '''
 
 from androguard.core.analysis import analysis
@@ -18,7 +18,7 @@ import sys
 from path_loader import get_dictionary_path
 
 
-max_calls = 5 # this value influences the input size in the parts related to CNN
+max_calls = 20 # this value influences the input size in the parts related to CNN
 
 
 def extract_compressed_features(apk_folder_directory) -> int:

@@ -1,10 +1,10 @@
 '''
 @Description: a directory/path loader (integrated anti-malware engine version)
-@Version: 1.0.1.20200408
+@Version: 1.0.2.20200412
 @Author: Jichen Zhao
 @Date: 2020-04-07 11:31:45
 @Last Editors: Jichen Zhao
-@LastEditTime: 2020-04-08 16:42:52
+@LastEditTime: 2020-04-12 16:21:09
 '''
 
 import os
@@ -45,11 +45,11 @@ def get_dictionary_path(apk_folder_directory) -> str:
 
 def get_cnn_trainer_saver_path() -> str:
     '''
-    Get the path of the file (.ckpt) from the saver when training a CNN with a stacked encoder.
+    Get the path of the checkpoint files from the saver when training a CNN with a stacked encoder.
 
     Returns
     -------
-    cnn_trainer_saver_path : the path of the file (.ckpt) from the saver when training a CNN with a stacked encoder
+    cnn_trainer_saver_path : the path of the checkpoint files from the saver when training a CNN with a stacked encoder
     '''
 
     cnn_trainer_saver_directory = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'cnn_trainer_saver')

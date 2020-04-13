@@ -50,7 +50,8 @@
     <string name="settings_toastLogFilesCleared">Successfully cleared all log files.</string>
     <string name="settings_preferenceCategoryOthers_title">OTHERS</string>
     <string name="settings_preferenceAboutApp_title">About the app</string>
-    <string name="settings_preferenceAboutApp_summary">Version:&#160;</string>
+    <string name="settings_preferenceAboutApp_summary_line1">App version:&#160;</string>
+    <string name="settings_preferenceAboutApp_summary_line2">Anti-malware engine version:&#160;</string>
     <string name="settings_dialogueAboutApp_title">About&#160;</string>
     <string name="settings_dialogueAboutApp_content_part1">
         &#169; 2020 Arvin Zhao\n

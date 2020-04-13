@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the fragment of settings
- * @Version: 1.1.8.20200330
+ * @Version: 1.1.9.20200413
  * @Author: Jichen Zhao
  * @Date: 2020-03-02 19:37:54
  * @Last Editors: Jichen Zhao
- * @LastEditTime: 2020-03-30 19:41:26
+ * @LastEditTime: 2020-04-13 19:41:26
  */
 
 package com.arvinzjc.xshielder;
@@ -40,6 +40,7 @@ import androidx.preference.SwitchPreference;
 import com.apkfuns.logutils.Log2FileConfig;
 import com.apkfuns.logutils.LogUtils;
 import com.arvinzjc.xshielder.utils.AppUtils;
+import com.arvinzjc.xshielder.utils.EngineUtils;
 import com.developer.filepicker.model.DialogProperties;
 import com.mikepenz.iconics.IconicsColorInt;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -303,7 +304,8 @@ public class FragmentSettings extends PreferenceFragmentCompat
 
             if (preferenceAboutApp != null)
             {
-                preferenceAboutApp.setSummary(context.getString(R.string.settings_preferenceAboutApp_summary) + AppUtils.getAppVersionName(context));
+                preferenceAboutApp.setSummary(context.getString(R.string.settings_preferenceAboutApp_summary_line1) + AppUtils.getAppVersionName(context) + "\n"
+                    + context.getString(R.string.settings_preferenceAboutApp_summary_line2) + new EngineUtils(context, "").getEngineVersion());
                 preferenceAboutApp.setOnPreferenceClickListener(preference ->
                 {
                     LogUtils.i("User chose to know about the app.");

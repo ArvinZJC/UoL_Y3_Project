@@ -1,10 +1,10 @@
 /*
  * @Description: a necessary class for initialising the application
- * @Version: 1.4.4.20200408
+ * @Version: 1.4.5.20200413
  * @Author: Jichen Zhao
  * @Date: 2020-01-24 13:08:14
  * @Last Editors: Jichen Zhao
- * @LastEditTime : 2020-04-08 14:12:45
+ * @LastEditTime : 2020-04-13 14:12:45
  */
 
 package com.arvinzjc.xshielder;
@@ -28,6 +28,7 @@ import com.apkfuns.logutils.Log2FileConfig;
 import com.apkfuns.logutils.LogLevel;
 import com.apkfuns.logutils.LogUtils;
 import com.arvinzjc.xshielder.utils.AppUtils;
+import com.arvinzjc.xshielder.utils.EngineUtils;
 import com.xuexiang.xui.XUI;
 
 public class AppInitialiser extends Application
@@ -218,6 +219,6 @@ public class AppInitialiser extends Application
             } // end if
         } // end if
 
-        LogUtils.i("The app started and initialised. Version: " + AppUtils.getAppVersionName(this));
+        LogUtils.i("The app started and initialised.\nApp version: " + AppUtils.getAppVersionName(this) + "\nAnti-malware engine version: " + new EngineUtils(this, "").getEngineVersion());
     } // end method onCreate
 } // end class AppInitialiser

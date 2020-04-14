@@ -1,10 +1,10 @@
 '''
 @Description: testing a CNN with a stacked autoencoder (integrated anti-malware engine version)
-@Version: 1.0.4.20200414
+@Version: 1.0.5.20200415
 @Author: Jichen Zhao
 @Date: 2020-04-08 10:12:59
 @Last Editors: Jichen Zhao
-@LastEditTime: 2020-04-14 22:06:39
+@LastEditTime: 2020-04-15 00:33:00
 '''
 
 import numpy as np
@@ -71,7 +71,7 @@ def classify_apps(apk_folder_directory):
             package_name_index = 0
 
             for start_index in range(0, len(batch_result_list), input_size):
-                prediction_dictionary[batch_package_name_list[package_name_index]] = batch_result_list[start_index : start_index + input_size].max()
+                prediction_dictionary[batch_package_name_list[package_name_index]] = np.int16(batch_result_list[start_index : start_index + input_size].max()).item() # convert the "numpy.int64" type to the native "int" type
                 package_name_index += 1
         
         return prediction_dictionary

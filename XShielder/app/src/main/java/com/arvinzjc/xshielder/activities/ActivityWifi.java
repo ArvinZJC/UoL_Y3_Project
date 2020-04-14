@@ -1,10 +1,10 @@
 /*
  * @Description: a class for the activity of the Wi-Fi security shield
- * @Version: 2.1.7.20200409
+ * @Version: 2.1.8.20200414
  * @Author: Jichen Zhao
  * @Date: 2020-01-19 13:59:45
  * @Last Editors: Jichen Zhao
- * @LastEditTime : 2020-04-09 23:52:07
+ * @LastEditTime : 2020-04-14 23:52:07
  */
 
 package com.arvinzjc.xshielder.activities;
@@ -32,10 +32,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
 import com.arvinzjc.xshielder.AppInitialiser;
 import com.arvinzjc.xshielder.R;
 import com.arvinzjc.xshielder.databinding.ActivityWifiBinding;
@@ -52,6 +48,10 @@ import com.xuexiang.xui.widget.dialog.materialdialog.DialogAction;
 import com.xuexiang.xui.widget.dialog.materialdialog.MaterialDialog;
 import com.xuexiang.xui.widget.grouplist.XUICommonListItemView;
 import com.xuexiang.xui.widget.grouplist.XUIGroupListView;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ActivityWifi extends AppCompatActivity
 {

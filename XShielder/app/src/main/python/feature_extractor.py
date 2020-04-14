@@ -1,10 +1,10 @@
 '''
 @Description: a compressed feature extractor (integrated anti-malware engine version)
-@Version: 1.0.4.20200412
+@Version: 1.0.5.20200414
 @Author: Jichen Zhao
 @Date: 2020-04-08 10:01:12
 @Last Editors: Jichen Zhao
-@LastEditTime: 2020-04-12 17:17:43
+@LastEditTime: 2020-04-14 17:05:04
 '''
 
 from androguard.core.analysis import analysis
@@ -18,7 +18,7 @@ import sys
 from path_loader import get_dictionary_path
 
 
-max_calls = 20 # this value influences the input size in the parts related to CNN
+max_calls = 50 # this value influences the input size in the parts related to CNN
 
 
 def extract_compressed_features(apk_folder_directory) -> int:
@@ -31,11 +31,11 @@ def extract_compressed_features(apk_folder_directory) -> int:
 
     Returns
     -------
-    problem_list : a list recording problems (even indexes for APK names and odd indexes for the corresponding problems)
+    problem_dictionary : a dictionary recording problems (keys for APK names and values for corresponding problems)
     '''
 
     api_call_dictionary = pickle.load(open(get_dictionary_path(apk_folder_directory), 'rb'), encoding = 'latin1') # change the encoding if there is a UnicodeDecodeError
-    failed_extraction_list = []
+    failed_extraction_dictionary = {}
 
     for file in os.listdir(apk_folder_directory):
         file_path = os.path.join(apk_folder_directory, file)
@@ -53,13 +53,11 @@ def extract_compressed_features(apk_folder_directory) -> int:
                 feature_stream.close()
 
                 if recursion_error_count > 0:
-                    failed_extraction_list.append(file)
-                    failed_extraction_list.append('HasRecursionError(' + str(recursion_error_count) + ')')
+                    failed_extraction_dictionary[file] = 'HasRecursionError(' + str(recursion_error_count) + ')'
             except Exception as e:
-                failed_extraction_list.append(file)
-                failed_extraction_list.append(repr(e))
+                failed_extraction_dictionary[File] = repr(e)
     
-    return failed_extraction_list
+    return failed_extraction_dictionary
 
 
 def get_compressed_feature_vector(path, api_call_dictionary):

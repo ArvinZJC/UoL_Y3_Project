@@ -1,10 +1,10 @@
 '''
 @Description: testing a CNN with a stacked autoencoder (integrated anti-malware engine version)
-@Version: 1.0.3.20200412
+@Version: 1.0.4.20200414
 @Author: Jichen Zhao
 @Date: 2020-04-08 10:12:59
 @Last Editors: Jichen Zhao
-@LastEditTime: 2020-04-12 17:38:32
+@LastEditTime: 2020-04-14 22:06:39
 '''
 
 import numpy as np
@@ -29,57 +29,56 @@ def classify_apps(apk_folder_directory):
 
     Returns
     -------
-    TODO:
+    prediction_dictionary : a dictionary recording classification results (keys for APK names and values for corresponding results - 0
+        represents a benign app, while 1 represents malware)
     '''
 
-    data_X, data_Y, package_name = load_data(apk_folder_directory)    
+    data_X, data_Y, package_name_list = load_data(apk_folder_directory)    
 
     learning_rate = 0.00001
-    batch_size = 2
+    batch_size = 1
     display_step = 1
-    dimension_count = data_X.max() + 10
-    input_size = 20
+    dimension_count = 86645
+    input_size = 50
     class_count = 2
 
     tf.disable_eager_execution()
     X = tf.placeholder(tf.float32, [None, input_size, dimension_count, 1])
     Y = tf.placeholder(tf.float32, [None, class_count])
 
-    # build the net and define the loss and optimiser
-    prediction = conv_net(X)
-    loss_op = slim.losses.softmax_cross_entropy(prediction, Y)
-    training_op = tf.train.AdagradOptimizer(learning_rate = learning_rate).minimize(loss_op)
-
-    # evaluate the model
-    correct_prediction = tf.equal(tf.argmax(prediction, 1), tf.argmax(Y, 1))
-    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-
+    prediction = conv_net(X) # build the net
     init_op = tf.global_variables_initializer() # intialise the variables to assign their default values
+    saver = tf.train.Saver()
 
     with tf.Session() as session:
-        saver = tf.train.import_meta_graph(get_cnn_trainer_saver_path() + '.meta')
+        session.run(init_op)
+
         saver.restore(session, get_cnn_trainer_saver_path())
         
         batch_count = int(data_X.shape[0] / batch_size)
-        batch_accuracy_sum = 0.0
+        prediction_dictionary = {}
 
         for step in range(batch_count):
-            batch_x, batch_y = data_X[step * batch_size : (step + 1) * batch_size], data_Y[step * batch_size : (step + 1) * batch_size]
+            batch_x = data_X[step * batch_size : (step + 1) * batch_size]
+            batch_y = data_Y[step * batch_size : (step + 1) * batch_size]
+            batch_package_name_list = package_name_list[step * batch_size : (step + 1) * batch_size]
 
             batch_x = decompress(batch_x, dimension_count)
-            batch_x = session.run(X, feed_dict = {X: batch_x})
             batch_y = get_one_hot_vector(batch_size, batch_y)
-            batch_y = np.repeat(batch_y, input_size, axis = 0)
-            assert(batch_x.shape[0] == batch_y.shape[0]) # raise exception if they have different sizes
 
-            batch_accuracy = session.run(accuracy, feed_dict = {X: batch_x, Y: batch_y}) # calculate batch accuracy
-            batch_accuracy_sum += batch_accuracy
-            print('Step: ' + str(step), 'batch accuracy: ' + '{:.3f}'.format(batch_accuracy))
+            batch_result_list = session.run(tf.argmax(prediction, 1), feed_dict = {X: batch_x})
 
-        print('Test accuracy: ' + '{:.3f}'.format(batch_accuracy_sum / batch_count))
+            package_name_index = 0
+
+            for start_index in range(0, len(batch_result_list), input_size):
+                prediction_dictionary[batch_package_name_list[package_name_index]] = batch_result_list[start_index : start_index + input_size].max()
+                package_name_index += 1
+        
+        return prediction_dictionary
+
 
 if __name__ == '__main__':
     from path_loader import get_test_apk_folder_directory
 
     
-    classify_apps(get_test_apk_folder_directory())
+    print(classify_apps(get_test_apk_folder_directory()))

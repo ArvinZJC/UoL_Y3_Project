@@ -1,10 +1,10 @@
 '''
 @Description: operations of building a CNN (integrated anti-malware engine version)
-@Version: 1.0.3.20200412
+@Version: 1.0.4.20200414
 @Author: Jichen Zhao
 @Date: 2020-04-08 10:14:15
 @Last Editors: Jichen Zhao
-@LastEditTime: 2020-04-12 17:37:17
+@LastEditTime: 2020-04-14 13:54:16
 '''
 
 import numpy as np
@@ -32,7 +32,6 @@ def conv_net(inputs):
         weights_regularizer = slim.l2_regularizer(0.0005)):
 
         net = slim.conv2d(inputs, 512, (3, inputs.shape[2]), 1, padding = 'valid', scope = 'conv_1') # (3, dimension_count)
-        print(net.shape)
         net = slim.max_pool2d(net, (4, 1), 4, padding = 'valid', scope = 'pool_2')
         net = slim.conv2d(net, 512, (5, 1), 1, scope = 'conv_3')
         net = slim.max_pool2d(net, (4, 1), 4, padding = 'valid', scope = 'pool_4')

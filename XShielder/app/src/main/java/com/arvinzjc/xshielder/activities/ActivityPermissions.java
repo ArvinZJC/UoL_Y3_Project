@@ -1,16 +1,13 @@
 /*
  * @Description: a class for the activity of permissions
- * @Version: 1.0.3.20200330
+ * @Version: 1.0.4.20200414
  * @Author: Jichen Zhao
  * @Date: 2020-03-04 06:33:31
  * @Last Editors: Jichen Zhao
- * @LastEditTime: 2020-03-30 07:41:12
+ * @LastEditTime: 2020-04-14 07:41:12
  */
 
 package com.arvinzjc.xshielder.activities;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -25,6 +22,9 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.apkfuns.logutils.LogUtils;
 import com.arvinzjc.xshielder.R;

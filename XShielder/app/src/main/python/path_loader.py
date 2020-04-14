@@ -1,10 +1,10 @@
 '''
 @Description: a directory/path loader (integrated anti-malware engine version)
-@Version: 1.0.2.20200412
+@Version: 1.0.3.20200414
 @Author: Jichen Zhao
 @Date: 2020-04-07 11:31:45
 @Last Editors: Jichen Zhao
-@LastEditTime: 2020-04-12 16:21:09
+@LastEditTime: 2020-04-14 23:01:45
 '''
 
 import os
@@ -51,13 +51,8 @@ def get_cnn_trainer_saver_path() -> str:
     -------
     cnn_trainer_saver_path : the path of the checkpoint files from the saver when training a CNN with a stacked encoder
     '''
-
-    cnn_trainer_saver_directory = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'cnn_trainer_saver')
-
-    if not os.path.exists(cnn_trainer_saver_directory):
-        os.makedirs(cnn_trainer_saver_directory)
     
-    return os.path.join(cnn_trainer_saver_directory, 'cnn_trainer.ckpt')
+    return os.path.join(os.path.dirname(__file__), 'cnn_trainer.ckpt')
 
 
 # test purposes only

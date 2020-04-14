@@ -1,21 +1,21 @@
 /*
  * @Description: a class for the activity of settings
- * @Version: 1.1.3.20200330
+ * @Version: 1.1.4.20200414
  * @Author: Jichen Zhao
  * @Date: 2020-02-14 20:42:39
  * @Last Editors: Jichen Zhao
- * @LastEditTime : 2020-03-30 20:48:04
+ * @LastEditTime : 2020-04-14 20:48:04
  */
 
 package com.arvinzjc.xshielder.activities;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.apkfuns.logutils.LogUtils;
 import com.arvinzjc.xshielder.FragmentSettings;

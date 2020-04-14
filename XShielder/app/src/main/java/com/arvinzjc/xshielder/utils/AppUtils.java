@@ -1,10 +1,10 @@
 /*
  * @Description: utilities for supporting some app and file operations
- * @Version: 1.0.5.20200409
+ * @Version: 1.0.6.20200414
  * @Author: Jichen Zhao
  * @Date: 2020-02-28 13:31:06
  * @Last Editors: Jichen Zhao
- * @LastEditTime: 2020-04-09 13:32:18
+ * @LastEditTime: 2020-04-14 13:32:18
  */
 
 package com.arvinzjc.xshielder.utils;

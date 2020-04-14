@@ -1,10 +1,10 @@
 /*
  * @Description: utilities for supporting the integrated anti-malware engine
- * @Version: 1.0.5.20200413
+ * @Version: 1.0.6.20200414
  * @Author: Jichen Zhao
  * @Date: 2020-04-07 19:28:36
  * @Last Editors: Jichen Zhao
- * @LastEditTime: 2020-04-13 19:30:26
+ * @LastEditTime: 2020-04-14 19:30:26
  */
 
 package com.arvinzjc.xshielder.utils;
@@ -17,9 +17,8 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 public class EngineUtils
 {
@@ -29,6 +28,8 @@ public class EngineUtils
     private static final String DICTIONARY_GENERATOR_CORE_FUNCTION = "generate_dictionary";
     private static final String FEATURE_EXTRACTOR_MODULE = "feature_extractor";
     private static final String FEATURE_EXTRACTOR_CORE_FUNCTION = "extract_compressed_features";
+    private static final String APP_CLASSIFIER_MODULE = "app_classifier";
+    private static final String APP_CLASSIFIER_CORE_FUNCTION = "classify_apps";
 
     private Python mEngine; // store the interface to the Python code of the integrated anti-malware engine
     private String mApkFolderDirectory; // the directory of the folder containing APKs for scanning
@@ -67,7 +68,7 @@ public class EngineUtils
 
     /**
      * Run the specified Python code to extract compressed features for apps and pickle them.
-     * @return a map recording problems (keys for APK names and values for the corresponding problems)
+     * @return a map recording problems (keys for APK names and values for corresponding problems)
      */
     public HashMap<String, String> extractFeatures()
     {
@@ -75,25 +76,29 @@ public class EngineUtils
          * a list recording failed extraction (even indexes for APK names and odd indexes for the corresponding problems);
          * avoid using ArrayList here, as PyList from Chaquopy cannot be cast to ArrayList
          */
-        List<PyObject> problemList = mEngine.getModule(FEATURE_EXTRACTOR_MODULE).callAttr(FEATURE_EXTRACTOR_CORE_FUNCTION, mApkFolderDirectory).asList();
-        int problemListSize = problemList.size();
+        Map<PyObject, PyObject> problemMap_pyObject = mEngine.getModule(FEATURE_EXTRACTOR_MODULE).callAttr(FEATURE_EXTRACTOR_CORE_FUNCTION, mApkFolderDirectory).asMap();
         HashMap<String, String> problemMap = new HashMap<>();
 
-        if (problemListSize > 0)
-        {
-            ArrayList<String> apkNameList = new ArrayList<>(); // a list storing even indexes of the problem list
-            ArrayList<String> correspondingProblemList = new ArrayList<>(); // a list storing odd indexes of the problem list
-
-            for (int count = 0; count < problemListSize; count += 2)
-                apkNameList.add(problemList.get(count).toString());
-
-            for (int count = 1; count < problemListSize; count += 2)
-                correspondingProblemList.add(problemList.get(count).toString());
-
-            for (int count = 0; count < apkNameList.size(); count++)
-                problemMap.put(apkNameList.get(count), correspondingProblemList.get(count));
-        } // end if
+        if (problemMap_pyObject.size() > 0)
+            for (Map.Entry<PyObject, PyObject> problemEntry : problemMap_pyObject.entrySet())
+                problemMap.put(problemEntry.getKey().toJava(String.class), problemEntry.getValue().toJava(String.class));
 
         return problemMap;
     } // end method extractFeatures
+
+    /**
+     * Run the specified Python code to classify apps as benign or malicious apps.
+     * @return a map recording classification results (keys for APK names and values for corresponding results - 0 represents a benign app, while 1 represents malware)
+     */
+    public HashMap<String, Integer> classifyApps()
+    {
+        Map<PyObject, PyObject> predictionMap_pyObject = mEngine.getModule(APP_CLASSIFIER_MODULE).callAttr(APP_CLASSIFIER_CORE_FUNCTION, mApkFolderDirectory).asMap();
+        HashMap<String, Integer> predictionMap = new HashMap<>();
+
+        if (predictionMap_pyObject.size() > 0)
+            for (Map.Entry<PyObject, PyObject> predictionEntry : predictionMap_pyObject.entrySet())
+                predictionMap.put(predictionEntry.getKey().toJava(String.class), predictionEntry.getValue().toJava(Integer.class));
+
+        return predictionMap;
+    } // end method classifyApps
 } // end class EngineUtils

@@ -1,10 +1,10 @@
 /*
  * @Description: utilities for supporting some app and file operations
- * @Version: 1.0.6.20200414
+ * @Version: 1.0.7.20200415
  * @Author: Jichen Zhao
  * @Date: 2020-02-28 13:31:06
  * @Last Editors: Jichen Zhao
- * @LastEditTime: 2020-04-14 13:32:18
+ * @LastEditTime: 2020-04-15 13:32:18
  */
 
 package com.arvinzjc.xshielder.utils;
@@ -133,7 +133,7 @@ public class AppUtils
 
         for (ApplicationInfo appInfo : packageManager.getInstalledApplications(0))
             // add the info of all third-party apps except this app to the info list of non-system apps
-            if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0 && !appInfo.packageName.equals(context.getApplicationInfo().packageName))
+            if ((appInfo.flags & (ApplicationInfo.FLAG_SYSTEM | ApplicationInfo.FLAG_UPDATED_SYSTEM_APP)) == 0 && !appInfo.packageName.equals(context.getApplicationInfo().packageName))
                 nonSystemAppInfoList.add(appInfo);
 
         return nonSystemAppInfoList;

@@ -1,10 +1,10 @@
 '''
 @Description: a data reader (integrated anti-malware engine version)
-@Version: 1.0.4.20200414
+@Version: 1.0.5.20200415
 @Author: Jichen Zhao
 @Date: 2020-04-08 10:43:42
 @Last Editors: Jichen Zhao
-@LastEditTime: 2020-04-14 16:57:23
+@LastEditTime: 2020-04-15 04:13:11
 '''
 
 import numpy as np
@@ -52,7 +52,7 @@ def load_data(apk_folder_directory):
             data_point = pickle.load(open(file_path, 'rb'), encoding = 'latin1') # change the encoding if there is a UnicodeDecodeError
             X.append(data_point['x'])
             Y.append(data_point['y'])
-            package_name_list.append(file.replace('.apk.save', ''))
+            package_name_list.append(file.replace('.save', ''))
 
     return np.asarray(X), np.asarray(Y), package_name_list
 

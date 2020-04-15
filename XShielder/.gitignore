@@ -78,3 +78,9 @@ app/src/main/python/__pycache__/
 
 # Visual Studio Code
 app/src/main/python/.vscode/*
+
+# Tensorflow CHECKPOINT files saving the graph
+app/src/main/python/cnn_trainer.ckpt.index
+app/src/main/python/cnn_trainer.ckpt.data-00000-of-00001
+app/src/main/python/cnn_trainer.ckpt.meta
+app/src/main/python/checkpoint

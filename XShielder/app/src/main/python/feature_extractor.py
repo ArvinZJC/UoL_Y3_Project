@@ -1,10 +1,10 @@
 '''
 @Description: a compressed feature extractor (integrated anti-malware engine version)
-@Version: 1.0.5.20200414
+@Version: 1.0.6.20200416
 @Author: Jichen Zhao
 @Date: 2020-04-08 10:01:12
 @Last Editors: Jichen Zhao
-@LastEditTime: 2020-04-14 17:05:04
+@LastEditTime: 2020-04-16 02:07:23
 '''
 
 from androguard.core.analysis import analysis
@@ -55,7 +55,7 @@ def extract_compressed_features(apk_folder_directory) -> int:
                 if recursion_error_count > 0:
                     failed_extraction_dictionary[file] = 'HasRecursionError(' + str(recursion_error_count) + ')'
             except Exception as e:
-                failed_extraction_dictionary[File] = repr(e)
+                failed_extraction_dictionary[file] = repr(e)
     
     return failed_extraction_dictionary
 
